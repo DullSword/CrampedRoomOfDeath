@@ -1,16 +1,17 @@
-import { _decorator, Component, resources, SpriteFrame } from 'cc';
+import { _decorator, Component, randomRangeInt, SpriteFrame } from 'cc';
 const { ccclass, property } = _decorator;
 
 import { CreateUINode } from '../../Utils';
 import { TileManager } from './TileManager';
-import { DataManagerInstance } from '../../Runtime/DataManager';
+import DataManager from '../../Runtime/DataManager';
+import ResourceManager from '../../Runtime/ResourceManager';
 
 @ccclass('TileMapManager')
 export class TileMapManager extends Component {
     async init() {
-        const SpriteFrames = await this.loadRes();
+        const SpriteFrames = await ResourceManager.loadDir("texture/tile", SpriteFrame);
 
-        const { mapInfo } = DataManagerInstance;
+        const { mapInfo } = DataManager.instance;
 
         for (let i = 0; i < mapInfo.length; i++) {
             const column = mapInfo[i];
@@ -20,9 +21,14 @@ export class TileMapManager extends Component {
                     continue;
                 }
 
-                const node = CreateUINode();
+                let number = item.src;
+                if ((number === 1 || number === 5 || number === 9) && i % 2 === 0 && j % 2 === 0) {
+                    number += randomRangeInt(0, 4);
+                }
 
-                const imgSrc = `tile (${item.src})`;
+                const imgSrc = `tile (${number})`;
+
+                const node = CreateUINode();
                 const spriteFrame = SpriteFrames.find((item) => item.name === imgSrc) || SpriteFrames[0];
 
                 const tileManager = node.addComponent(TileManager);
@@ -31,17 +37,6 @@ export class TileMapManager extends Component {
                 node.setParent(this.node);
             }
         }
-    }
-
-    loadRes() {
-        return new Promise<SpriteFrame[]>((resolve, reject) => {
-            resources.loadDir("texture/tile/tile", SpriteFrame, function (err, assets) {
-                if (err) {
-                    reject(err);
-                }
-                resolve(assets);
-            });
-        })
     }
 }
 

@@ -1,9 +1,11 @@
 import level1 from "../Levels/Level1";
-import { TILE_TYPE_ENUM } from "../Enums";
+import level2 from "../Levels/Level2";
+
+import { ETileType } from "../Enums";
 
 export interface ITile {
     src: number | null,
-    type: TILE_TYPE_ENUM | null
+    type: ETileType | null
 };
 
 export interface Ilevel {
@@ -12,6 +14,7 @@ export interface Ilevel {
 
 const levels: Record<string, Ilevel> = {
     level1,
+    level2,
 };
 
 export default levels;

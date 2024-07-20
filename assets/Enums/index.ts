@@ -1,12 +1,16 @@
-export enum TILE_TYPE_ENUM {
-    WALL_ROW,
-    WALL_COLUMN,
-    WALL_LEFT_TOP,
-    WALL_LEFT_BOTTOM,
-    WALL_RIGHT_TOP,
-    WALL_RIGHT_BOTTOM,
-    CLIFF_CENTER,
-    CLIFF_LEFT,
-    CLIFF_RIGHT,
-    FLOOR
+export enum ETileType {
+    WallRow,
+    WallColumn,
+    WallLeftTop,
+    WallLeftBottom,
+    WallRightTop,
+    WallRightBottom,
+    CliffCenter,
+    CliffLeft,
+    CliffRight,
+    Floor
 };
+
+export enum ELevelEvent {
+    NextLevl,
+}

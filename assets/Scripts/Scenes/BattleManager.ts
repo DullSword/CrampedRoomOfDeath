@@ -4,13 +4,23 @@ const { ccclass, property } = _decorator;
 import { TileMapManager } from '../Tile/TileMapManager';
 import { CreateUINode } from '../../Utils';
 import levels, { Ilevel } from '../../Levels';
-import { DataManagerInstance } from '../../Runtime/DataManager';
+import DataManager from '../../Runtime/DataManager';
 import { TILE_WIDTH, TILE_HEIGHT } from '../Tile/TileManager';
+import EventManager from '../../Runtime/EventManager';
+import { ELevelEvent } from '../../Enums';
 
 @ccclass('BattleManager')
 export class BattleManager extends Component {
     level: Ilevel;
     stage: Node;
+
+    onLoad() {
+        EventManager.instance.on(ELevelEvent.NextLevl, this.NextLevel, this);
+    }
+
+    onDestroy() {
+        EventManager.instance.off(ELevelEvent.NextLevl, this.NextLevel);
+    }
 
     start() {
         this.generateStage();
@@ -19,16 +29,23 @@ export class BattleManager extends Component {
     }
 
     initLevel() {
-        const level = levels[`level${1}`];
+        const level = levels[`level${DataManager.instance.levelIndex}`];
         if (level) {
+            this.clearLevel();
+
             this.level = level;
 
-            DataManagerInstance.mapInfo = this.level.mapInfo;
-            DataManagerInstance.mapRowCount = this.level.mapInfo.length || 0;
-            DataManagerInstance.mapColCount = this.level.mapInfo[0].length || 0;
+            DataManager.instance.mapInfo = this.level.mapInfo;
+            DataManager.instance.mapRowCount = this.level.mapInfo.length || 0;
+            DataManager.instance.mapColCount = this.level.mapInfo[0].length || 0;
 
             this.generateTileMap();
         }
+    }
+
+    clearLevel() {
+        this.stage.destroyAllChildren();
+        DataManager.instance.reset();
     }
 
     generateStage() {
@@ -46,7 +63,7 @@ export class BattleManager extends Component {
     }
 
     adaptPos() {
-        const { mapRowCount, mapColCount } = DataManagerInstance;
+        const { mapRowCount, mapColCount } = DataManager.instance;
 
         const stageXOffset = -mapColCount * TILE_WIDTH / 2;
         const stageYOffset = mapRowCount * TILE_HEIGHT / 2;
@@ -56,6 +73,9 @@ export class BattleManager extends Component {
             stageYOffset
         );
     }
+
+    NextLevel() {
+        DataManager.instance.levelIndex++;
+        this.initLevel();
+    }
 }
-
-

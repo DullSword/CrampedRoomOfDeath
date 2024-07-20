@@ -9,4 +9,3 @@ export const CreateUINode = (name: string = "") => {
     node.layer = Layers.Enum.UI_2D;
     return node;
 }
-

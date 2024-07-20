@@ -1,5 +1,5 @@
 import { Ilevel } from "../Levels";
-import { TILE_TYPE_ENUM } from "../Enums";
+import { ETileType } from "../Enums";
 
 const mapInfo = [
     [
@@ -21,195 +21,195 @@ const mapInfo = [
         },
         {
             src: 16,
-            type: TILE_TYPE_ENUM.WALL_LEFT_TOP,
+            type: ETileType.WallLeftTop,
         },
         {
             src: 5,
-            type: TILE_TYPE_ENUM.WALL_COLUMN,
+            type: ETileType.WallColumn,
         },
         {
             src: 5,
-            type: TILE_TYPE_ENUM.WALL_COLUMN,
+            type: ETileType.WallColumn,
         },
         {
             src: 5,
-            type: TILE_TYPE_ENUM.WALL_COLUMN,
+            type: ETileType.WallColumn,
         },
         {
             src: 13,
-            type: TILE_TYPE_ENUM.WALL_LEFT_BOTTOM,
+            type: ETileType.WallLeftBottom,
         },
         {
             src: 18,
-            type: TILE_TYPE_ENUM.CLIFF_LEFT,
+            type: ETileType.CliffLeft,
         },
     ],
     [
         {
             src: 16,
-            type: TILE_TYPE_ENUM.WALL_LEFT_TOP,
+            type: ETileType.WallLeftTop,
         },
         {
             src: 5,
-            type: TILE_TYPE_ENUM.WALL_COLUMN,
+            type: ETileType.WallColumn,
         },
         {
             src: 5,
-            type: TILE_TYPE_ENUM.WALL_COLUMN,
+            type: ETileType.WallColumn,
         },
         {
             src: 5,
-            type: TILE_TYPE_ENUM.WALL_COLUMN,
+            type: ETileType.WallColumn,
         },
         {
             src: 14,
-            type: TILE_TYPE_ENUM.WALL_RIGHT_BOTTOM,
+            type: ETileType.WallRightBottom,
         },
         {
             src: 1,
-            type: TILE_TYPE_ENUM.FLOOR,
+            type: ETileType.Floor,
         },
         {
             src: 1,
-            type: TILE_TYPE_ENUM.FLOOR,
+            type: ETileType.Floor,
         },
         {
             src: 1,
-            type: TILE_TYPE_ENUM.FLOOR,
+            type: ETileType.Floor,
         },
         {
             src: 21,
-            type: TILE_TYPE_ENUM.WALL_RIGHT_BOTTOM,
+            type: ETileType.WallRightBottom,
         },
         {
             src: 17,
-            type: TILE_TYPE_ENUM.CLIFF_CENTER,
+            type: ETileType.CliffCenter,
         },
     ],
     [
         {
             src: 9,
-            type: TILE_TYPE_ENUM.WALL_ROW,
+            type: ETileType.WallRow,
         },
         {
             src: 1,
-            type: TILE_TYPE_ENUM.FLOOR,
+            type: ETileType.Floor,
         },
         {
             src: 1,
-            type: TILE_TYPE_ENUM.FLOOR,
+            type: ETileType.Floor,
         },
         {
             src: 1,
-            type: TILE_TYPE_ENUM.FLOOR,
+            type: ETileType.Floor,
         },
         {
             src: 1,
-            type: TILE_TYPE_ENUM.FLOOR,
+            type: ETileType.Floor,
         },
         {
             src: 1,
-            type: TILE_TYPE_ENUM.FLOOR,
+            type: ETileType.Floor,
         },
         {
             src: 1,
-            type: TILE_TYPE_ENUM.FLOOR,
+            type: ETileType.Floor,
         },
         {
             src: 1,
-            type: TILE_TYPE_ENUM.FLOOR,
+            type: ETileType.Floor,
         },
         {
             src: 1,
-            type: TILE_TYPE_ENUM.FLOOR,
+            type: ETileType.Floor,
         },
         {
             src: 17,
-            type: TILE_TYPE_ENUM.CLIFF_CENTER,
+            type: ETileType.CliffCenter,
         },
     ],
     [
         {
             src: 9,
-            type: TILE_TYPE_ENUM.WALL_ROW,
+            type: ETileType.WallRow,
         },
         {
             src: 1,
-            type: TILE_TYPE_ENUM.FLOOR,
+            type: ETileType.Floor,
         },
         {
             src: 1,
-            type: TILE_TYPE_ENUM.FLOOR,
+            type: ETileType.Floor,
         },
         {
             src: 16,
-            type: TILE_TYPE_ENUM.WALL_LEFT_TOP,
+            type: ETileType.WallLeftTop,
         },
         {
             src: 13,
-            type: TILE_TYPE_ENUM.WALL_LEFT_BOTTOM,
+            type: ETileType.WallLeftBottom,
         },
         {
             src: 1,
-            type: TILE_TYPE_ENUM.FLOOR,
+            type: ETileType.Floor,
         },
         {
             src: 1,
-            type: TILE_TYPE_ENUM.FLOOR,
+            type: ETileType.Floor,
         },
         {
             src: 1,
-            type: TILE_TYPE_ENUM.FLOOR,
+            type: ETileType.Floor,
         },
         {
             src: 20,
-            type: TILE_TYPE_ENUM.WALL_LEFT_BOTTOM,
+            type: ETileType.WallLeftBottom,
         },
         {
             src: 17,
-            type: TILE_TYPE_ENUM.CLIFF_CENTER,
+            type: ETileType.CliffCenter,
         },
     ],
     [
         {
             src: 15,
-            type: TILE_TYPE_ENUM.WALL_RIGHT_TOP,
+            type: ETileType.WallRightTop,
         },
         {
             src: 13,
-            type: TILE_TYPE_ENUM.WALL_LEFT_BOTTOM,
+            type: ETileType.WallLeftBottom,
         },
         {
             src: 1,
-            type: TILE_TYPE_ENUM.FLOOR,
+            type: ETileType.Floor,
         },
         {
             src: 9,
-            type: TILE_TYPE_ENUM.WALL_ROW,
+            type: ETileType.WallRow,
         },
         {
             src: 15,
-            type: TILE_TYPE_ENUM.WALL_RIGHT_TOP,
+            type: ETileType.WallRightTop,
         },
         {
             src: 5,
-            type: TILE_TYPE_ENUM.WALL_COLUMN,
+            type: ETileType.WallColumn,
         },
         {
             src: 5,
-            type: TILE_TYPE_ENUM.WALL_COLUMN,
+            type: ETileType.WallColumn,
         },
         {
             src: 5,
-            type: TILE_TYPE_ENUM.WALL_COLUMN,
+            type: ETileType.WallColumn,
         },
         {
             src: 14,
-            type: TILE_TYPE_ENUM.WALL_RIGHT_BOTTOM,
+            type: ETileType.WallRightBottom,
         },
         {
             src: 19,
-            type: TILE_TYPE_ENUM.CLIFF_RIGHT,
+            type: ETileType.CliffRight,
         },
     ],
     [
@@ -219,207 +219,207 @@ const mapInfo = [
         },
         {
             src: 9,
-            type: TILE_TYPE_ENUM.WALL_ROW,
+            type: ETileType.WallRow,
         },
         {
             src: 1,
-            type: TILE_TYPE_ENUM.FLOOR,
+            type: ETileType.Floor,
         },
         {
             src: 9,
-            type: TILE_TYPE_ENUM.WALL_ROW,
+            type: ETileType.WallRow,
         },
         {
             src: 16,
-            type: TILE_TYPE_ENUM.WALL_LEFT_TOP,
+            type: ETileType.WallLeftTop,
         },
         {
             src: 5,
-            type: TILE_TYPE_ENUM.WALL_COLUMN,
+            type: ETileType.WallColumn,
         },
         {
             src: 5,
-            type: TILE_TYPE_ENUM.WALL_COLUMN,
+            type: ETileType.WallColumn,
         },
         {
             src: 5,
-            type: TILE_TYPE_ENUM.WALL_COLUMN,
+            type: ETileType.WallColumn,
         },
         {
             src: 13,
-            type: TILE_TYPE_ENUM.WALL_LEFT_BOTTOM,
+            type: ETileType.WallLeftBottom,
         },
         {
             src: 18,
-            type: TILE_TYPE_ENUM.CLIFF_LEFT,
+            type: ETileType.CliffLeft,
         },
     ],
     [
         {
             src: 16,
-            type: TILE_TYPE_ENUM.WALL_LEFT_TOP,
+            type: ETileType.WallLeftTop,
         },
         {
             src: 14,
-            type: TILE_TYPE_ENUM.WALL_RIGHT_BOTTOM,
+            type: ETileType.WallRightBottom,
         },
         {
             src: 1,
-            type: TILE_TYPE_ENUM.FLOOR,
+            type: ETileType.Floor,
         },
         {
             src: 15,
-            type: TILE_TYPE_ENUM.WALL_RIGHT_TOP,
+            type: ETileType.WallRightTop,
         },
         {
             src: 14,
-            type: TILE_TYPE_ENUM.WALL_RIGHT_BOTTOM,
+            type: ETileType.WallRightBottom,
         },
         {
             src: 1,
-            type: TILE_TYPE_ENUM.FLOOR,
+            type: ETileType.Floor,
         },
         {
             src: 1,
-            type: TILE_TYPE_ENUM.FLOOR,
+            type: ETileType.Floor,
         },
         {
             src: 1,
-            type: TILE_TYPE_ENUM.FLOOR,
+            type: ETileType.Floor,
         },
         {
             src: 21,
-            type: TILE_TYPE_ENUM.WALL_RIGHT_BOTTOM,
+            type: ETileType.WallRightBottom,
         },
         {
             src: 19,
-            type: TILE_TYPE_ENUM.CLIFF_RIGHT,
+            type: ETileType.CliffRight,
         },
     ],
     [
         {
             src: 9,
-            type: TILE_TYPE_ENUM.WALL_ROW,
+            type: ETileType.WallRow,
         },
         {
             src: 1,
-            type: TILE_TYPE_ENUM.FLOOR,
+            type: ETileType.Floor,
         },
         {
             src: 1,
-            type: TILE_TYPE_ENUM.FLOOR,
+            type: ETileType.Floor,
         },
         {
             src: 1,
-            type: TILE_TYPE_ENUM.FLOOR,
+            type: ETileType.Floor,
         },
         {
             src: 1,
-            type: TILE_TYPE_ENUM.FLOOR,
+            type: ETileType.Floor,
         },
         {
             src: 1,
-            type: TILE_TYPE_ENUM.FLOOR,
+            type: ETileType.Floor,
         },
         {
             src: 1,
-            type: TILE_TYPE_ENUM.FLOOR,
+            type: ETileType.Floor,
         },
         {
             src: 1,
-            type: TILE_TYPE_ENUM.FLOOR,
+            type: ETileType.Floor,
         },
         {
             src: 1,
-            type: TILE_TYPE_ENUM.FLOOR,
+            type: ETileType.Floor,
         },
         {
             src: 17,
-            type: TILE_TYPE_ENUM.CLIFF_CENTER,
+            type: ETileType.CliffCenter,
         },
     ],
     [
         {
             src: 9,
-            type: TILE_TYPE_ENUM.WALL_ROW,
+            type: ETileType.WallRow,
         },
         {
             src: 1,
-            type: TILE_TYPE_ENUM.FLOOR,
+            type: ETileType.Floor,
         },
         {
             src: 1,
-            type: TILE_TYPE_ENUM.FLOOR,
+            type: ETileType.Floor,
         },
         {
             src: 16,
-            type: TILE_TYPE_ENUM.WALL_LEFT_TOP,
+            type: ETileType.WallLeftTop,
         },
         {
             src: 13,
-            type: TILE_TYPE_ENUM.WALL_LEFT_BOTTOM,
+            type: ETileType.WallLeftBottom,
         },
         {
             src: 1,
-            type: TILE_TYPE_ENUM.FLOOR,
+            type: ETileType.Floor,
         },
         {
             src: 1,
-            type: TILE_TYPE_ENUM.FLOOR,
+            type: ETileType.Floor,
         },
         {
             src: 1,
-            type: TILE_TYPE_ENUM.FLOOR,
+            type: ETileType.Floor,
         },
         {
             src: 20,
-            type: TILE_TYPE_ENUM.WALL_LEFT_BOTTOM,
+            type: ETileType.WallLeftBottom,
         },
         {
             src: 17,
-            type: TILE_TYPE_ENUM.CLIFF_CENTER,
+            type: ETileType.CliffCenter,
         },
     ],
     [
         {
             src: 15,
-            type: TILE_TYPE_ENUM.WALL_RIGHT_TOP,
+            type: ETileType.WallRightTop,
         },
         {
             src: 5,
-            type: TILE_TYPE_ENUM.WALL_COLUMN,
+            type: ETileType.WallColumn,
         },
         {
             src: 5,
-            type: TILE_TYPE_ENUM.WALL_COLUMN,
+            type: ETileType.WallColumn,
         },
         {
             src: 14,
-            type: TILE_TYPE_ENUM.WALL_RIGHT_BOTTOM,
+            type: ETileType.WallRightBottom,
         },
         {
             src: 15,
-            type: TILE_TYPE_ENUM.WALL_RIGHT_TOP,
+            type: ETileType.WallRightTop,
         },
         {
             src: 5,
-            type: TILE_TYPE_ENUM.WALL_COLUMN,
+            type: ETileType.WallColumn,
         },
         {
             src: 5,
-            type: TILE_TYPE_ENUM.WALL_COLUMN,
+            type: ETileType.WallColumn,
         },
         {
             src: 5,
-            type: TILE_TYPE_ENUM.WALL_COLUMN,
+            type: ETileType.WallColumn,
         },
         {
             src: 14,
-            type: TILE_TYPE_ENUM.WALL_RIGHT_BOTTOM,
+            type: ETileType.WallRightBottom,
         },
         {
             src: 19,
-            type: TILE_TYPE_ENUM.CLIFF_RIGHT,
+            type: ETileType.CliffRight,
         },
     ],
 ];
