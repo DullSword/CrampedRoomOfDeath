@@ -1,6 +1,9 @@
 
 export default class Singleton {
     private static _instance: any = null;
+
+    protected constructor(){}
+
     protected static getInstance<T extends Singleton>(): T {
         if (!this._instance) {
             this._instance = new this();

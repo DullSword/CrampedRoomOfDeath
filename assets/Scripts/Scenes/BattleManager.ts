@@ -7,7 +7,7 @@ import levels, { Ilevel } from '../../Levels';
 import DataManager from '../../Runtime/DataManager';
 import { TILE_WIDTH, TILE_HEIGHT } from '../Tile/TileManager';
 import EventManager from '../../Runtime/EventManager';
-import { ELevelEvent } from '../../Enums';
+import { EEvent } from '../../Enums';
 import { PlayerManager } from '../Player/PlayerManager';
 
 @ccclass('BattleManager')
@@ -17,11 +17,11 @@ export class BattleManager extends Component {
     player: Node;
 
     onLoad() {
-        EventManager.instance.on(ELevelEvent.NextLevl, this.NextLevel, this);
+        EventManager.instance.on(EEvent.NextLevl, this.NextLevel, this);
     }
 
     onDestroy() {
-        EventManager.instance.off(ELevelEvent.NextLevl, this.NextLevel);
+        EventManager.instance.off(EEvent.NextLevl, this.NextLevel);
     }
 
     start() {

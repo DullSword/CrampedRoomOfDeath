@@ -8,20 +8,33 @@ export enum ETileType {
     CliffCenter = 'CliffCenter',
     CliffLeft = 'CliffLeft',
     CliffRight = 'CliffRight',
-    Floor = 'Floor'
+    Floor = 'Floor',
 };
 
-export enum ELevelEvent {
+export enum EEvent {
     NextLevl = 'NextLevel',
+    PlayerControll = 'PlayerControll',
 }
 
-export enum EInputEvent {
-    Move = 'Move',
-}
-
-export enum EInputDirection {
+export enum EControll {
     Left = 'Left',
     Right = 'Right',
     Up = 'Up',
     Down = 'Down',
+    TurnLeft = 'TurnLeft',
+    TurnRight = 'TurnRight',
+}
+
+export enum EStateMachineParamType {
+    FLOAT,
+    BOOLEAN,
+    TRIGGER,
+    INTEGER,
+    VEC3_experimental,
+    QUAT_experimental,
+}
+
+export enum EPlayerState {
+    Idle = 'Idle',
+    TurnLeft = 'TurnLeft',
 }
