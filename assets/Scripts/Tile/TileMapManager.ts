@@ -28,7 +28,7 @@ export class TileMapManager extends Component {
 
                 const imgSrc = `tile (${number})`;
 
-                const node = CreateUINode();
+                const node = CreateUINode(imgSrc);
                 const spriteFrame = SpriteFrames.find((item) => item.name === imgSrc) || SpriteFrames[0];
 
                 const tileManager = node.addComponent(TileManager);

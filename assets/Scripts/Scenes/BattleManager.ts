@@ -8,11 +8,13 @@ import DataManager from '../../Runtime/DataManager';
 import { TILE_WIDTH, TILE_HEIGHT } from '../Tile/TileManager';
 import EventManager from '../../Runtime/EventManager';
 import { ELevelEvent } from '../../Enums';
+import { PlayerManager } from '../Player/PlayerManager';
 
 @ccclass('BattleManager')
 export class BattleManager extends Component {
     level: Ilevel;
     stage: Node;
+    player: Node;
 
     onLoad() {
         EventManager.instance.on(ELevelEvent.NextLevl, this.NextLevel, this);
@@ -24,6 +26,7 @@ export class BattleManager extends Component {
 
     start() {
         this.generateStage();
+        this.generatePlayer();
 
         this.initLevel();
     }
@@ -49,12 +52,20 @@ export class BattleManager extends Component {
     }
 
     generateStage() {
-        this.stage = CreateUINode();
+        this.stage = CreateUINode('stage');
         this.stage.setParent(this.node);
     }
 
+    generatePlayer() {
+        this.player = CreateUINode('player');
+        this.player.setParent(this.node);
+
+        const playerManagerComponent = this.player.addComponent(PlayerManager);
+        playerManagerComponent.init();
+    }
+
     generateTileMap() {
-        const tileMap = CreateUINode();
+        const tileMap = CreateUINode('map');
         tileMap.setParent(this.stage);
         const tileMapManager = tileMap.addComponent(TileMapManager);
         tileMapManager.init();

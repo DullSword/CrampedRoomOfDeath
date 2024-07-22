@@ -7,12 +7,12 @@ export interface IEvent {
 
 export default class EventManager extends Singleton {
 
-    private events: Map<number, IEvent[]> = new Map();
+    private events: Map<string, IEvent[]> = new Map();
     static get instance() {
         return super.getInstance<EventManager>();
     }
 
-    on(eventName: number, func: Function, context: unknown) {
+    on(eventName: string, func: Function, context: unknown) {
         if (!this.events.has(eventName)) {
             this.events.set(eventName, [{ func, context }]);
         } else {
@@ -20,7 +20,7 @@ export default class EventManager extends Singleton {
         }
     }
 
-    off(eventName: number, func: Function) {
+    off(eventName: string, func: Function) {
         if (this.events.has(eventName)) {
             const index = this.events.get(eventName).findIndex(el => el.func === func);
             if (index !== -1) {
@@ -29,7 +29,7 @@ export default class EventManager extends Singleton {
         }
     }
 
-    emit(eventName: number, ...args: unknown[]) {
+    emit(eventName: string, ...args: unknown[]) {
         if (this.events.has(eventName)) {
             this.events.get(eventName).forEach(({ func, context }) => {
                 func.apply(context ? context : null, args);
