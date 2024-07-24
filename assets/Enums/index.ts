@@ -48,6 +48,6 @@ export enum EPlayerState {
 export enum EPlayerDirection {
     Left,
     Right,
-    Up,
-    Down,
+    Top,
+    Bottom,
 }

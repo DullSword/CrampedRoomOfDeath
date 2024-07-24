@@ -48,6 +48,7 @@ export class PlayerManager extends Component {
 
         this.fsm = this.addComponent(PlayerStateMachine);
         await this.fsm.init();
+        this.direction = EPlayerDirection.Top;
         this.state = EPlayerState.Idle;
 
         EventManager.instance.on(EEvent.PlayerControll, this.controll, this);
@@ -93,6 +94,19 @@ export class PlayerManager extends Component {
         }
 
         if (event === EControll.TurnLeft) {
+            if (this.direction === EPlayerDirection.Top) {
+                this.direction = EPlayerDirection.Left;
+            }
+            else if (this.direction === EPlayerDirection.Bottom) {
+                this.direction = EPlayerDirection.Right;
+            }
+            else if (this.direction === EPlayerDirection.Left) {
+                this.direction = EPlayerDirection.Bottom;
+            }
+            else if (this.direction === EPlayerDirection.Right) {
+                this.direction = EPlayerDirection.Top;
+            }
+
             this.state = EPlayerState.TurnLeft;
         }
     }

@@ -1,9 +1,10 @@
-import { _decorator, Animation, AnimationClip, AnimationState } from 'cc';
-const { ccclass, property } = _decorator;
+import { _decorator, Animation, AnimationState } from 'cc';
+const { ccclass } = _decorator;
 
 import { EPlayerState, EPlayerStateMachineParams, EStateMachineParamType } from '../../Enums';
-import { State } from '../../Base/State';
 import { StateMachine } from '../../Base/StateMachine';
+import { PlayerIdleSubStateMachine } from './PlayerIdleSubStateMachine';
+import { PlayerTurnLeftSubStateMachine } from './PlayerTurnLeftSubStateMachine';
 
 @ccclass('PlayerStateMachine')
 export class PlayerStateMachine extends StateMachine {
@@ -23,8 +24,8 @@ export class PlayerStateMachine extends StateMachine {
     }
 
     async initStates() {
-        const IdleState = new State('texture/player/idle/top', this, AnimationClip.WrapMode.Loop);
-        const TurnLeftState = new State('texture/player/turnleft/top', this);
+        const IdleState = new PlayerIdleSubStateMachine(this);
+        const TurnLeftState = new PlayerTurnLeftSubStateMachine(this);
 
         await Promise.all([IdleState.init(), TurnLeftState.init()]);
 

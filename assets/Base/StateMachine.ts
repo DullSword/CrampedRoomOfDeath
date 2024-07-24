@@ -2,6 +2,7 @@ import { _decorator, Component, Animation, animation } from 'cc';
 
 import { EPlayerState, EStateMachineParamType } from '../Enums';
 import { State } from './State';
+import { SubStateMachine } from './SubStateMachine';
 
 export interface IStateMachineParams {
     type: EStateMachineParamType,
@@ -10,10 +11,10 @@ export interface IStateMachineParams {
 
 export abstract class StateMachine extends Component {
 
-    private _currentState: State = null;
+    private _currentState: State | SubStateMachine = null;
 
     params: Map<string, IStateMachineParams> = new Map();
-    states: Map<EPlayerState, State> = new Map();
+    states: Map<EPlayerState, State | SubStateMachine> = new Map();
 
     animationComponent: Animation;
 
@@ -42,7 +43,7 @@ export abstract class StateMachine extends Component {
         return this._currentState;
     }
 
-    set currentState(newState: State) {
+    set currentState(newState: State | SubStateMachine) {
         this._currentState = newState;
         this._currentState.run();
     }
