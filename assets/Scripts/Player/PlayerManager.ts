@@ -1,7 +1,7 @@
 import { _decorator, Component, Sprite, UITransform, Vec2 } from 'cc';
 const { ccclass, property } = _decorator;
 
-import { EControll, EEvent, EPlayerState } from '../../Enums';
+import { EControll, EEvent, EPlayerDirection, EPlayerState, EPlayerStateMachineParams } from '../../Enums';
 import { TILE_HEIGHT, TILE_WIDTH } from '../Tile/TileManager';
 import EventManager from '../../Runtime/EventManager';
 import { PlayerStateMachine } from './PlayerStateMachine';
@@ -18,6 +18,27 @@ export class PlayerManager extends Component {
 
     private readonly velocity = 0.1;
 
+    private _direction: EPlayerDirection;
+    private _state: EPlayerState;
+
+    get direction() {
+        return this._direction;
+    }
+
+    set direction(value: EPlayerDirection) {
+        this._direction = value;
+        this.fsm.setParamValue(EPlayerStateMachineParams.Direction, value);
+    }
+
+    get state() {
+        return this._state;
+    }
+
+    set state(value: EPlayerState) {
+        this._state = value;
+        this.fsm.setParamValue(value, true);
+    }
+
     async init() {
         const spriteComponent = this.node.addComponent(Sprite);
         spriteComponent.sizeMode = Sprite.SizeMode.CUSTOM;
@@ -27,7 +48,7 @@ export class PlayerManager extends Component {
 
         this.fsm = this.addComponent(PlayerStateMachine);
         await this.fsm.init();
-        this.fsm.setParamValue(EPlayerState.Idle, true);
+        this.state = EPlayerState.Idle;
 
         EventManager.instance.on(EEvent.PlayerControll, this.controll, this);
     }
@@ -72,7 +93,7 @@ export class PlayerManager extends Component {
         }
 
         if (event === EControll.TurnLeft) {
-            this.fsm.setParamValue(EPlayerState.TurnLeft, true);
+            this.state = EPlayerState.TurnLeft;
         }
     }
 }

@@ -34,7 +34,20 @@ export enum EStateMachineParamType {
     QUAT_experimental,
 }
 
+export enum EPlayerStateMachineParams {
+    Idle = 'Idle',
+    TurnLeft = 'TurnLeft',
+    Direction = 'Direction',
+}
+
 export enum EPlayerState {
     Idle = 'Idle',
     TurnLeft = 'TurnLeft',
+}
+
+export enum EPlayerDirection {
+    Left,
+    Right,
+    Up,
+    Down,
 }

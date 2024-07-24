@@ -1,34 +1,25 @@
-import { _decorator, Component, Animation, AnimationClip, animation, SpriteFrame } from 'cc';
+import { _decorator, Animation, AnimationClip, AnimationState } from 'cc';
 const { ccclass, property } = _decorator;
 
-import { EPlayerState, EStateMachineParamType } from '../../Enums';
+import { EPlayerState, EPlayerStateMachineParams, EStateMachineParamType } from '../../Enums';
 import { State } from '../../Base/State';
-
-export interface IStateMachineParams {
-    type: EStateMachineParamType,
-    value: animation.Value_experimental
-}
+import { StateMachine } from '../../Base/StateMachine';
 
 @ccclass('PlayerStateMachine')
-export class PlayerStateMachine extends Component {
-
-    private _currentState: State = null;
-
-    params: Map<string, IStateMachineParams> = new Map();
-    states: Map<EPlayerState, State> = new Map();
-
-    animationComponent: Animation;
+export class PlayerStateMachine extends StateMachine {
 
     async init() {
         this.animationComponent = this.node.addComponent(Animation);
+        this.initAnimationEvent();
 
         this.initParams();
         await this.initStates();
     }
 
     initParams() {
-        this.params.set(EPlayerState.Idle, { type: EStateMachineParamType.TRIGGER, value: false });
-        this.params.set(EPlayerState.TurnLeft, { type: EStateMachineParamType.TRIGGER, value: false });
+        this.params.set(EPlayerStateMachineParams.Idle, { type: EStateMachineParamType.TRIGGER, value: false });
+        this.params.set(EPlayerStateMachineParams.TurnLeft, { type: EStateMachineParamType.TRIGGER, value: false });
+        this.params.set(EPlayerStateMachineParams.Direction, { type: EStateMachineParamType.INTEGER, value: 0 });
     }
 
     async initStates() {
@@ -41,35 +32,27 @@ export class PlayerStateMachine extends Component {
         this.states.set(EPlayerState.TurnLeft, TurnLeftState);
     }
 
-    getParamValue(paramName: string) {
-        return this.params.get(paramName)?.value;
-    }
-
-    setParamValue(paramName: string, value: animation.Value_experimental) {
-        if (this.params.has(paramName)) {
-            this.params.get(paramName).value = value;
-            this.run();
-        }
-    }
-
-    get currentState() {
-        return this._currentState;
-    }
-
-    set currentState(newState: State) {
-        this._currentState = newState;
-        this._currentState.run();
+    initAnimationEvent() {
+        this.animationComponent.on(Animation.EventType.FINISHED, (type: Animation.EventType, state: AnimationState) => {
+            const whiteList = ['turn'];
+            if (whiteList.some((v) => state.name.includes(v))) {
+                this.setParamValue(EPlayerStateMachineParams.Idle, true);
+            }
+        }, this);
     }
 
     run() {
         switch (this.currentState) {
             case this.states.get(EPlayerState.Idle): {
-                if (this.getParamValue(EPlayerState.TurnLeft)) {
+                if (this.getParamValue(EPlayerStateMachineParams.TurnLeft)) {
                     this.currentState = this.states.get(EPlayerState.TurnLeft);
                 }
                 break;
             }
             case this.states.get(EPlayerState.TurnLeft): {
+                if (this.getParamValue(EPlayerStateMachineParams.Idle)) {
+                    this.currentState = this.states.get(EPlayerState.Idle);
+                }
                 break;
             }
             default: {
@@ -78,5 +61,3 @@ export class PlayerStateMachine extends Component {
         }
     }
 }
-
-
