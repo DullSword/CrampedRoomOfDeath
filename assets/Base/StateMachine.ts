@@ -1,6 +1,6 @@
 import { _decorator, Component, Animation, animation } from 'cc';
 
-import { EPlayerState, EStateMachineParamType } from '../Enums';
+import { EEntityState, EStateMachineParamType } from '../Enums';
 import { State } from './State';
 import { SubStateMachine } from './SubStateMachine';
 
@@ -14,7 +14,7 @@ export abstract class StateMachine extends Component {
     private _currentState: State | SubStateMachine = null;
 
     params: Map<string, IStateMachineParams> = new Map();
-    states: Map<EPlayerState, State | SubStateMachine> = new Map();
+    states: Map<EEntityState, State | SubStateMachine> = new Map();
 
     animationComponent: Animation;
 

@@ -1,7 +1,7 @@
 import { _decorator, Animation, AnimationState } from 'cc';
 const { ccclass } = _decorator;
 
-import { EPlayerState, EPlayerStateMachineParams, EStateMachineParamType } from '../../Enums';
+import { EEntityState, EEntityStateMachineParams, EStateMachineParamType } from '../../Enums';
 import { StateMachine } from '../../Base/StateMachine';
 import { PlayerIdleSubStateMachine } from './PlayerIdleSubStateMachine';
 import { PlayerTurnLeftSubStateMachine } from './PlayerTurnLeftSubStateMachine';
@@ -18,9 +18,9 @@ export class PlayerStateMachine extends StateMachine {
     }
 
     initParams() {
-        this.params.set(EPlayerStateMachineParams.Idle, { type: EStateMachineParamType.TRIGGER, value: false });
-        this.params.set(EPlayerStateMachineParams.TurnLeft, { type: EStateMachineParamType.TRIGGER, value: false });
-        this.params.set(EPlayerStateMachineParams.Direction, { type: EStateMachineParamType.INTEGER, value: 0 });
+        this.params.set(EEntityStateMachineParams.Idle, { type: EStateMachineParamType.TRIGGER, value: false });
+        this.params.set(EEntityStateMachineParams.TurnLeft, { type: EStateMachineParamType.TRIGGER, value: false });
+        this.params.set(EEntityStateMachineParams.Direction, { type: EStateMachineParamType.INTEGER, value: 0 });
     }
 
     async initStates() {
@@ -29,35 +29,35 @@ export class PlayerStateMachine extends StateMachine {
 
         await Promise.all([IdleState.init(), TurnLeftState.init()]);
 
-        this.states.set(EPlayerState.Idle, IdleState);
-        this.states.set(EPlayerState.TurnLeft, TurnLeftState);
+        this.states.set(EEntityState.Idle, IdleState);
+        this.states.set(EEntityState.TurnLeft, TurnLeftState);
     }
 
     initAnimationEvent() {
         this.animationComponent.on(Animation.EventType.FINISHED, (type: Animation.EventType, state: AnimationState) => {
             const whiteList = ['turn'];
             if (whiteList.some((v) => state.name.includes(v))) {
-                this.setParamValue(EPlayerStateMachineParams.Idle, true);
+                this.setParamValue(EEntityStateMachineParams.Idle, true);
             }
         }, this);
     }
 
     run() {
         switch (this.currentState) {
-            case this.states.get(EPlayerState.Idle): {
-                if (this.getParamValue(EPlayerStateMachineParams.TurnLeft)) {
-                    this.currentState = this.states.get(EPlayerState.TurnLeft);
+            case this.states.get(EEntityState.Idle): {
+                if (this.getParamValue(EEntityStateMachineParams.TurnLeft)) {
+                    this.currentState = this.states.get(EEntityState.TurnLeft);
                 }
                 break;
             }
-            case this.states.get(EPlayerState.TurnLeft): {
-                if (this.getParamValue(EPlayerStateMachineParams.Idle)) {
-                    this.currentState = this.states.get(EPlayerState.Idle);
+            case this.states.get(EEntityState.TurnLeft): {
+                if (this.getParamValue(EEntityStateMachineParams.Idle)) {
+                    this.currentState = this.states.get(EEntityState.Idle);
                 }
                 break;
             }
             default: {
-                this.currentState = this.states.get(EPlayerState.Idle);
+                this.currentState = this.states.get(EEntityState.Idle);
             }
         }
     }

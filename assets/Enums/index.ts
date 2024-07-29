@@ -34,20 +34,24 @@ export enum EStateMachineParamType {
     QUAT_experimental,
 }
 
-export enum EPlayerStateMachineParams {
+export enum EEntityStateMachineParams {
     Idle = 'Idle',
     TurnLeft = 'TurnLeft',
     Direction = 'Direction',
 }
 
-export enum EPlayerState {
+export enum EEntityState {
     Idle = 'Idle',
     TurnLeft = 'TurnLeft',
 }
 
-export enum EPlayerDirection {
+export enum EDirection {
     Left,
     Right,
     Top,
     Bottom,
+}
+
+export enum EEntityType {
+    Player,
 }

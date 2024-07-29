@@ -1,5 +1,6 @@
 
-import { EPlayerDirection } from '../Enums';
+import { AnimationClip } from 'cc';
+import { EDirection } from '../Enums';
 import { State } from './State';
 import { StateMachine } from './StateMachine';
 
@@ -7,7 +8,7 @@ export abstract class SubStateMachine {
 
     private _currentState: State = null;
 
-    states: Map<EPlayerDirection, State> = new Map();
+    states: Map<EDirection, State> = new Map();
 
     get currentState() {
         return this._currentState;
@@ -18,7 +19,7 @@ export abstract class SubStateMachine {
         this._currentState.run();
     }
 
-    constructor(protected fsm: StateMachine) {
+    constructor(protected fsm: StateMachine, protected baseUrl: string, protected wrapMode: AnimationClip.WrapMode = AnimationClip.WrapMode.Normal) {
     }
 
     abstract init(): void;
