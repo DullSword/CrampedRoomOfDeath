@@ -39,8 +39,8 @@ export class BattleManager extends Component {
             this.level = level;
 
             DataManager.instance.mapInfo = this.level.mapInfo;
-            DataManager.instance.mapRowCount = this.level.mapInfo.length || 0;
-            DataManager.instance.mapColCount = this.level.mapInfo[0].length || 0;
+            DataManager.instance.mapColCount = this.level.mapInfo.length || 0;
+            DataManager.instance.mapRowCount = this.level.mapInfo[0].length || 0;
 
             this.generateTileMap();
         }

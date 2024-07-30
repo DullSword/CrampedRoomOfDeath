@@ -13,16 +13,16 @@ export class TileMapManager extends Component {
 
         const { mapInfo } = DataManager.instance;
 
-        for (let i = 0; i < mapInfo.length; i++) {
-            const column = mapInfo[i];
-            for (let j = 0; j < column.length; j++) {
-                const item = column[j];
+        for (let columnIdx = 0; columnIdx < mapInfo.length; columnIdx++) {
+            const column = mapInfo[columnIdx];
+            for (let rowIdx = 0; rowIdx < column.length; rowIdx++) {
+                const item = column[rowIdx];
                 if (item.src === null || item.type === null) {
                     continue;
                 }
 
                 let number = item.src;
-                if ((number === 1 || number === 5 || number === 9) && i % 2 === 0 && j % 2 === 0) {
+                if ((number === 1 || number === 5 || number === 9) && columnIdx % 2 === 0 && rowIdx % 2 === 0) {
                     number += randomRangeInt(0, 4);
                 }
 
@@ -32,7 +32,7 @@ export class TileMapManager extends Component {
                 const spriteFrame = SpriteFrames.find((item) => item.name === imgSrc) || SpriteFrames[0];
 
                 const tileManager = node.addComponent(TileManager);
-                tileManager.init(spriteFrame, i, j);
+                tileManager.init(spriteFrame, columnIdx, rowIdx);
 
                 node.setParent(this.node);
             }
