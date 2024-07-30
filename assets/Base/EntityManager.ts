@@ -39,7 +39,7 @@ export abstract class EntityManager extends Component {
         const spriteComponent = this.addComponent(Sprite);
         spriteComponent.sizeMode = Sprite.SizeMode.CUSTOM;
 
-        const UITransformComponent = this.addComponent(UITransform);
+        const UITransformComponent = this.getComponent(UITransform);
         UITransformComponent.setContentSize(ENTITY_WIDTH, ENTITY_HEIGHT);
 
         this.fsm = this.addComponent(params.fsm);
@@ -48,11 +48,11 @@ export abstract class EntityManager extends Component {
         this.type = params.type;
         this.position = params.position;
         this.direction = params.direction;
-        
+
         this.state = params.state;
     }
 
     protected update(dt: number): void {
-        this.node.setPosition((this.position.x - 0.5) * TILE_WIDTH, -(this.position.y - 0.5) * TILE_HEIGHT);
+        this.node.setPosition((this.position.x - 1.5) * TILE_WIDTH, -(this.position.y - 1.5) * TILE_HEIGHT);
     }
 }

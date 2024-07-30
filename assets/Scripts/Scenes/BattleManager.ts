@@ -26,7 +26,6 @@ export class BattleManager extends Component {
 
     start() {
         this.generateStage();
-        this.generatePlayer();
 
         this.initLevel();
     }
@@ -43,6 +42,7 @@ export class BattleManager extends Component {
             DataManager.instance.mapRowCount = this.level.mapInfo[0].length || 0;
 
             this.generateTileMap();
+            this.generatePlayer();
         }
     }
 
@@ -58,7 +58,7 @@ export class BattleManager extends Component {
 
     generatePlayer() {
         this.player = CreateUINode('player');
-        this.player.setParent(this.node);
+        this.player.setParent(this.stage);
 
         const playerManagerComponent = this.player.addComponent(PlayerManager);
         playerManagerComponent.init();
