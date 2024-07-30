@@ -13,10 +13,10 @@ export enum ETileType {
 
 export enum EEvent {
     NextLevl = 'NextLevel',
-    PlayerControll = 'PlayerControll',
+    PlayerInput = 'PlayerInput',
 }
 
-export enum EControll {
+export enum EInput {
     Left = 'Left',
     Right = 'Right',
     Up = 'Up',

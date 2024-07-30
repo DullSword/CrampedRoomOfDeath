@@ -2,7 +2,7 @@ import { _decorator, Vec2 } from 'cc';
 const { ccclass, property } = _decorator;
 
 import { EntityManager } from '../../Base/EntityManager';
-import { EControll, EEvent, EDirection, EEntityState, EEntityType } from '../../Enums';
+import { EInput, EEvent, EDirection, EEntityState, EEntityType } from '../../Enums';
 import EventManager from '../../Runtime/EventManager';
 import { PlayerStateMachine } from './PlayerStateMachine';
 
@@ -22,7 +22,7 @@ export class PlayerManager extends EntityManager {
             state: EEntityState.Idle,
         });
 
-        EventManager.instance.on(EEvent.PlayerControll, this.controll, this);
+        EventManager.instance.on(EEvent.PlayerInput, this.controll, this);
     }
 
     protected update(dt: number): void {
@@ -51,20 +51,20 @@ export class PlayerManager extends EntityManager {
         }
     }
 
-    controll(event: EControll) {
-        if (event === EControll.Left) {
+    controll(inputValue: EInput) {
+        if (inputValue === EInput.Left) {
             this.targetPosition.x -= 1;
-        } else if (event === EControll.Right) {
+        } else if (inputValue === EInput.Right) {
             this.targetPosition.x += 1;
         }
 
-        if (event === EControll.Up) {
+        if (inputValue === EInput.Up) {
             this.targetPosition.y -= 1;
-        } else if (event === EControll.Down) {
+        } else if (inputValue === EInput.Down) {
             this.targetPosition.y += 1;
         }
 
-        if (event === EControll.TurnLeft) {
+        if (inputValue === EInput.TurnLeft) {
             if (this.direction === EDirection.Top) {
                 this.direction = EDirection.Left;
             }
