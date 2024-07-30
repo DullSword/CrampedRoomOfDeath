@@ -10,7 +10,7 @@ import { PlayerTurnLeftSubStateMachine } from './PlayerTurnLeftSubStateMachine';
 export class PlayerStateMachine extends StateMachine {
 
     async init() {
-        this.animationComponent = this.node.addComponent(Animation);
+        this.animationComponent = this.addComponent(Animation);
         this.initAnimationEvent();
 
         this.initParams();

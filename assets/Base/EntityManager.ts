@@ -39,7 +39,7 @@ export abstract class EntityManager extends Component {
         const spriteComponent = this.addComponent(Sprite);
         spriteComponent.sizeMode = Sprite.SizeMode.CUSTOM;
 
-        const UITransformComponent = this.node.addComponent(UITransform);
+        const UITransformComponent = this.addComponent(UITransform);
         UITransformComponent.setContentSize(ENTITY_WIDTH, ENTITY_HEIGHT);
 
         this.fsm = this.addComponent(params.fsm);
