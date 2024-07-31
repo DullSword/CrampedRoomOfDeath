@@ -11,10 +11,13 @@ export class TileMapManager extends Component {
     async init() {
         const SpriteFrames = await ResourceManager.loadDir("texture/tile", SpriteFrame);
 
-        const { mapInfo } = DataManager.instance;
+        const { mapInfo, tileInfo } = DataManager.instance;
 
         for (let columnIdx = 0; columnIdx < mapInfo.length; columnIdx++) {
             const column = mapInfo[columnIdx];
+
+            tileInfo[columnIdx] = [];
+
             for (let rowIdx = 0; rowIdx < column.length; rowIdx++) {
                 const item = column[rowIdx];
                 if (item.src === null || item.type === null) {
@@ -32,12 +35,12 @@ export class TileMapManager extends Component {
                 const spriteFrame = SpriteFrames.find((item) => item.name === imgSrc) || SpriteFrames[0];
 
                 const tileManager = node.addComponent(TileManager);
-                tileManager.init(spriteFrame, columnIdx, rowIdx);
+                tileManager.init(item.type, spriteFrame, columnIdx, rowIdx);
+
+                tileInfo[columnIdx][rowIdx] = tileManager;
 
                 node.setParent(this.node);
             }
         }
     }
 }
-
-

@@ -1,4 +1,5 @@
 import { _decorator, Component, Sprite, SpriteFrame, UITransform } from 'cc';
+import { ETileType } from '../../Enums';
 const { ccclass, property } = _decorator;
 
 export const TILE_WIDTH = 55;
@@ -6,7 +7,22 @@ export const TILE_HEIGHT = 55;
 
 @ccclass('TileManager')
 export class TileManager extends Component {
-    init(spriteFrame: SpriteFrame, columnIdx: number, rowIdx: number) {
+    type: ETileType;
+    bMovable: boolean;
+    bWeaponBlocked: boolean;
+
+    init(type: ETileType, spriteFrame: SpriteFrame, columnIdx: number, rowIdx: number) {
+        if (type.includes('Wall')) {
+            this.bMovable = false;
+            this.bWeaponBlocked = true;
+        } else if (type.includes('Cliff')) {
+            this.bMovable = false;
+            this.bWeaponBlocked = false;
+        } else if (type.includes('Floor')) {
+            this.bMovable = true;
+            this.bWeaponBlocked = false;
+        }
+
         const spriteComponent = this.addComponent(Sprite);
         spriteComponent.spriteFrame = spriteFrame;
 
