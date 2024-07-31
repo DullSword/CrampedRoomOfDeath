@@ -2,7 +2,7 @@ import { _decorator, Vec2 } from 'cc';
 const { ccclass, property } = _decorator;
 
 import { EntityManager } from '../../Base/EntityManager';
-import { EInput, EEvent, EDirection, EEntityState, EEntityType } from '../../Enums';
+import { EInput, EEvent, EDirection, EEntityState, EEntityType, EActionResult } from '../../Enums';
 import EventManager from '../../Runtime/EventManager';
 import { PlayerStateMachine } from './PlayerStateMachine';
 import DataManager from '../../Runtime/DataManager';
@@ -55,7 +55,15 @@ export class PlayerManager extends EntityManager {
     }
 
     handleInput(inputValue: EInput) {
-        if (!this.isActionValid(inputValue)) {
+        if (this.isActionValid(inputValue) !== EActionResult.Success) {
+            if (inputValue.toString() === this.direction.toString()) {
+                this.state = EEntityState.BlockedFront;
+            } else if (inputValue === EInput.TurnLeft) {
+                this.state = EEntityState.BlockedTurnLeft;
+            } else if (inputValue === EInput.TurnRight) {
+                this.state = EEntityState.BlockedTurnRight;
+            }
+
             return;
         }
 
@@ -76,14 +84,14 @@ export class PlayerManager extends EntityManager {
                 passTilePosition.x < 0 || passTilePosition.y < 0 || passTilePosition.x >= tileInfo.length || passTilePosition.y >= tileInfo[0].length ||
                 stayTilePosition.x < 0 || stayTilePosition.y < 0 || stayTilePosition.x >= tileInfo.length || stayTilePosition.y >= tileInfo[0].length
             ) {
-                return false;
+                return EActionResult.Blocked;
             }
 
             const { bWeaponBlocked: bPassTileWeaponBlocked } = tileInfo[passTilePosition.x][passTilePosition.y];
             const { bWeaponBlocked: bStayTileWeaponBlocked } = tileInfo[stayTilePosition.x][stayTilePosition.y];
 
             if (bPassTileWeaponBlocked || bStayTileWeaponBlocked) {
-                return false;
+                return EActionResult.Blocked;
             }
         } else {
             const nextPosition = this.getNextPosition(inputValue, lastPosition);
@@ -93,18 +101,18 @@ export class PlayerManager extends EntityManager {
                 nextPosition.x < 0 || nextPosition.y < 0 || nextPosition.x >= tileInfo.length || nextPosition.y >= tileInfo[0].length ||
                 nextPositionAfterNext.x < 0 || nextPositionAfterNext.y < 0 || nextPositionAfterNext.x >= tileInfo.length || nextPositionAfterNext.y >= tileInfo[0].length
             ) {
-                return false;
+                return EActionResult.Blocked;
             }
 
             const { bMovable: bNextPositionMovable } = tileInfo[nextPosition.x][nextPosition.y];
             const { bWeaponBlocked: bnextPositionAfterNextWeaponBlocked } = tileInfo[nextPositionAfterNext.x][nextPositionAfterNext.y];
 
             if (!bNextPositionMovable || bnextPositionAfterNextWeaponBlocked) {
-                return false;
+                return EActionResult.Blocked;
             }
         }
 
-        return true;
+        return EActionResult.Success;
     }
 
     calculatePositions(direction: EDirection, lastPosition: Vec2, turnLeft: boolean) {
@@ -133,9 +141,9 @@ export class PlayerManager extends EntityManager {
     getNextPosition(inputValue: EInput, lastPosition: Vec2) {
         let nextPosition = new Vec2(lastPosition);
 
-        if (inputValue === EInput.Up) {
+        if (inputValue === EInput.Top) {
             nextPosition.y -= 1;
-        } else if (inputValue === EInput.Down) {
+        } else if (inputValue === EInput.Bottom) {
             nextPosition.y += 1;
         } else if (inputValue === EInput.Left) {
             nextPosition.x -= 1;
@@ -173,9 +181,9 @@ export class PlayerManager extends EntityManager {
             this.targetPosition.x += 1;
         }
 
-        if (inputValue === EInput.Up) {
+        if (inputValue === EInput.Top) {
             this.targetPosition.y -= 1;
-        } else if (inputValue === EInput.Down) {
+        } else if (inputValue === EInput.Bottom) {
             this.targetPosition.y += 1;
         }
 
@@ -194,6 +202,23 @@ export class PlayerManager extends EntityManager {
             }
 
             this.state = EEntityState.TurnLeft;
+        }
+
+        if (inputValue === EInput.TurnRight) {
+            if (this.direction === EDirection.Top) {
+                this.direction = EDirection.Right;
+            }
+            else if (this.direction === EDirection.Bottom) {
+                this.direction = EDirection.Left;
+            }
+            else if (this.direction === EDirection.Left) {
+                this.direction = EDirection.Top;
+            }
+            else if (this.direction === EDirection.Right) {
+                this.direction = EDirection.Bottom;
+            }
+
+            this.state = EEntityState.TurnRight;
         }
     }
 }

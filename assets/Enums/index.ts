@@ -19,8 +19,8 @@ export enum EEvent {
 export enum EInput {
     Left = 'Left',
     Right = 'Right',
-    Up = 'Up',
-    Down = 'Down',
+    Top = 'Top',
+    Bottom = 'Bottom',
     TurnLeft = 'TurnLeft',
     TurnRight = 'TurnRight',
 }
@@ -37,21 +37,34 @@ export enum EStateMachineParamType {
 export enum EEntityStateMachineParams {
     Idle = 'Idle',
     TurnLeft = 'TurnLeft',
+    TurnRight = 'TurnRight',
     Direction = 'Direction',
+    BlockedFront = 'BlockedFront',
+    BlockedTurnLeft = 'BlockedTurnLeft',
+    BlockedTurnRight = 'BlockedTurnRight',
 }
 
 export enum EEntityState {
     Idle = 'Idle',
     TurnLeft = 'TurnLeft',
+    TurnRight = 'TurnRight',
+    BlockedFront = 'BlockedFront',
+    BlockedTurnLeft = 'BlockedTurnLeft',
+    BlockedTurnRight = 'BlockedTurnRight',
 }
 
 export enum EDirection {
-    Left,
-    Right,
-    Top,
-    Bottom,
+    Left = 'Left',
+    Right = 'Right',
+    Top = 'Top',
+    Bottom = 'Bottom',
 }
 
 export enum EEntityType {
     Player,
+}
+
+export enum EActionResult {
+    Success,
+    Blocked,
 }

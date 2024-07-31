@@ -8,7 +8,7 @@ import { TILE_HEIGHT, TILE_WIDTH } from '../Scripts/Tile/TileManager';
 const ENTITY_WIDTH = 220;
 const ENTITY_HEIGHT = 220;
 
-export abstract class EntityManager extends Component {
+export class EntityManager extends Component {
 
     type: EEntityType;
     position: Vec2 = new Vec2(0, 0);
