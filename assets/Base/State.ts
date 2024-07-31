@@ -16,6 +16,10 @@ export class State {
 
     async init() {
         const spriteFrames = await ResourceManager.loadDir(this.path, SpriteFrame);
+        
+        // 异步加载的精灵帧顺序不一定，所以需要按数字顺序对精灵帧进行排序
+        spriteFrames.sort((a, b) => parseInt(a.name.match(/\d+/)[0]) - parseInt(b.name.match(/\d+/)[0]));
+
         const keyframes = spriteFrames.map((spriteFrame, index): [number, SpriteFrame] => [1 / this.sampleRate * index, spriteFrame]);
 
         this.animationClip = new AnimationClip(this.path);
