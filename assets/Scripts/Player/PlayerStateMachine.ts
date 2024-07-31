@@ -10,6 +10,7 @@ import { PlayerTurnLeftSubStateMachine } from './PlayerTurnLeftSubStateMachine';
 import { PlayerTurnRightSubStateMachine } from './PlayerTurnRightSubStateMachine';
 
 import { PlayerBlockedFrontSubStateMachine } from './PlayerBlockedFrontSubStateMachine';
+import { PlayerBlockedBackSubStateMachine } from './PlayerBlockedBackSubStateMachine';
 import { PlayerBlockedTurnLeftSubStateMachine } from './PlayerBlockedTurnLeftSubStateMachine';
 import { PlayerBlockedTurnRightSubStateMachine } from './PlayerBlockedTurnRightSubStateMachine';
 
@@ -30,6 +31,7 @@ export class PlayerStateMachine extends StateMachine {
         this.params.set(EEntityStateMachineParams.TurnRight, { type: EStateMachineParamType.TRIGGER, value: false });
 
         this.params.set(EEntityStateMachineParams.BlockedFront, { type: EStateMachineParamType.TRIGGER, value: false });
+        this.params.set(EEntityStateMachineParams.BlockedBack, { type: EStateMachineParamType.TRIGGER, value: false });
         this.params.set(EEntityStateMachineParams.BlockedTurnLeft, { type: EStateMachineParamType.TRIGGER, value: false });
         this.params.set(EEntityStateMachineParams.BlockedTurnRight, { type: EStateMachineParamType.TRIGGER, value: false });
 
@@ -42,6 +44,7 @@ export class PlayerStateMachine extends StateMachine {
         const TurnRightState = new PlayerTurnRightSubStateMachine(this);
 
         const BlockedFrontState = new PlayerBlockedFrontSubStateMachine(this);
+        const BlockedBackState = new PlayerBlockedBackSubStateMachine(this);
         const BlockedTurnLeftState = new PlayerBlockedTurnLeftSubStateMachine(this);
         const BlockedTurnRightState = new PlayerBlockedTurnRightSubStateMachine(this);
 
@@ -51,6 +54,7 @@ export class PlayerStateMachine extends StateMachine {
             TurnRightState.init(),
 
             BlockedFrontState.init(),
+            BlockedBackState.init(),
             BlockedTurnLeftState.init(),
             BlockedTurnRightState.init(),
         ]);
@@ -60,6 +64,7 @@ export class PlayerStateMachine extends StateMachine {
         this.states.set(EEntityState.TurnRight, TurnRightState);
 
         this.states.set(EEntityState.BlockedFront, BlockedFrontState);
+        this.states.set(EEntityState.BlockedBack, BlockedBackState);
         this.states.set(EEntityState.BlockedTurnLeft, BlockedTurnLeftState);
         this.states.set(EEntityState.BlockedTurnRight, BlockedTurnRightState);
     }
@@ -85,6 +90,9 @@ export class PlayerStateMachine extends StateMachine {
                 if (this.getParamValue(EEntityStateMachineParams.BlockedFront)) {
                     this.currentState = this.states.get(EEntityState.BlockedFront);
                 }
+                if (this.getParamValue(EEntityStateMachineParams.BlockedBack)) {
+                    this.currentState = this.states.get(EEntityState.BlockedBack);
+                }
                 if (this.getParamValue(EEntityStateMachineParams.BlockedTurnLeft)) {
                     this.currentState = this.states.get(EEntityState.BlockedTurnLeft);
                 }
@@ -95,6 +103,7 @@ export class PlayerStateMachine extends StateMachine {
             case this.states.get(EEntityState.TurnLeft):
             case this.states.get(EEntityState.TurnRight):
             case this.states.get(EEntityState.BlockedFront):
+            case this.states.get(EEntityState.BlockedBack):
             case this.states.get(EEntityState.BlockedTurnLeft):
             case this.states.get(EEntityState.BlockedTurnRight):
                 if (this.getParamValue(EEntityStateMachineParams.Idle)) {
