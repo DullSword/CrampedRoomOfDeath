@@ -121,18 +121,25 @@ export class PlayerManager extends EntityManager {
         let passTilePosition = new Vec2();
         let stayTilePosition = new Vec2();
 
-        if (direction === EDirection.Top) {
-            passTilePosition.set(turnLeft ? x - 1 : x + 1, y - 1);
-            stayTilePosition.set(turnLeft ? x - 1 : x + 1, y);
-        } else if (direction === EDirection.Bottom) {
-            passTilePosition.set(turnLeft ? x + 1 : x - 1, y + 1);
-            stayTilePosition.set(turnLeft ? x + 1 : x - 1, y);
-        } else if (direction === EDirection.Left) {
-            passTilePosition.set(x - 1, turnLeft ? y + 1 : y - 1);
-            stayTilePosition.set(x, turnLeft ? y + 1 : y - 1);
-        } else if (direction === EDirection.Right) {
-            passTilePosition.set(x + 1, turnLeft ? y - 1 : y + 1);
-            stayTilePosition.set(x, turnLeft ? y - 1 : y + 1);
+        switch (direction) {
+            case EDirection.Top:
+                passTilePosition.set(turnLeft ? x - 1 : x + 1, y - 1);
+                stayTilePosition.set(turnLeft ? x - 1 : x + 1, y);
+                break;
+            case EDirection.Bottom:
+                passTilePosition.set(turnLeft ? x + 1 : x - 1, y + 1);
+                stayTilePosition.set(turnLeft ? x + 1 : x - 1, y);
+                break;
+            case EDirection.Left:
+                passTilePosition.set(x - 1, turnLeft ? y + 1 : y - 1);
+                stayTilePosition.set(x, turnLeft ? y + 1 : y - 1);
+                break;
+            case EDirection.Right:
+                passTilePosition.set(x + 1, turnLeft ? y - 1 : y + 1);
+                stayTilePosition.set(x, turnLeft ? y - 1 : y + 1);
+                break;
+            default:
+                break;
         }
 
         return { passTilePosition, stayTilePosition };
@@ -141,14 +148,21 @@ export class PlayerManager extends EntityManager {
     getNextPosition(inputValue: EInput, lastPosition: Vec2) {
         let nextPosition = new Vec2(lastPosition);
 
-        if (inputValue === EInput.Top) {
-            nextPosition.y -= 1;
-        } else if (inputValue === EInput.Bottom) {
-            nextPosition.y += 1;
-        } else if (inputValue === EInput.Left) {
-            nextPosition.x -= 1;
-        } else if (inputValue === EInput.Right) {
-            nextPosition.x += 1;
+        switch (inputValue) {
+            case EInput.Top:
+                nextPosition.y -= 1;
+                break;
+            case EInput.Bottom:
+                nextPosition.y += 1;
+                break;
+            case EInput.Left:
+                nextPosition.x -= 1;
+                break;
+            case EInput.Right:
+                nextPosition.x += 1;
+                break;
+            default:
+                break;
         }
 
         return nextPosition;
@@ -157,18 +171,25 @@ export class PlayerManager extends EntityManager {
     getNextPositionAfterNext(direction: EDirection, nextPosition: Vec2) {
         let nextPositionAfterNext = new Vec2(nextPosition);
 
-        if (direction === EDirection.Top) {
-            nextPositionAfterNext.x = nextPosition.x;
-            nextPositionAfterNext.y = nextPosition.y - 1;
-        } else if (direction === EDirection.Bottom) {
-            nextPositionAfterNext.x = nextPosition.x;
-            nextPositionAfterNext.y = nextPosition.y + 1;
-        } else if (direction === EDirection.Left) {
-            nextPositionAfterNext.x = nextPosition.x - 1;
-            nextPositionAfterNext.y = nextPosition.y;
-        } else if (direction === EDirection.Right) {
-            nextPositionAfterNext.x = nextPosition.x + 1;
-            nextPositionAfterNext.y = nextPosition.y;
+        switch (direction) {
+            case EDirection.Top:
+                nextPositionAfterNext.x = nextPosition.x;
+                nextPositionAfterNext.y = nextPosition.y - 1;
+                break;
+            case EDirection.Bottom:
+                nextPositionAfterNext.x = nextPosition.x;
+                nextPositionAfterNext.y = nextPosition.y + 1;
+                break;
+            case EDirection.Left:
+                nextPositionAfterNext.x = nextPosition.x - 1;
+                nextPositionAfterNext.y = nextPosition.y;
+                break;
+            case EDirection.Right:
+                nextPositionAfterNext.x = nextPosition.x + 1;
+                nextPositionAfterNext.y = nextPosition.y;
+                break;
+            default:
+                break;
         }
 
         return nextPositionAfterNext;
@@ -188,34 +209,42 @@ export class PlayerManager extends EntityManager {
         }
 
         if (inputValue === EInput.TurnLeft) {
-            if (this.direction === EDirection.Top) {
-                this.direction = EDirection.Left;
-            }
-            else if (this.direction === EDirection.Bottom) {
-                this.direction = EDirection.Right;
-            }
-            else if (this.direction === EDirection.Left) {
-                this.direction = EDirection.Bottom;
-            }
-            else if (this.direction === EDirection.Right) {
-                this.direction = EDirection.Top;
+            switch (this.direction) {
+                case EDirection.Top:
+                    this.direction = EDirection.Left;
+                    break;
+                case EDirection.Bottom:
+                    this.direction = EDirection.Right;
+                    break;
+                case EDirection.Left:
+                    this.direction = EDirection.Bottom;
+                    break;
+                case EDirection.Right:
+                    this.direction = EDirection.Top;
+                    break;
+                default:
+                    break;
             }
 
             this.state = EEntityState.TurnLeft;
         }
 
         if (inputValue === EInput.TurnRight) {
-            if (this.direction === EDirection.Top) {
-                this.direction = EDirection.Right;
-            }
-            else if (this.direction === EDirection.Bottom) {
-                this.direction = EDirection.Left;
-            }
-            else if (this.direction === EDirection.Left) {
-                this.direction = EDirection.Top;
-            }
-            else if (this.direction === EDirection.Right) {
-                this.direction = EDirection.Bottom;
+            switch (this.direction) {
+                case EDirection.Top:
+                    this.direction = EDirection.Right;
+                    break;
+                case EDirection.Bottom:
+                    this.direction = EDirection.Left;
+                    break;
+                case EDirection.Left:
+                    this.direction = EDirection.Top;
+                    break;
+                case EDirection.Right:
+                    this.direction = EDirection.Bottom;
+                    break;
+                default:
+                    break;
             }
 
             this.state = EEntityState.TurnRight;
