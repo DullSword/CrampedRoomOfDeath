@@ -56,22 +56,7 @@ export class PlayerManager extends EntityManager {
 
     handleInput(inputValue: EInput) {
         if (this.isActionValid(inputValue) !== EActionResult.Success) {
-            if (inputValue.toString() === this.direction.toString()) {
-                this.state = EEntityState.BlockedFront;
-            } else if (
-                (inputValue === EInput.Top && this.direction === EDirection.Bottom) ||
-                (inputValue === EInput.Bottom && this.direction === EDirection.Top) ||
-                (inputValue === EInput.Left && this.direction === EDirection.Right) ||
-                (inputValue === EInput.Right && this.direction === EDirection.Left)
-            ) {
-                this.state = EEntityState.BlockedBack;
-            }
-            else if (inputValue === EInput.TurnLeft) {
-                this.state = EEntityState.BlockedTurnLeft;
-            } else if (inputValue === EInput.TurnRight) {
-                this.state = EEntityState.BlockedTurnRight;
-            }
-
+            this.handleBlocked(inputValue);
             return;
         }
 
@@ -201,6 +186,24 @@ export class PlayerManager extends EntityManager {
         }
 
         return nextPositionAfterNext;
+    }
+
+    handleBlocked(inputValue: EInput) {
+        if (inputValue.toString() === this.direction.toString()) {
+            this.state = EEntityState.BlockedFront;
+        } else if (
+            (inputValue === EInput.Top && this.direction === EDirection.Bottom) ||
+            (inputValue === EInput.Bottom && this.direction === EDirection.Top) ||
+            (inputValue === EInput.Left && this.direction === EDirection.Right) ||
+            (inputValue === EInput.Right && this.direction === EDirection.Left)
+        ) {
+            this.state = EEntityState.BlockedBack;
+        }
+        else if (inputValue === EInput.TurnLeft) {
+            this.state = EEntityState.BlockedTurnLeft;
+        } else if (inputValue === EInput.TurnRight) {
+            this.state = EEntityState.BlockedTurnRight;
+        }
     }
 
     controll(inputValue: EInput) {
