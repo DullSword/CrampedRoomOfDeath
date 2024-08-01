@@ -1,6 +1,7 @@
+import { Vec2 } from 'cc';
 
 import { EntityManager } from '../../../Base/EntityManager';
-import { EDirection, EEvent } from '../../../Enums';
+import { EDirection, EEntityState, EEvent } from '../../../Enums';
 import EventManager from '../../../Runtime/EventManager';
 import DataManager from '../../../Runtime/DataManager';
 import { IEntity } from '../../../Levels';
@@ -16,8 +17,9 @@ export abstract class EnemyManager extends EntityManager {
             state: params.state,
         });
 
-        EventManager.instance.on(EEvent.PlayerMoveEnd, this.adjustDirection, this);
         EventManager.instance.on(EEvent.playerSpawned, this.adjustDirection, this);
+        EventManager.instance.on(EEvent.PlayerMoveEnd, this.adjustDirection, this);
+        EventManager.instance.on(EEvent.PlayerMoveEnd, this.tryAttackTarget, this);
 
         this.adjustDirection();
     }
@@ -45,6 +47,14 @@ export abstract class EnemyManager extends EntityManager {
             this.direction = DistX < DistY ? EDirection.Bottom : EDirection.Left;
         } else if (fourthQuadrant) {
             this.direction = DistX < DistY ? EDirection.Bottom : EDirection.Right;
+        }
+    }
+
+    tryAttackTarget() {
+        const { position: playerPosition } = DataManager.instance.player;
+
+        if (Vec2.distance(this.position, playerPosition) <= 1) {
+            this.state = EEntityState.Attack;
         }
     }
 }

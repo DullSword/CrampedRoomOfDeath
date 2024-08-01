@@ -11,7 +11,7 @@ export class WoodenSkeletonManager extends EnemyManager {
     async init() {
         await super.init({
             type: EEntityType.Enemy,
-            position: new Vec2(7, 7),
+            position: new Vec2(2, 4),
             fsm: WoodenSkeletonStateMachine,
             direction: EDirection.Top,
             state: EEntityState.Idle,

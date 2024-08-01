@@ -45,6 +45,7 @@ export enum EEntityStateMachineParams {
     BlockedBack = 'BlockedBack',
     BlockedTurnLeft = 'BlockedTurnLeft',
     BlockedTurnRight = 'BlockedTurnRight',
+    Attack = 'Attack',
 }
 
 export enum EEntityState {
@@ -55,6 +56,7 @@ export enum EEntityState {
     BlockedBack = 'BlockedBack',
     BlockedTurnLeft = 'BlockedTurnLeft',
     BlockedTurnRight = 'BlockedTurnRight',
+    Attack = 'Attack',
 }
 
 export enum EDirection {

@@ -2,6 +2,7 @@ import { Animation, AnimationState } from 'cc';
 
 import { EEntityState, EEntityStateMachineParams, EStateMachineParamType } from '../../../Enums';
 import { StateMachine } from '../../../Base/StateMachine';
+import { EntityManager } from '../../../Base/EntityManager';
 
 export abstract class EnemyStateMachine extends StateMachine {
 
@@ -15,7 +16,7 @@ export abstract class EnemyStateMachine extends StateMachine {
 
     initParams() {
         this.params.set(EEntityStateMachineParams.Idle, { type: EStateMachineParamType.TRIGGER, value: false });
-
+        this.params.set(EEntityStateMachineParams.Attack, { type: EStateMachineParamType.TRIGGER, value: false });
         this.params.set(EEntityStateMachineParams.Direction, { type: EStateMachineParamType.INTEGER, value: 0 });
     }
 
@@ -23,14 +24,22 @@ export abstract class EnemyStateMachine extends StateMachine {
 
     initAnimationEvent() {
         this.animationComponent.on(Animation.EventType.FINISHED, (type: Animation.EventType, state: AnimationState) => {
-
+            const whiteList = ['attack'];
+            if (whiteList.some((v) => state.name.includes(v))) {
+                this.node.getComponent(EntityManager).state = EEntityState.Idle;
+            }
         }, this);
     }
 
     run() {
         switch (this.currentState) {
             case this.states.get(EEntityState.Idle):
-                this.currentState = this.currentState;
+                if (this.getParamValue(EEntityStateMachineParams.Attack)) {
+                    this.currentState = this.states.get(EEntityState.Attack);
+                } else {
+                    this.currentState = this.currentState;
+                }
+
                 break;
             default: {
                 this.currentState = this.states.get(EEntityState.Idle);
