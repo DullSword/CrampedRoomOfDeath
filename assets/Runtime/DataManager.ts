@@ -1,5 +1,6 @@
 import Singleton from "../Base/Singleton";
 import { ITile } from "../Levels";
+import { PlayerManager } from "../Scripts/Player/PlayerManager";
 import { TileManager } from "../Scripts/Tile/TileManager";
 
 export default class DataManager extends Singleton {
@@ -10,6 +11,8 @@ export default class DataManager extends Singleton {
     tileInfo: Array<Array<TileManager>> = [];
 
     levelIndex: number = 1;
+
+    player: PlayerManager = null;
 
     static get instance() {
         return super.getInstance<DataManager>();

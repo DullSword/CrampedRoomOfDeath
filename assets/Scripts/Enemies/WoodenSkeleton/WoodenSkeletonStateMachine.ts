@@ -1,26 +1,16 @@
-import { _decorator, Animation, AnimationState } from 'cc';
+import { _decorator } from 'cc';
 const { ccclass } = _decorator;
 
-import { EEntityState, EEntityStateMachineParams, EStateMachineParamType } from '../../../Enums';
-import { StateMachine } from '../../../Base/StateMachine';
+import { EnemyStateMachine } from './EnemyStateMachine';
 
 import { WoodenSkeletonIdleSubStateMachine } from './WoodenSkeletonIdleSubStateMachine';
+import { EEntityState } from '../../../Enums';
 
 @ccclass('WoodenSkeletonStateMachine')
-export class WoodenSkeletonStateMachine extends StateMachine {
+export class WoodenSkeletonStateMachine extends EnemyStateMachine {
 
     async init() {
-        this.animationComponent = this.addComponent(Animation);
-        this.initAnimationEvent();
-
-        this.initParams();
-        await this.initStates();
-    }
-
-    initParams() {
-        this.params.set(EEntityStateMachineParams.Idle, { type: EStateMachineParamType.TRIGGER, value: false });
-
-        this.params.set(EEntityStateMachineParams.Direction, { type: EStateMachineParamType.INTEGER, value: 0 });
+        await super.init();
     }
 
     async initStates() {
@@ -31,22 +21,5 @@ export class WoodenSkeletonStateMachine extends StateMachine {
         ]);
 
         this.states.set(EEntityState.Idle, IdleState);
-    }
-
-    initAnimationEvent() {
-        this.animationComponent.on(Animation.EventType.FINISHED, (type: Animation.EventType, state: AnimationState) => {
-
-        }, this);
-    }
-
-    run() {
-        switch (this.currentState) {
-            case this.states.get(EEntityState.Idle):
-
-                break;
-            default: {
-                this.currentState = this.states.get(EEntityState.Idle);
-            }
-        }
     }
 }

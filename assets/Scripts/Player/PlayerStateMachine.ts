@@ -83,21 +83,18 @@ export class PlayerStateMachine extends StateMachine {
             case this.states.get(EEntityState.Idle):
                 if (this.getParamValue(EEntityStateMachineParams.TurnLeft)) {
                     this.currentState = this.states.get(EEntityState.TurnLeft);
-                }
-                if (this.getParamValue(EEntityStateMachineParams.TurnRight)) {
+                } else if (this.getParamValue(EEntityStateMachineParams.TurnRight)) {
                     this.currentState = this.states.get(EEntityState.TurnRight);
-                }
-                if (this.getParamValue(EEntityStateMachineParams.BlockedFront)) {
+                } else if (this.getParamValue(EEntityStateMachineParams.BlockedFront)) {
                     this.currentState = this.states.get(EEntityState.BlockedFront);
-                }
-                if (this.getParamValue(EEntityStateMachineParams.BlockedBack)) {
+                } else if (this.getParamValue(EEntityStateMachineParams.BlockedBack)) {
                     this.currentState = this.states.get(EEntityState.BlockedBack);
-                }
-                if (this.getParamValue(EEntityStateMachineParams.BlockedTurnLeft)) {
+                } else if (this.getParamValue(EEntityStateMachineParams.BlockedTurnLeft)) {
                     this.currentState = this.states.get(EEntityState.BlockedTurnLeft);
-                }
-                if (this.getParamValue(EEntityStateMachineParams.BlockedTurnRight)) {
+                } else if (this.getParamValue(EEntityStateMachineParams.BlockedTurnRight)) {
                     this.currentState = this.states.get(EEntityState.BlockedTurnRight);
+                } else {
+                    this.currentState = this.currentState;
                 }
                 break;
             case this.states.get(EEntityState.TurnLeft):

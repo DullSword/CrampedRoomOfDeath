@@ -15,7 +15,6 @@ import { WoodenSkeletonManager } from '../Enemies/WoodenSkeleton/WoodenSkeletonM
 export class BattleManager extends Component {
     level: Ilevel;
     stage: Node;
-    player: Node;
 
     onLoad() {
         EventManager.instance.on(EEvent.NextLevl, this.NextLevel, this);
@@ -58,20 +57,24 @@ export class BattleManager extends Component {
         this.stage.setParent(this.node);
     }
 
-    generatePlayer() {
-        this.player = CreateUINode('player');
-        this.player.setParent(this.stage);
+    async generatePlayer() {
+        const player = CreateUINode('player');
+        player.setParent(this.stage);
 
-        const playerManagerComponent = this.player.addComponent(PlayerManager);
-        playerManagerComponent.init();
+        const playerManagerComponent = player.addComponent(PlayerManager);
+        await playerManagerComponent.init();
+
+        DataManager.instance.player = playerManagerComponent;
+
+        EventManager.instance.emit(EEvent.playerSpawned);
     }
 
-    generateEnemies() {
-        const woodenSkeleton = CreateUINode('enemy');
+    async generateEnemies() {
+        const woodenSkeleton = CreateUINode('woodenSkeleton');
         woodenSkeleton.setParent(this.stage);
 
         const woodenSkeletonManagerComponent = woodenSkeleton.addComponent(WoodenSkeletonManager);
-        woodenSkeletonManagerComponent.init();
+        await woodenSkeletonManagerComponent.init();
     }
 
     generateTileMap() {

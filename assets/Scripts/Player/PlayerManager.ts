@@ -12,6 +12,8 @@ export class PlayerManager extends EntityManager {
 
     targetPosition: Vec2 = new Vec2(0, 0);
 
+    private isMoving = false;
+
     private readonly velocity = 0.1;
 
     async init() {
@@ -46,11 +48,16 @@ export class PlayerManager extends EntityManager {
             this.position.y -= this.velocity;
         }
 
-        if (Math.abs(this.position.x - this.targetPosition.x) < 0.01) {
+        if (
+            Math.abs(this.position.x - this.targetPosition.x) < 0.01 &&
+            Math.abs(this.position.y - this.targetPosition.y) < 0.01 &&
+            this.isMoving
+        ) {
+            this.isMoving = false;
             this.position.x = this.targetPosition.x;
-        }
-        if (Math.abs(this.position.y - this.targetPosition.y) < 0.01) {
             this.position.y = this.targetPosition.y;
+
+            EventManager.instance.emit(EEvent.PlayerMoveEnd);
         }
     }
 
@@ -207,16 +214,24 @@ export class PlayerManager extends EntityManager {
     }
 
     controll(inputValue: EInput) {
+        if (this.isMoving) {
+            return;
+        }
+
         if (inputValue === EInput.Left) {
             this.targetPosition.x -= 1;
+            this.isMoving = true;
         } else if (inputValue === EInput.Right) {
             this.targetPosition.x += 1;
+            this.isMoving = true;
         }
 
         if (inputValue === EInput.Top) {
             this.targetPosition.y -= 1;
+            this.isMoving = true;
         } else if (inputValue === EInput.Bottom) {
             this.targetPosition.y += 1;
+            this.isMoving = true;
         }
 
         if (inputValue === EInput.TurnLeft) {

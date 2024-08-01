@@ -14,6 +14,8 @@ export enum ETileType {
 export enum EEvent {
     NextLevl = 'NextLevel',
     PlayerInput = 'PlayerInput',
+    playerSpawned = 'playerSpawned',
+    PlayerMoveEnd = 'PlayerMoveEnd',
 }
 
 export enum EInput {
@@ -64,6 +66,7 @@ export enum EDirection {
 
 export enum EEntityType {
     Player,
+    Enemy,
 }
 
 export enum EActionResult {
