@@ -25,7 +25,8 @@ export abstract class EnemyManager extends EntityManager {
     }
 
     adjustDirection() {
-        if (!DataManager.instance.player) {
+        const player = DataManager.instance.player;
+        if (this.state === EEntityState.Death || !player || player.state === EEntityState.Death) {
             return;
         }
 
@@ -51,12 +52,11 @@ export abstract class EnemyManager extends EntityManager {
     }
 
     tryAttackTarget() {
-        const { position: playerPosition } = DataManager.instance.player;
-
-        if (Vec2.distance(this.position, playerPosition) <= 1) {
-            this.state = EEntityState.Attack;
-
-            EventManager.instance.emit(EEvent.playerDeath, this);
+        const player = DataManager.instance.player;
+        if (this.state === EEntityState.Death || !player || player.state === EEntityState.Death) {
+            return;
         }
+
+        super.tryAttackTarget(player, 1);
     }
 }

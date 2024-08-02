@@ -16,6 +16,8 @@ export class PlayerManager extends EntityManager {
 
     private readonly velocity = 0.1;
 
+    private target: EntityManager = null;
+
     async init() {
         await super.init({
             type: EEntityType.Player,
@@ -28,8 +30,6 @@ export class PlayerManager extends EntityManager {
         this.targetPosition.set(this.position);
 
         EventManager.instance.on(EEvent.PlayerInput, this.handleInput, this);
-
-        EventManager.instance.on(EEvent.playerDeath, this.OnDeath, this);
     }
 
     protected update(dt: number): void {
@@ -64,19 +64,19 @@ export class PlayerManager extends EntityManager {
     }
 
     handleInput(inputValue: EInput) {
-        if (this.state === EEntityState.Death) {
+        if (this.state === EEntityState.Death || this.state === EEntityState.Attack) {
             return;
         }
 
         switch (this.isActionValid(inputValue)) {
             case EActionResult.Move:
-                this.controll(inputValue);
+                this.control(inputValue);
                 break;
             case EActionResult.Blocked:
                 this.handleBlocked(inputValue);
                 break;
             case EActionResult.Attack:
-                this.state = EEntityState.Attack;
+                this.tryAttackTarget(this.target, 2);
                 break;
             default:
             // do nothing
@@ -125,9 +125,11 @@ export class PlayerManager extends EntityManager {
             }
 
             const { enemies } = DataManager.instance;
+            const enemyTarget = enemies.filter(enemy => enemy.state !== EEntityState.Death).filter(enemy => Vec2.strictEquals(enemy.position, nextPositionAfterNext));
 
-            const bShouldAttack = enemies.some(enemy => Vec2.strictEquals(enemy.position, nextPositionAfterNext));
+            const bShouldAttack = enemyTarget.length > 0;
             if (bShouldAttack) {
+                this.target = enemyTarget[0];
                 return EActionResult.Attack;
             }
         }
@@ -233,7 +235,7 @@ export class PlayerManager extends EntityManager {
         }
     }
 
-    controll(inputValue: EInput) {
+    control(inputValue: EInput) {
         if (this.isMoving) {
             return;
         }

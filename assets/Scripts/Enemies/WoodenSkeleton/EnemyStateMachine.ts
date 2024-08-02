@@ -17,6 +17,7 @@ export abstract class EnemyStateMachine extends StateMachine {
     initParams() {
         this.params.set(EEntityStateMachineParams.Idle, { type: EStateMachineParamType.TRIGGER, value: false });
         this.params.set(EEntityStateMachineParams.Attack, { type: EStateMachineParamType.TRIGGER, value: false });
+        this.params.set(EEntityStateMachineParams.Death, { type: EStateMachineParamType.TRIGGER, value: false });
         this.params.set(EEntityStateMachineParams.Direction, { type: EStateMachineParamType.INTEGER, value: 0 });
     }
 
@@ -36,6 +37,8 @@ export abstract class EnemyStateMachine extends StateMachine {
             case this.states.get(EEntityState.Idle):
                 if (this.getParamValue(EEntityStateMachineParams.Attack)) {
                     this.currentState = this.states.get(EEntityState.Attack);
+                } else if (this.getParamValue(EEntityStateMachineParams.Death)) {
+                    this.currentState = this.states.get(EEntityState.Death);
                 } else {
                     this.currentState = this.currentState;
                 }

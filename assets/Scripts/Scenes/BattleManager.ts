@@ -17,11 +17,11 @@ export class BattleManager extends Component {
     stage: Node;
 
     onLoad() {
-        EventManager.instance.on(EEvent.NextLevl, this.NextLevel, this);
+        EventManager.instance.on(EEvent.NextLevel, this.NextLevel, this);
     }
 
     onDestroy() {
-        EventManager.instance.off(EEvent.NextLevl, this.NextLevel);
+        EventManager.instance.off(EEvent.NextLevel, this.NextLevel);
     }
 
     start() {

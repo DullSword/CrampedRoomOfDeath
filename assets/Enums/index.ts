@@ -12,11 +12,11 @@ export enum ETileType {
 };
 
 export enum EEvent {
-    NextLevl = 'NextLevel',
+    NextLevel = 'NextLevel',
     PlayerInput = 'PlayerInput',
     playerSpawned = 'playerSpawned',
     PlayerMoveEnd = 'PlayerMoveEnd',
-    playerDeath = 'playerDeath'
+    Death = 'Death'
 }
 
 export enum EInput {
