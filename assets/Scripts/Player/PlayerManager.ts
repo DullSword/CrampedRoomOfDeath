@@ -28,6 +28,8 @@ export class PlayerManager extends EntityManager {
         this.targetPosition.set(this.position);
 
         EventManager.instance.on(EEvent.PlayerInput, this.handleInput, this);
+
+        EventManager.instance.on(EEvent.playerDeath, this.OnDeath, this);
     }
 
     protected update(dt: number): void {
@@ -62,6 +64,10 @@ export class PlayerManager extends EntityManager {
     }
 
     handleInput(inputValue: EInput) {
+        if (this.state === EEntityState.Death) {
+            return;
+        }
+
         if (this.isActionValid(inputValue) !== EActionResult.Success) {
             this.handleBlocked(inputValue);
             return;

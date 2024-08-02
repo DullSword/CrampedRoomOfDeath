@@ -55,6 +55,8 @@ export abstract class EnemyManager extends EntityManager {
 
         if (Vec2.distance(this.position, playerPosition) <= 1) {
             this.state = EEntityState.Attack;
+
+            EventManager.instance.emit(EEvent.playerDeath, this);
         }
     }
 }

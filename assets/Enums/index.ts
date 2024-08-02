@@ -16,6 +16,7 @@ export enum EEvent {
     PlayerInput = 'PlayerInput',
     playerSpawned = 'playerSpawned',
     PlayerMoveEnd = 'PlayerMoveEnd',
+    playerDeath = 'playerDeath'
 }
 
 export enum EInput {
@@ -36,18 +37,6 @@ export enum EStateMachineParamType {
     QUAT_experimental,
 }
 
-export enum EEntityStateMachineParams {
-    Idle = 'Idle',
-    TurnLeft = 'TurnLeft',
-    TurnRight = 'TurnRight',
-    Direction = 'Direction',
-    BlockedFront = 'BlockedFront',
-    BlockedBack = 'BlockedBack',
-    BlockedTurnLeft = 'BlockedTurnLeft',
-    BlockedTurnRight = 'BlockedTurnRight',
-    Attack = 'Attack',
-}
-
 export enum EEntityState {
     Idle = 'Idle',
     TurnLeft = 'TurnLeft',
@@ -57,6 +46,20 @@ export enum EEntityState {
     BlockedTurnLeft = 'BlockedTurnLeft',
     BlockedTurnRight = 'BlockedTurnRight',
     Attack = 'Attack',
+    Death = 'Death',
+}
+
+export enum EEntityStateMachineParams {
+    Direction = 'Direction',
+    Idle = EEntityState.Idle,
+    TurnLeft = EEntityState.TurnLeft,
+    TurnRight = EEntityState.TurnRight,
+    BlockedFront = EEntityState.BlockedFront,
+    BlockedBack = EEntityState.BlockedBack,
+    BlockedTurnLeft = EEntityState.BlockedTurnLeft,
+    BlockedTurnRight = EEntityState.BlockedTurnRight,
+    Attack = EEntityState.Attack,
+    Death = EEntityState.Death,
 }
 
 export enum EDirection {

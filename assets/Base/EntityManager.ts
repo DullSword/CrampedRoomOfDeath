@@ -55,4 +55,8 @@ export class EntityManager extends Component {
     protected update(dt: number): void {
         this.node.setPosition((this.position.x - 1.5) * TILE_WIDTH, -(this.position.y - 1.5) * TILE_HEIGHT);
     }
+
+    protected OnDeath(Instigator: EntityManager) {
+        this.state = EEntityState.Death;
+    }
 }
