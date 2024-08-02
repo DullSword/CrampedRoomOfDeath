@@ -68,12 +68,19 @@ export class PlayerManager extends EntityManager {
             return;
         }
 
-        if (this.isActionValid(inputValue) !== EActionResult.Success) {
-            this.handleBlocked(inputValue);
-            return;
+        switch (this.isActionValid(inputValue)) {
+            case EActionResult.Move:
+                this.controll(inputValue);
+                break;
+            case EActionResult.Blocked:
+                this.handleBlocked(inputValue);
+                break;
+            case EActionResult.Attack:
+                this.state = EEntityState.Attack;
+                break;
+            default:
+            // do nothing
         }
-
-        this.controll(inputValue);
     }
 
     isActionValid(inputValue: EInput) {
@@ -116,9 +123,16 @@ export class PlayerManager extends EntityManager {
             if (!bNextPositionMovable || bnextPositionAfterNextWeaponBlocked) {
                 return EActionResult.Blocked;
             }
+
+            const { enemies } = DataManager.instance;
+
+            const bShouldAttack = enemies.some(enemy => Vec2.strictEquals(enemy.position, nextPositionAfterNext));
+            if (bShouldAttack) {
+                return EActionResult.Attack;
+            }
         }
 
-        return EActionResult.Success;
+        return EActionResult.Move;
     }
 
     calculatePositions(direction: EDirection, lastPosition: Vec2, turnLeft: boolean) {

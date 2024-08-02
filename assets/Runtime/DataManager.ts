@@ -1,5 +1,6 @@
 import Singleton from "../Base/Singleton";
 import { ITile } from "../Levels";
+import { EnemyManager } from "../Scripts/Enemies/WoodenSkeleton/EnemyManager";
 import { PlayerManager } from "../Scripts/Player/PlayerManager";
 import { TileManager } from "../Scripts/Tile/TileManager";
 
@@ -13,6 +14,7 @@ export default class DataManager extends Singleton {
     levelIndex: number = 1;
 
     player: PlayerManager = null;
+    enemies: Array<EnemyManager> = [];
 
     static get instance() {
         return super.getInstance<DataManager>();

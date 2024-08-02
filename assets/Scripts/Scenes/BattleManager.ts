@@ -75,6 +75,8 @@ export class BattleManager extends Component {
 
         const woodenSkeletonManagerComponent = woodenSkeleton.addComponent(WoodenSkeletonManager);
         await woodenSkeletonManagerComponent.init();
+
+        DataManager.instance.enemies.push(woodenSkeletonManagerComponent);
     }
 
     generateTileMap() {

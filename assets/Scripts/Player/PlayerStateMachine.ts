@@ -15,6 +15,7 @@ import { PlayerBlockedTurnLeftSubStateMachine } from './PlayerBlockedTurnLeftSub
 import { PlayerBlockedTurnRightSubStateMachine } from './PlayerBlockedTurnRightSubStateMachine';
 
 import { PlayerDeadSubStateMachine } from './PlayerDeadSubStateMachine';
+import { PlayerAttackSubStateMachine } from './PlayerAttackSubStateMachine';
 
 @ccclass('PlayerStateMachine')
 export class PlayerStateMachine extends StateMachine {
@@ -37,6 +38,7 @@ export class PlayerStateMachine extends StateMachine {
         this.params.set(EEntityStateMachineParams.BlockedTurnLeft, { type: EStateMachineParamType.TRIGGER, value: false });
         this.params.set(EEntityStateMachineParams.BlockedTurnRight, { type: EStateMachineParamType.TRIGGER, value: false });
 
+        this.params.set(EEntityStateMachineParams.Attack, { type: EStateMachineParamType.TRIGGER, value: false });
         this.params.set(EEntityStateMachineParams.Death, { type: EStateMachineParamType.TRIGGER, value: false });
 
         this.params.set(EEntityStateMachineParams.Direction, { type: EStateMachineParamType.INTEGER, value: 0 });
@@ -52,6 +54,7 @@ export class PlayerStateMachine extends StateMachine {
         const BlockedTurnLeftState = new PlayerBlockedTurnLeftSubStateMachine(this);
         const BlockedTurnRightState = new PlayerBlockedTurnRightSubStateMachine(this);
 
+        const AttackState = new PlayerAttackSubStateMachine(this);
         const DeadState = new PlayerDeadSubStateMachine(this);
 
         await Promise.all([
@@ -64,6 +67,7 @@ export class PlayerStateMachine extends StateMachine {
             BlockedTurnLeftState.init(),
             BlockedTurnRightState.init(),
 
+            AttackState.init(),
             DeadState.init(),
         ]);
 
@@ -76,12 +80,13 @@ export class PlayerStateMachine extends StateMachine {
         this.states.set(EEntityState.BlockedTurnLeft, BlockedTurnLeftState);
         this.states.set(EEntityState.BlockedTurnRight, BlockedTurnRightState);
 
+        this.states.set(EEntityState.Attack, AttackState);
         this.states.set(EEntityState.Death, DeadState);
     }
 
     initAnimationEvent() {
         this.animationComponent.on(Animation.EventType.FINISHED, (type: Animation.EventType, state: AnimationState) => {
-            const whiteList = ['turn', 'block'];
+            const whiteList = ['turn', 'block', 'attack'];
             if (whiteList.some((v) => state.name.includes(v))) {
                 this.node.getComponent(EntityManager).state = EEntityState.Idle;
             }
@@ -103,6 +108,8 @@ export class PlayerStateMachine extends StateMachine {
                     this.currentState = this.states.get(EEntityState.BlockedTurnLeft);
                 } else if (this.getParamValue(EEntityStateMachineParams.BlockedTurnRight)) {
                     this.currentState = this.states.get(EEntityState.BlockedTurnRight);
+                } else if (this.getParamValue(EEntityStateMachineParams.Attack)) {
+                    this.currentState = this.states.get(EEntityState.Attack);
                 } else if (this.getParamValue(EEntityStateMachineParams.Death)) {
                     this.currentState = this.states.get(EEntityState.Death);
                 } else {
@@ -115,6 +122,7 @@ export class PlayerStateMachine extends StateMachine {
             case this.states.get(EEntityState.BlockedBack):
             case this.states.get(EEntityState.BlockedTurnLeft):
             case this.states.get(EEntityState.BlockedTurnRight):
+            case this.states.get(EEntityState.Attack):
                 if (this.getParamValue(EEntityStateMachineParams.Idle)) {
                     this.currentState = this.states.get(EEntityState.Idle);
                 }

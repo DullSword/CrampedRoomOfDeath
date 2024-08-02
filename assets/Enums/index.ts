@@ -75,6 +75,7 @@ export enum EEntityType {
 }
 
 export enum EActionResult {
-    Success,
+    Move,
+    Attack,
     Blocked,
 }
