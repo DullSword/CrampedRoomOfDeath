@@ -1,4 +1,4 @@
-import { _decorator, Component, Node } from 'cc';
+import { _decorator, Component, Node, Vec2 } from 'cc';
 const { ccclass, property } = _decorator;
 
 import { TileMapManager } from '../Tile/TileMapManager';
@@ -7,9 +7,8 @@ import levels, { Ilevel } from '../../Levels';
 import DataManager from '../../Runtime/DataManager';
 import { TILE_WIDTH, TILE_HEIGHT } from '../Tile/TileManager';
 import EventManager from '../../Runtime/EventManager';
-import { EEvent } from '../../Enums';
-import { PlayerManager } from '../Player/PlayerManager';
-import { WoodenSkeletonManager } from '../Enemies/WoodenSkeleton/WoodenSkeletonManager';
+import { EEnemyType, EEvent } from '../../Enums';
+import { EnemyFactory, PlayerFactory } from '../../Base/EntityFactory';
 
 @ccclass('BattleManager')
 export class BattleManager extends Component {
@@ -58,11 +57,12 @@ export class BattleManager extends Component {
     }
 
     async generatePlayer() {
-        const player = CreateUINode('player');
-        player.setParent(this.stage);
-
-        const playerManagerComponent = player.addComponent(PlayerManager);
-        await playerManagerComponent.init();
+        const playerManagerComponent = await new PlayerFactory().create(
+            {
+                position: new Vec2(2, 7)
+            },
+            this.stage,
+        );
 
         DataManager.instance.player = playerManagerComponent;
 
@@ -70,11 +70,13 @@ export class BattleManager extends Component {
     }
 
     async generateEnemies() {
-        const woodenSkeleton = CreateUINode('woodenSkeleton');
-        woodenSkeleton.setParent(this.stage);
-
-        const woodenSkeletonManagerComponent = woodenSkeleton.addComponent(WoodenSkeletonManager);
-        await woodenSkeletonManagerComponent.init();
+        const woodenSkeletonManagerComponent = await new EnemyFactory().create(
+            {
+                position: new Vec2(2, 4),
+                enemyType: EEnemyType.WoodenSkeleton,
+            },
+            this.stage,
+        );
 
         DataManager.instance.enemies.push(woodenSkeletonManagerComponent);
     }

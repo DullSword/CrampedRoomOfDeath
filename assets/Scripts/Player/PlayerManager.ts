@@ -6,6 +6,7 @@ import { EInput, EEvent, EDirection, EEntityState, EEntityType, EActionResult } 
 import EventManager from '../../Runtime/EventManager';
 import { PlayerStateMachine } from './PlayerStateMachine';
 import DataManager from '../../Runtime/DataManager';
+import { IEntity } from '../../Levels';
 
 @ccclass('PlayerManager')
 export class PlayerManager extends EntityManager {
@@ -18,13 +19,13 @@ export class PlayerManager extends EntityManager {
 
     private target: EntityManager = null;
 
-    async init() {
+    async init(params: IEntity) {
         await super.init({
             type: EEntityType.Player,
-            position: new Vec2(2, 8),
+            position: params.position,
             fsm: PlayerStateMachine,
-            direction: EDirection.Top,
-            state: EEntityState.Idle,
+            direction: params.direction,
+            state: params.state,
         });
 
         this.targetPosition.set(this.position);

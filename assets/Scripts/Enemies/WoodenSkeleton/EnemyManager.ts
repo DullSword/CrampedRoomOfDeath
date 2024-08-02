@@ -1,7 +1,7 @@
 import { Vec2 } from 'cc';
 
 import { EntityManager } from '../../../Base/EntityManager';
-import { EDirection, EEntityState, EEvent } from '../../../Enums';
+import { EDirection, EEntityState, EEntityType, EEvent } from '../../../Enums';
 import EventManager from '../../../Runtime/EventManager';
 import DataManager from '../../../Runtime/DataManager';
 import { IEntity } from '../../../Levels';
@@ -10,7 +10,7 @@ export abstract class EnemyManager extends EntityManager {
 
     async init(params: IEntity) {
         await super.init({
-            type: params.type,
+            type: EEntityType.Enemy,
             position: params.position,
             fsm: params.fsm,
             direction: params.direction,
