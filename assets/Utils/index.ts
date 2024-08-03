@@ -1,4 +1,5 @@
 import { Node, Layers, UITransform, Vec2 } from 'cc';
+import { EDirection, EInput } from '../Enums';
 
 export const CreateUINode = (name: string = "") => {
     const node = new Node(name);
@@ -8,4 +9,19 @@ export const CreateUINode = (name: string = "") => {
 
     node.layer = Layers.Enum.UI_2D;
     return node;
+}
+
+export const mapInputToDirection = (input: EInput) => {
+    switch (input) {
+        case EInput.Left:
+            return EDirection.Left;
+        case EInput.Right:
+            return EDirection.Right;
+        case EInput.Top:
+            return EDirection.Top;
+        case EInput.Bottom:
+            return EDirection.Bottom;
+        default:
+            return null; // 如果无法映射，返回 null
+    }
 }

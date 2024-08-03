@@ -29,7 +29,7 @@ export class BattleManager extends Component {
         this.initLevel();
     }
 
-    initLevel() {
+    async initLevel() {
         const level = levels[`level${DataManager.instance.levelIndex}`];
         if (level) {
             this.clearLevel();
@@ -40,7 +40,8 @@ export class BattleManager extends Component {
             DataManager.instance.mapColCount = this.level.mapInfo.length || 0;
             DataManager.instance.mapRowCount = this.level.mapInfo[0].length || 0;
 
-            this.generateTileMap();
+            await this.generateTileMap();
+
             this.generatePlayer();
             this.generateEnemies();
             this.generateDoor();
@@ -73,7 +74,7 @@ export class BattleManager extends Component {
     async generateEnemies() {
         const woodenSkeletonManagerComponent = await new EnemyFactory().create(
             {
-                position: new Vec2(2, 4),
+                position: new Vec2(3, 6),
                 enemyType: EEnemyType.WoodenSkeleton,
             },
             this.stage,
@@ -101,11 +102,11 @@ export class BattleManager extends Component {
         DataManager.instance.door = doorManagerComponent;
     }
 
-    generateTileMap() {
+    async generateTileMap() {
         const tileMap = CreateUINode('map');
         tileMap.setParent(this.stage);
         const tileMapManager = tileMap.addComponent(TileMapManager);
-        tileMapManager.init();
+        await tileMapManager.init();
 
         this.adaptPos();
     }

@@ -7,6 +7,7 @@ import EventManager from '../../Runtime/EventManager';
 import { PlayerStateMachine } from './PlayerStateMachine';
 import DataManager from '../../Runtime/DataManager';
 import { IEntity } from '../../Levels';
+import { mapInputToDirection } from '../../Utils';
 
 @ccclass('PlayerManager')
 export class PlayerManager extends EntityManager {
@@ -124,20 +125,22 @@ export class PlayerManager extends EntityManager {
                 return EActionResult.Blocked;
             }
 
+            const { enemies } = DataManager.instance;
+            const enemyTarget = enemies.filter(enemy => enemy.state !== EEntityState.Death).filter(enemy => Vec2.strictEquals(enemy.position, nextPositionAfterNext));
+
+            const bIsSameDirection = mapInputToDirection(inputValue) === this.direction;
+
+            const bShouldAttack = bIsSameDirection && enemyTarget.length > 0;
+            if (bShouldAttack) {
+                this.target = enemyTarget[0];
+                return EActionResult.Attack;
+            }
+
             const { bMovable: bNextPositionMovable } = tileInfo[nextPosition.x][nextPosition.y];
             const { bWeaponBlocked: bnextPositionAfterNextWeaponBlocked } = tileInfo[nextPositionAfterNext.x][nextPositionAfterNext.y];
 
             if (!bNextPositionMovable || bnextPositionAfterNextWeaponBlocked) {
                 return EActionResult.Blocked;
-            }
-
-            const { enemies } = DataManager.instance;
-            const enemyTarget = enemies.filter(enemy => enemy.state !== EEntityState.Death).filter(enemy => Vec2.strictEquals(enemy.position, nextPositionAfterNext));
-
-            const bShouldAttack = enemyTarget.length > 0;
-            if (bShouldAttack) {
-                this.target = enemyTarget[0];
-                return EActionResult.Attack;
             }
         }
 
@@ -225,7 +228,7 @@ export class PlayerManager extends EntityManager {
     }
 
     handleBlocked(inputValue: EInput) {
-        if (inputValue.toString() === this.direction.toString()) {
+        if (mapInputToDirection(inputValue) === this.direction) {
             this.state = EEntityState.BlockedFront;
         } else if (
             (inputValue === EInput.Top && this.direction === EDirection.Bottom) ||

@@ -16,6 +16,8 @@ export abstract class EnemyManager extends EntityManager {
             state: params.state,
         });
 
+        this.setTileInfo(false, true);
+
         EventManager.instance.on(EEvent.playerSpawned, this.adjustDirection, this);
         EventManager.instance.on(EEvent.PlayerMoveEnd, this.adjustDirection, this);
         EventManager.instance.on(EEvent.PlayerMoveEnd, this.tryAttackPlayer, this);
@@ -69,6 +71,10 @@ export abstract class EnemyManager extends EntityManager {
 
     protected OnDeath(target: EntityManager, Instigator: EntityManager): void {
         super.OnDeath(target, Instigator);
+
+        if (target === this) {
+            this.setTileInfo(true, false);
+        }
 
         const bNoEnemySurvived = DataManager.instance.enemies.every(enemy => enemy.state === EEntityState.Death);
         if (bNoEnemySurvived) {

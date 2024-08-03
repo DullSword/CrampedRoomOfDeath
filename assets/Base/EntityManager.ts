@@ -5,6 +5,7 @@ import { EDirection, EEntityState, EEntityStateMachineParams, EEntityType, EEven
 import { StateMachine } from './StateMachine';
 import { TILE_HEIGHT, TILE_WIDTH } from '../Scripts/Tile/TileManager';
 import EventManager from '../Runtime/EventManager';
+import DataManager from '../Runtime/DataManager';
 
 const ENTITY_WIDTH = 220;
 const ENTITY_HEIGHT = 220;
@@ -74,6 +75,14 @@ export class EntityManager extends Component {
     protected OnDeath(target: EntityManager, Instigator: EntityManager) {
         if (target === this) {
             this.state = EEntityState.Death;
+        }
+    }
+
+    protected setTileInfo(bMovable: boolean, bWeaponBlocked: boolean) {
+        const tile = DataManager.instance.tileInfo?.[this.position.x]?.[this.position.y];
+        if (tile) {
+            tile.bMovable = bMovable;
+            tile.bWeaponBlocked = bWeaponBlocked;
         }
     }
 }
