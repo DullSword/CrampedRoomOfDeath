@@ -16,7 +16,9 @@ export enum EEvent {
     PlayerInput = 'PlayerInput',
     playerSpawned = 'playerSpawned',
     PlayerMoveEnd = 'PlayerMoveEnd',
+    playerActionCompleted = 'playerActionCompleted',
     Death = 'Death',
+    FallingDeath = 'FallingDeath',
     OpenDoor = 'OpenDoor',
 }
 
@@ -48,6 +50,7 @@ export enum EEntityState {
     BlockedTurnRight = 'BlockedTurnRight',
     Attack = 'Attack',
     Death = 'Death',
+    FallingDeath = 'FallingDeath',
 }
 
 export enum EEntityStateMachineParams {
@@ -61,6 +64,7 @@ export enum EEntityStateMachineParams {
     BlockedTurnRight = EEntityState.BlockedTurnRight,
     Attack = EEntityState.Attack,
     Death = EEntityState.Death,
+    FallingDeath = EEntityState.FallingDeath,
 }
 
 export enum EDirection {
@@ -73,7 +77,8 @@ export enum EDirection {
 export enum EEntityType {
     Player,
     Enemy,
-    Door
+    Door,
+    Trap,
 }
 
 export enum EEnemyType {
@@ -81,8 +86,12 @@ export enum EEnemyType {
     IronSkeleton,
 }
 
+export enum ETrapType {
+    Burst,
+}
+
 export enum EActionResult {
-    Move,
+    Perform,
     Attack,
     Blocked,
 }

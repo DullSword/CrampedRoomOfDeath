@@ -7,8 +7,8 @@ import levels, { Ilevel } from '../../Levels';
 import DataManager from '../../Runtime/DataManager';
 import { TILE_WIDTH, TILE_HEIGHT } from '../Tile/TileManager';
 import EventManager from '../../Runtime/EventManager';
-import { EEnemyType, EEvent } from '../../Enums';
-import { DoorFactory, EnemyFactory, PlayerFactory } from '../../Base/EntityFactory';
+import { EEnemyType, EEvent, ETrapType } from '../../Enums';
+import { TrapFactory, DoorFactory, EnemyFactory, PlayerFactory } from '../../Base/EntityFactory';
 
 @ccclass('BattleManager')
 export class BattleManager extends Component {
@@ -42,9 +42,11 @@ export class BattleManager extends Component {
 
             await this.generateTileMap();
 
-            this.generatePlayer();
             this.generateEnemies();
             this.generateDoor();
+            this.generateBurst();
+
+            this.generatePlayer();
         }
     }
 
@@ -74,7 +76,7 @@ export class BattleManager extends Component {
     async generateEnemies() {
         const woodenSkeletonManagerComponent = await new EnemyFactory().create(
             {
-                position: new Vec2(3, 6),
+                position: new Vec2(2, 4),
                 enemyType: EEnemyType.WoodenSkeleton,
             },
             this.stage,
@@ -100,6 +102,18 @@ export class BattleManager extends Component {
         );
 
         DataManager.instance.door = doorManagerComponent;
+    }
+
+    async generateBurst() {
+        const burstManagerComponent = await new TrapFactory().create(
+            {
+                position: new Vec2(2, 2),
+                trapType: ETrapType.Burst,
+            },
+            this.stage,
+        );
+
+        DataManager.instance.traps.push(burstManagerComponent);
     }
 
     async generateTileMap() {

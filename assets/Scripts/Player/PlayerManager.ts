@@ -32,6 +32,8 @@ export class PlayerManager extends EntityManager {
         this.targetPosition.set(this.position);
 
         EventManager.instance.on(EEvent.PlayerInput, this.handleInput, this);
+
+        EventManager.instance.on(EEvent.FallingDeath, this.onFallingDeath, this);
     }
 
     protected onDestroy(): void {
@@ -77,7 +79,7 @@ export class PlayerManager extends EntityManager {
         }
 
         switch (this.isActionValid(inputValue)) {
-            case EActionResult.Move:
+            case EActionResult.Perform:
                 this.control(inputValue);
                 break;
             case EActionResult.Blocked:
@@ -89,6 +91,8 @@ export class PlayerManager extends EntityManager {
             default:
             // do nothing
         }
+
+        EventManager.instance.emit(EEvent.playerActionCompleted);
     }
 
     isActionValid(inputValue: EInput) {
@@ -144,7 +148,7 @@ export class PlayerManager extends EntityManager {
             }
         }
 
-        return EActionResult.Move;
+        return EActionResult.Perform;
     }
 
     calculatePositions(direction: EDirection, lastPosition: Vec2, turnLeft: boolean) {
@@ -306,6 +310,12 @@ export class PlayerManager extends EntityManager {
             }
 
             this.state = EEntityState.TurnRight;
+        }
+    }
+
+    protected onFallingDeath(target: EntityManager, Instigator: EntityManager) {
+        if (target === this) {
+            this.state = EEntityState.FallingDeath;
         }
     }
 }

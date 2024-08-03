@@ -1,7 +1,7 @@
 import { Node, Vec2 } from 'cc';
 
-import { IEnemy, IEntity } from '../Levels';
-import { EDirection, EEnemyType, EEntityState, EEntityType } from '../Enums';
+import { IEnemy, IEntity, ITrap } from '../Levels';
+import { EDirection, EEnemyType, EEntityState, EEntityType, ETrapType } from '../Enums';
 import { CreateUINode } from '../Utils';
 import { EntityManager } from './EntityManager';
 import { StateMachine } from './StateMachine';
@@ -17,6 +17,10 @@ import { IronSkeletonStateMachine } from '../Scripts/Enemies/IronSkeleton/IronSk
 
 import { DoorManager } from '../Scripts/Door/DoorManager';
 import { DoorStateMachine } from '../Scripts/Door/DoorStateMachine';
+
+import { TrapManager } from '../Scripts/Traps/TrapManager';
+import { BurstManager } from '../Scripts/Traps/Burst/BurstManager';
+import { BurstStateMachine } from '../Scripts/Traps/Burst/BurstStateMachine';
 
 export interface IEntityFactory {
     create(params: Partial<IEntity>, parentNode: Node): Promise<EntityManager>;
@@ -88,5 +92,36 @@ export class DoorFactory implements IEntityFactory {
         });
 
         return doorManagerComponent;
+    }
+}
+
+export class TrapFactory implements IEntityFactory {
+    async create({ position = new Vec2(0, 0), direction = EDirection.Top, state = EEntityState.Idle, trapType, triggerDistance = 0 }: Omit<ITrap, 'type' | 'fsm'>, parentNode: Node) {
+        const trap = CreateUINode('trap');
+        trap.setParent(parentNode);
+
+        let trapManagerComponent: TrapManager;
+        let stateMachine: new () => StateMachine;
+
+        switch (trapType) {
+            case ETrapType.Burst:
+                trapManagerComponent = trap.addComponent(BurstManager);
+                stateMachine = BurstStateMachine;
+                break;
+            default:
+                break;
+        }
+
+        await trapManagerComponent.init({
+            type: EEntityType.Trap,
+            fsm: stateMachine,
+            position: position,
+            direction: direction,
+            state: state,
+            trapType,
+            triggerDistance,
+        });
+
+        return trapManagerComponent;
     }
 }

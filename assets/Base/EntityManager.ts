@@ -85,4 +85,16 @@ export class EntityManager extends Component {
             tile.bWeaponBlocked = bWeaponBlocked;
         }
     }
+
+    protected setTileVisibility(bShow: boolean) {
+        const tile = DataManager.instance.tileInfo?.[this.position.x]?.[this.position.y];
+        if (tile) {
+            const spriteComponent = tile.node.getComponent(Sprite);
+            if (spriteComponent) {
+                const color = spriteComponent.color.clone();
+                color.a = bShow ? 255 : 0;
+                spriteComponent.color = color;
+            }
+        }
+    }
 }
