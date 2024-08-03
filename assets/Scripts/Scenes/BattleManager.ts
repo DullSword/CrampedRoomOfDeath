@@ -79,7 +79,15 @@ export class BattleManager extends Component {
             this.stage,
         );
 
-        DataManager.instance.enemies.push(woodenSkeletonManagerComponent);
+        const ironSkeletonManagerComponent = await new EnemyFactory().create(
+            {
+                position: new Vec2(7, 7),
+                enemyType: EEnemyType.IronSkeleton,
+            },
+            this.stage,
+        );
+
+        DataManager.instance.enemies.push(woodenSkeletonManagerComponent, ironSkeletonManagerComponent);
     }
 
     async generateDoor() {

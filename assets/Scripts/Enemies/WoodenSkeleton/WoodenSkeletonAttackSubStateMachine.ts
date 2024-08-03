@@ -1,5 +1,5 @@
 
-import { EnemyAttackSubStateMachine } from "./EnemyAttackSubStateMachine";
+import { EnemyAttackSubStateMachine } from "../EnemyAttackSubStateMachine";
 import { StateMachine } from "../../../Base/StateMachine";
 import { AnimationClip } from "cc";
 

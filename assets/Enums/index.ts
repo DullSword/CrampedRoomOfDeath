@@ -78,6 +78,7 @@ export enum EEntityType {
 
 export enum EEnemyType {
     WoodenSkeleton,
+    IronSkeleton,
 }
 
 export enum EActionResult {

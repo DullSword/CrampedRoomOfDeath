@@ -45,7 +45,7 @@ export abstract class StateMachine extends Component {
 
     set currentState(newState: State | SubStateMachine) {
         this._currentState = newState;
-        this._currentState.run();
+        this._currentState?.run();
     }
 
     abstract init(): void;

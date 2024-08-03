@@ -1,9 +1,9 @@
 
-import { EntityManager } from '../../../Base/EntityManager';
-import { EDirection, EEntityState, EEntityType, EEvent } from '../../../Enums';
-import EventManager from '../../../Runtime/EventManager';
-import DataManager from '../../../Runtime/DataManager';
-import { IEntity } from '../../../Levels';
+import { EntityManager } from '../../Base/EntityManager';
+import { EDirection, EEntityState, EEntityType, EEvent } from '../../Enums';
+import EventManager from '../../Runtime/EventManager';
+import DataManager from '../../Runtime/DataManager';
+import { IEntity } from '../../Levels';
 
 export abstract class EnemyManager extends EntityManager {
 
@@ -18,7 +18,7 @@ export abstract class EnemyManager extends EntityManager {
 
         EventManager.instance.on(EEvent.playerSpawned, this.adjustDirection, this);
         EventManager.instance.on(EEvent.PlayerMoveEnd, this.adjustDirection, this);
-        EventManager.instance.on(EEvent.PlayerMoveEnd, this.tryAttackTarget, this);
+        EventManager.instance.on(EEvent.PlayerMoveEnd, this.tryAttackPlayer, this);
 
         this.adjustDirection();
     }
@@ -26,7 +26,7 @@ export abstract class EnemyManager extends EntityManager {
     protected onDestroy(): void {
         EventManager.instance.off(EEvent.playerSpawned, this.adjustDirection, this);
         EventManager.instance.off(EEvent.PlayerMoveEnd, this.adjustDirection, this);
-        EventManager.instance.off(EEvent.PlayerMoveEnd, this.tryAttackTarget, this);
+        EventManager.instance.off(EEvent.PlayerMoveEnd, this.tryAttackPlayer, this);
 
         super.onDestroy();
     }
@@ -58,7 +58,7 @@ export abstract class EnemyManager extends EntityManager {
         }
     }
 
-    tryAttackTarget() {
+    tryAttackPlayer() {
         const player = DataManager.instance.player;
         if (this.state === EEntityState.Death || !player || player.state === EEntityState.Death) {
             return;

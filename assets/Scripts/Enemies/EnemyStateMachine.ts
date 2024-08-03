@@ -1,8 +1,8 @@
 import { Animation, AnimationState } from 'cc';
 
-import { EEntityState, EEntityStateMachineParams, EStateMachineParamType } from '../../../Enums';
-import { StateMachine } from '../../../Base/StateMachine';
-import { EntityManager } from '../../../Base/EntityManager';
+import { EEntityState, EEntityStateMachineParams, EStateMachineParamType } from '../../Enums';
+import { StateMachine } from '../../Base/StateMachine';
+import { EntityManager } from '../../Base/EntityManager';
 
 export abstract class EnemyStateMachine extends StateMachine {
 

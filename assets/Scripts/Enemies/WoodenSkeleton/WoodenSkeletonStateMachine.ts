@@ -1,7 +1,7 @@
 import { _decorator } from 'cc';
 const { ccclass } = _decorator;
 
-import { EnemyStateMachine } from './EnemyStateMachine';
+import { EnemyStateMachine } from '../EnemyStateMachine';
 import { EEntityState } from '../../../Enums';
 import { WoodenSkeletonIdleSubStateMachine } from './WoodenSkeletonIdleSubStateMachine';
 import { WoodenSkeletonAttackSubStateMachine } from './WoodenSkeletonAttackSubStateMachine';

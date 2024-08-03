@@ -1,6 +1,6 @@
 
-import { DirectionSubStateMachine } from "../../../Base/DirectionSubStateMachine";
-import { StateMachine } from "../../../Base/StateMachine";
+import { DirectionSubStateMachine } from "../../Base/DirectionSubStateMachine";
+import { StateMachine } from "../../Base/StateMachine";
 import { AnimationClip } from "cc";
 
 export class EnemyAttackSubStateMachine extends DirectionSubStateMachine {

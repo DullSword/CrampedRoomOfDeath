@@ -1,7 +1,7 @@
 import Singleton from "../Base/Singleton";
 import { ITile } from "../Levels";
 import { DoorManager } from "../Scripts/Door/DoorManager";
-import { EnemyManager } from "../Scripts/Enemies/WoodenSkeleton/EnemyManager";
+import { EnemyManager } from "../Scripts/Enemies/EnemyManager";
 import { PlayerManager } from "../Scripts/Player/PlayerManager";
 import { TileManager } from "../Scripts/Tile/TileManager";
 

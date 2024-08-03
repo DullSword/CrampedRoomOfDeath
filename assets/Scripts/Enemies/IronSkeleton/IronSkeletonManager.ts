@@ -4,10 +4,14 @@ const { ccclass, property } = _decorator;
 import { EnemyManager } from '../EnemyManager';
 import { IEntity } from '../../../Levels';
 
-@ccclass('WoodenSkeletonManager')
-export class WoodenSkeletonManager extends EnemyManager {
+@ccclass('IronSkeletonManager')
+export class IronSkeletonManager extends EnemyManager {
 
     async init(params: IEntity) {
         await super.init(params);
+    }
+
+    tryAttackPlayer() {
+        // do nothing
     }
 }

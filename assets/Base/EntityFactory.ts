@@ -9,9 +9,11 @@ import { StateMachine } from './StateMachine';
 import { PlayerManager } from '../Scripts/Player/PlayerManager';
 import { PlayerStateMachine } from '../Scripts/Player/PlayerStateMachine';
 
-import { EnemyManager } from '../Scripts/Enemies/WoodenSkeleton/EnemyManager';
+import { EnemyManager } from '../Scripts/Enemies/EnemyManager';
 import { WoodenSkeletonManager } from '../Scripts/Enemies/WoodenSkeleton/WoodenSkeletonManager';
 import { WoodenSkeletonStateMachine } from '../Scripts/Enemies/WoodenSkeleton/WoodenSkeletonStateMachine';
+import { IronSkeletonManager } from '../Scripts/Enemies/IronSkeleton/IronSkeletonManager';
+import { IronSkeletonStateMachine } from '../Scripts/Enemies/IronSkeleton/IronSkeletonStateMachine';
 
 import { DoorManager } from '../Scripts/Door/DoorManager';
 import { DoorStateMachine } from '../Scripts/Door/DoorStateMachine';
@@ -50,6 +52,10 @@ export class EnemyFactory implements IEntityFactory {
             case EEnemyType.WoodenSkeleton:
                 enemyManagerComponent = enemy.addComponent(WoodenSkeletonManager);
                 stateMachine = WoodenSkeletonStateMachine;
+                break;
+            case EEnemyType.IronSkeleton:
+                enemyManagerComponent = enemy.addComponent(IronSkeletonManager);
+                stateMachine = IronSkeletonStateMachine;
                 break;
             default:
                 break;
