@@ -42,9 +42,11 @@ export class BattleManager extends Component {
 
             await this.generateTileMap();
 
-            this.generateEnemies();
-            this.generateDoor();
-            this.generateBurst();
+            await Promise.all([
+                this.generateEnemies(),
+                this.generateDoor(),
+                this.generateBurst()]
+            );
 
             this.generatePlayer();
         }
