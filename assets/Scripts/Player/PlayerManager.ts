@@ -33,6 +33,12 @@ export class PlayerManager extends EntityManager {
         EventManager.instance.on(EEvent.PlayerInput, this.handleInput, this);
     }
 
+    protected onDestroy(): void {
+        EventManager.instance.off(EEvent.PlayerInput, this.handleInput, this);
+
+        super.onDestroy();
+    }
+
     protected update(dt: number): void {
         this.updatePosition();
         super.update(dt);

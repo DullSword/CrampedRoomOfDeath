@@ -55,6 +55,10 @@ export class EntityManager extends Component {
         EventManager.instance.on(EEvent.Death, this.OnDeath, this);
     }
 
+    protected onDestroy(): void {
+        EventManager.instance.off(EEvent.Death, this.OnDeath, this);
+    }
+
     protected update(dt: number): void {
         this.node.setPosition((this.position.x - 1.5) * TILE_WIDTH, -(this.position.y - 1.5) * TILE_HEIGHT);
     }

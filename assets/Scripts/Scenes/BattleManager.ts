@@ -20,7 +20,7 @@ export class BattleManager extends Component {
     }
 
     onDestroy() {
-        EventManager.instance.off(EEvent.NextLevel, this.NextLevel);
+        EventManager.instance.off(EEvent.NextLevel, this.NextLevel, this);
     }
 
     start() {

@@ -24,6 +24,14 @@ export abstract class EnemyManager extends EntityManager {
         this.adjustDirection();
     }
 
+    protected onDestroy(): void {
+        EventManager.instance.off(EEvent.playerSpawned, this.adjustDirection, this);
+        EventManager.instance.off(EEvent.PlayerMoveEnd, this.adjustDirection, this);
+        EventManager.instance.off(EEvent.PlayerMoveEnd, this.tryAttackTarget, this);
+
+        super.onDestroy();
+    }
+
     adjustDirection() {
         const player = DataManager.instance.player;
         if (this.state === EEntityState.Death || !player || player.state === EEntityState.Death) {

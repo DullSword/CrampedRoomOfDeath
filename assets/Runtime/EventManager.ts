@@ -20,9 +20,9 @@ export default class EventManager extends Singleton {
         }
     }
 
-    off(eventName: string, func: Function) {
+    off(eventName: string, func: Function, context: unknown) {
         if (this.events.has(eventName)) {
-            const index = this.events.get(eventName).findIndex(el => el.func === func);
+            const index = this.events.get(eventName).findIndex(el => el.func === func && el.context === context);
             if (index !== -1) {
                 this.events.get(eventName).splice(index, 1);
             }
