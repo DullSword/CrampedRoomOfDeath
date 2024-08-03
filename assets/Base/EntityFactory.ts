@@ -71,6 +71,7 @@ export class EnemyFactory implements IEntityFactory {
             position: position || new Vec2(0, 0),
             direction: direction || EDirection.Top,
             state: state || EEntityState.Idle,
+            enemyType,
         });
 
         return enemyManagerComponent;

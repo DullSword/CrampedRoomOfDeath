@@ -1,13 +1,15 @@
 
 import { EntityManager } from '../../Base/EntityManager';
-import { EDirection, EEntityState, EEntityType, EEvent } from '../../Enums';
+import { EDirection, EEnemyType, EEntityState, EEntityType, EEvent } from '../../Enums';
 import EventManager from '../../Runtime/EventManager';
 import DataManager from '../../Runtime/DataManager';
-import { IEntity } from '../../Levels';
+import { IEnemy } from '../../Levels';
 
 export abstract class EnemyManager extends EntityManager {
 
-    async init(params: IEntity) {
+    protected enemyType: EEnemyType = null;
+
+    async init(params: IEnemy) {
         await super.init({
             type: EEntityType.Enemy,
             position: params.position,
@@ -15,6 +17,8 @@ export abstract class EnemyManager extends EntityManager {
             direction: params.direction,
             state: params.state,
         });
+
+        this.enemyType = params.enemyType;
 
         this.setTileInfo(false, true);
 
