@@ -9,11 +9,9 @@ export class DoorManager extends EntityManager {
 
     async init(params: IEntity) {
         await super.init({
+            ...params,
             type: EEntityType.Door,
-            position: params.position,
             fsm: DoorStateMachine,
-            direction: params.direction,
-            state: params.state,
         });
 
         EventManager.instance.on(EEvent.OpenDoor, this.open, this);

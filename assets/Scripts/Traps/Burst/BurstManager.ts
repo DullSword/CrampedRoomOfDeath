@@ -2,7 +2,7 @@ import { UITransform, Vec2 } from 'cc';
 
 import { TrapManager } from '../TrapManager';
 import { ITrap } from '../../../Levels';
-import { EEntityState, EEntityType, EEvent } from '../../../Enums';
+import { EEntityState, EEvent } from '../../../Enums';
 
 import { TILE_WIDTH, TILE_HEIGHT } from '../../Tile/TileManager';
 
@@ -13,13 +13,7 @@ export class BurstManager extends TrapManager {
 
     async init(params: ITrap) {
         await super.init({
-            type: EEntityType.Trap,
-            position: params.position,
-            fsm: params.fsm,
-            direction: params.direction,
-            state: params.state,
-            trapType: params.trapType,
-            triggerDistance: params.triggerDistance,
+            ...params,
         });
 
         const UITransformComponent = this.getComponent(UITransform);

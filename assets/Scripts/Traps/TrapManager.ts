@@ -12,11 +12,8 @@ export abstract class TrapManager extends EntityManager {
 
     async init(params: ITrap) {
         await super.init({
+            ...params,
             type: EEntityType.Trap,
-            position: params.position,
-            fsm: params.fsm,
-            direction: params.direction,
-            state: params.state,
         });
 
         this.trapType = params.trapType;

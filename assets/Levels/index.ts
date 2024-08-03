@@ -15,9 +15,9 @@ export interface Ilevel {
 };
 
 export interface IEntity {
-    type: EEntityType,
+    type?: EEntityType,
     position?: Vec2,
-    fsm: new () => StateMachine,
+    fsm?: new () => StateMachine,
     direction?: EDirection,
     state?: EEntityState,
 }

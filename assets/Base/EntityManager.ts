@@ -48,10 +48,10 @@ export class EntityManager extends Component {
         await this.fsm.init();
 
         this.type = params.type;
-        this.position = params.position;
-        this.direction = params.direction;
+        this.position = params.position || new Vec2(0, 0);
+        this.direction = params.direction || EDirection.Top;
 
-        this.state = params.state;
+        this.state = params.state || EEntityState.Idle;
 
         EventManager.instance.on(EEvent.Death, this.OnDeath, this);
     }

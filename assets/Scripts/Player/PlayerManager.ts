@@ -22,11 +22,9 @@ export class PlayerManager extends EntityManager {
 
     async init(params: IEntity) {
         await super.init({
+            ...params,
             type: EEntityType.Player,
-            position: params.position,
             fsm: PlayerStateMachine,
-            direction: params.direction,
-            state: params.state,
         });
 
         this.targetPosition.set(this.position);

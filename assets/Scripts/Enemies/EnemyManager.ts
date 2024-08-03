@@ -11,11 +11,8 @@ export abstract class EnemyManager extends EntityManager {
 
     async init(params: IEnemy) {
         await super.init({
+            ...params,
             type: EEntityType.Enemy,
-            position: params.position,
-            fsm: params.fsm,
-            direction: params.direction,
-            state: params.state,
         });
 
         this.enemyType = params.enemyType;
