@@ -8,7 +8,7 @@ import DataManager from '../../Runtime/DataManager';
 import { TILE_WIDTH, TILE_HEIGHT } from '../Tile/TileManager';
 import EventManager from '../../Runtime/EventManager';
 import { EEnemyType, EEvent } from '../../Enums';
-import { EnemyFactory, PlayerFactory } from '../../Base/EntityFactory';
+import { DoorFactory, EnemyFactory, PlayerFactory } from '../../Base/EntityFactory';
 
 @ccclass('BattleManager')
 export class BattleManager extends Component {
@@ -43,6 +43,7 @@ export class BattleManager extends Component {
             this.generateTileMap();
             this.generatePlayer();
             this.generateEnemies();
+            this.generateDoor();
         }
     }
 
@@ -79,6 +80,17 @@ export class BattleManager extends Component {
         );
 
         DataManager.instance.enemies.push(woodenSkeletonManagerComponent);
+    }
+
+    async generateDoor() {
+        const doorManagerComponent = await new DoorFactory().create(
+            {
+                position: new Vec2(7, 8),
+            },
+            this.stage,
+        );
+
+        DataManager.instance.door = doorManagerComponent;
     }
 
     generateTileMap() {

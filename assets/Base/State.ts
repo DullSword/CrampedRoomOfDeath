@@ -33,7 +33,7 @@ export class State {
     }
 
     run() {
-        if (this.fsm.animationComponent.defaultClip?.name === this.animationClip.name) {
+        if (!this.animationClip || this.fsm.animationComponent.defaultClip?.name === this.animationClip.name) {
             return;
         }
 

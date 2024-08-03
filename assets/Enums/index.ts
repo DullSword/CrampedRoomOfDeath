@@ -16,7 +16,8 @@ export enum EEvent {
     PlayerInput = 'PlayerInput',
     playerSpawned = 'playerSpawned',
     PlayerMoveEnd = 'PlayerMoveEnd',
-    Death = 'Death'
+    Death = 'Death',
+    OpenDoor = 'OpenDoor',
 }
 
 export enum EInput {
@@ -72,6 +73,7 @@ export enum EDirection {
 export enum EEntityType {
     Player,
     Enemy,
+    Door
 }
 
 export enum EEnemyType {

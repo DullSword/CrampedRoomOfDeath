@@ -13,6 +13,9 @@ import { EnemyManager } from '../Scripts/Enemies/WoodenSkeleton/EnemyManager';
 import { WoodenSkeletonManager } from '../Scripts/Enemies/WoodenSkeleton/WoodenSkeletonManager';
 import { WoodenSkeletonStateMachine } from '../Scripts/Enemies/WoodenSkeleton/WoodenSkeletonStateMachine';
 
+import { DoorManager } from '../Scripts/Door/DoorManager';
+import { DoorStateMachine } from '../Scripts/Door/DoorStateMachine';
+
 export interface IEntityFactory {
     create(params: Partial<IEntity>, parentNode: Node): Promise<EntityManager>;
 }
@@ -61,5 +64,23 @@ export class EnemyFactory implements IEntityFactory {
         });
 
         return enemyManagerComponent;
+    }
+}
+
+export class DoorFactory implements IEntityFactory {
+    async create({ position = new Vec2(0, 0), direction = EDirection.Top, state = EEntityState.Idle }: Omit<IEntity, 'type' | 'fsm'>, parentNode: Node) {
+        const door = CreateUINode('door');
+        door.setParent(parentNode);
+
+        const doorManagerComponent = door.addComponent(DoorManager);
+        await doorManagerComponent.init({
+            type: EEntityType.Door,
+            fsm: DoorStateMachine,
+            position: position,
+            direction: direction,
+            state: state,
+        });
+
+        return doorManagerComponent;
     }
 }

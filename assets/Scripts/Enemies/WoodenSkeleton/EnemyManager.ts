@@ -1,4 +1,3 @@
-import { Vec2 } from 'cc';
 
 import { EntityManager } from '../../../Base/EntityManager';
 import { EDirection, EEntityState, EEntityType, EEvent } from '../../../Enums';
@@ -66,5 +65,14 @@ export abstract class EnemyManager extends EntityManager {
         }
 
         super.tryAttackTarget(player, 1);
+    }
+
+    protected OnDeath(target: EntityManager, Instigator: EntityManager): void {
+        super.OnDeath(target, Instigator);
+
+        const bNoEnemySurvived = DataManager.instance.enemies.every(enemy => enemy.state === EEntityState.Death);
+        if (bNoEnemySurvived) {
+            EventManager.instance.emit(EEvent.OpenDoor);
+        }
     }
 }
