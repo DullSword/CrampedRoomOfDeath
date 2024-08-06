@@ -1,4 +1,4 @@
-import { Component, Sprite, UITransform, Vec2 } from 'cc';
+import { Component, Size, Sprite, UITransform, Vec2 } from 'cc';
 
 import { IEntity } from '../Levels';
 import { EDirection, EEntityState, EEntityStateMachineParams, EEntityType, EEvent, } from '../Enums';
@@ -7,8 +7,7 @@ import { TILE_HEIGHT, TILE_WIDTH } from '../Scripts/Tile/TileManager';
 import EventManager from '../Runtime/EventManager';
 import DataManager from '../Runtime/DataManager';
 
-const ENTITY_WIDTH = 220;
-const ENTITY_HEIGHT = 220;
+const DEFAULT_ENTITY_SIZE = new Size(220, 220);
 
 export class EntityManager extends Component {
 
@@ -42,16 +41,16 @@ export class EntityManager extends Component {
         spriteComponent.sizeMode = Sprite.SizeMode.CUSTOM;
 
         const UITransformComponent = this.getComponent(UITransform);
-        UITransformComponent.setContentSize(ENTITY_WIDTH, ENTITY_HEIGHT);
+        UITransformComponent.setContentSize(params.tileSize ?? DEFAULT_ENTITY_SIZE);
 
         this.fsm = this.addComponent(params.fsm);
         await this.fsm.init();
 
         this.type = params.type;
-        this.position = params.position || new Vec2(0, 0);
-        this.direction = params.direction || EDirection.Top;
+        this.position = params.position ?? new Vec2(0, 0);
+        this.direction = params.direction ?? EDirection.Top;
 
-        this.state = params.state || EEntityState.Idle;
+        this.state = params.state ?? EEntityState.Idle;
 
         EventManager.instance.on(EEvent.Death, this.OnDeath, this);
     }

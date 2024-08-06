@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Vec2 } from 'cc';
+import { _decorator, Component, Node, Size, Vec2 } from 'cc';
 const { ccclass, property } = _decorator;
 
 import { TileMapManager } from '../Tile/TileMapManager';
@@ -111,6 +111,7 @@ export class BattleManager extends Component {
             {
                 position: new Vec2(2, 2),
                 trapType: ETrapType.Burst,
+                tileSize: new Size(TILE_WIDTH, TILE_HEIGHT),
             },
             this.stage,
         );

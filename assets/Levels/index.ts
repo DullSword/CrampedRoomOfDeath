@@ -2,7 +2,7 @@ import level1 from "../Levels/Level1";
 import level2 from "../Levels/Level2";
 
 import { EDirection, EEnemyType, EEntityState, EEntityType, ETileType, ETrapType } from "../Enums";
-import { Vec2 } from "cc";
+import { Size, Vec2 } from "cc";
 import { StateMachine } from "../Base/StateMachine";
 
 export interface ITile {
@@ -20,6 +20,7 @@ export interface IEntity {
     fsm?: new () => StateMachine,
     direction?: EDirection,
     state?: EEntityState,
+    tileSize?: Size,
 }
 
 export interface IEnemy extends IEntity {
