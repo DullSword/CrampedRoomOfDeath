@@ -18,7 +18,8 @@ export default class DataManager extends Singleton {
     player: PlayerManager = null;
     enemies: Array<EnemyManager> = [];
     door: DoorManager = null;
-    traps: Array<TrapManager> = [];
+    bursts: Array<TrapManager> = [];
+    spikes: Array<TrapManager> = [];
 
     static get instance() {
         return super.getInstance<DataManager>();
@@ -28,5 +29,13 @@ export default class DataManager extends Singleton {
         this.mapInfo = [];
         this.mapRowCount = 0;
         this.mapColCount = 0;
+
+        this.tileInfo = [];
+
+        this.player = null;
+        this.enemies = [];
+        this.door = null;
+        this.bursts = [];
+        this.spikes = [];
     }
-}
+} 

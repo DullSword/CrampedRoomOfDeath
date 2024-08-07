@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Size, Vec2 } from 'cc';
+import { _decorator, Component, Node, Vec2 } from 'cc';
 const { ccclass, property } = _decorator;
 
 import { TileMapManager } from '../Tile/TileMapManager';
@@ -7,7 +7,7 @@ import levels, { Ilevel } from '../../Levels';
 import DataManager from '../../Runtime/DataManager';
 import { TILE_WIDTH, TILE_HEIGHT } from '../Tile/TileManager';
 import EventManager from '../../Runtime/EventManager';
-import { EEnemyType, EEvent, ETrapType } from '../../Enums';
+import { EEntityState, EEvent } from '../../Enums';
 import { TrapFactory, DoorFactory, EnemyFactory, PlayerFactory } from '../../Base/EntityFactory';
 
 @ccclass('BattleManager')
@@ -17,10 +17,12 @@ export class BattleManager extends Component {
 
     onLoad() {
         EventManager.instance.on(EEvent.NextLevel, this.NextLevel, this);
+        EventManager.instance.on(EEvent.PlayerMoveEnd, this.checkArrived, this);
     }
 
     onDestroy() {
         EventManager.instance.off(EEvent.NextLevel, this.NextLevel, this);
+        EventManager.instance.off(EEvent.PlayerMoveEnd, this.checkArrived, this);
     }
 
     start() {
@@ -65,9 +67,7 @@ export class BattleManager extends Component {
 
     async generatePlayer() {
         const playerManagerComponent = await new PlayerFactory().create(
-            {
-                position: new Vec2(2, 7)
-            },
+            { ...this.level.player },
             this.stage,
         );
 
@@ -77,30 +77,19 @@ export class BattleManager extends Component {
     }
 
     async generateEnemies() {
-        const woodenSkeletonManagerComponent = await new EnemyFactory().create(
-            {
-                position: new Vec2(2, 4),
-                enemyType: EEnemyType.WoodenSkeleton,
-            },
+        const promises = this.level.enemies.map(enemy => new EnemyFactory().create(
+            { ...enemy },
             this.stage,
-        );
+        ));
 
-        const ironSkeletonManagerComponent = await new EnemyFactory().create(
-            {
-                position: new Vec2(7, 7),
-                enemyType: EEnemyType.IronSkeleton,
-            },
-            this.stage,
-        );
+        const enemyComponents = await Promise.all(promises);
 
-        DataManager.instance.enemies.push(woodenSkeletonManagerComponent, ironSkeletonManagerComponent);
+        DataManager.instance.enemies.push(...enemyComponents);
     }
 
     async generateDoor() {
         const doorManagerComponent = await new DoorFactory().create(
-            {
-                position: new Vec2(7, 8),
-            },
+            { ...this.level.door },
             this.stage,
         );
 
@@ -108,28 +97,25 @@ export class BattleManager extends Component {
     }
 
     async generateBurst() {
-        const burstManagerComponent = await new TrapFactory().create(
-            {
-                position: new Vec2(2, 2),
-                trapType: ETrapType.Burst,
-                tileSize: new Size(TILE_WIDTH, TILE_HEIGHT),
-            },
+        const promises = this.level.bursts.map(burst => new TrapFactory().create(
+            { ...burst },
             this.stage,
-        );
+        ));
 
-        DataManager.instance.traps.push(burstManagerComponent);
+        const burstComponents = await Promise.all(promises);
+
+        DataManager.instance.bursts.push(...burstComponents);
     }
 
     async generateSpike() {
-        const spikeManagerComponent = await new TrapFactory().create(
-            {
-                position: new Vec2(4, 2),
-                trapType: ETrapType.SpikerFour,
-            },
+        const promises = this.level.spikes.map(spike => new TrapFactory().create(
+            { ...spike },
             this.stage,
-        );
+        ));
 
-        DataManager.instance.traps.push(spikeManagerComponent);
+        const spikeComponents = await Promise.all(promises);
+
+        DataManager.instance.spikes.push(...spikeComponents);
     }
 
     async generateTileMap() {
@@ -156,5 +142,15 @@ export class BattleManager extends Component {
     NextLevel() {
         DataManager.instance.levelIndex++;
         this.initLevel();
+    }
+
+    checkArrived() {
+        const { player, door } = DataManager.instance;
+        const { position: playerPosition } = player;
+        const { position: doorPosition, state: doorState } = door;
+
+        if (Vec2.strictEquals(playerPosition, doorPosition) && doorState === EEntityState.Death) {
+            EventManager.instance.emit(EEvent.NextLevel);
+        }
     }
 }

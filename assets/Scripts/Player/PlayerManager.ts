@@ -109,10 +109,10 @@ export class PlayerManager extends EntityManager {
 
             const { passTilePosition, stayTilePosition } = this.calculatePositions(direction, lastPosition, turnLeft);
 
-            if (
-                passTilePosition.x < 0 || passTilePosition.y < 0 || passTilePosition.x >= tileInfo.length || passTilePosition.y >= tileInfo[0].length ||
-                stayTilePosition.x < 0 || stayTilePosition.y < 0 || stayTilePosition.x >= tileInfo.length || stayTilePosition.y >= tileInfo[0].length
-            ) {
+            const bIsPassTileOutOfBounds = passTilePosition.x < 0 || passTilePosition.y < 0 || passTilePosition.x >= tileInfo.length || passTilePosition.y >= tileInfo[0].length;
+            const bIsStayTileOutOfBounds = stayTilePosition.x < 0 || stayTilePosition.y < 0 || stayTilePosition.x >= tileInfo.length || stayTilePosition.y >= tileInfo[0].length;
+
+            if (bIsPassTileOutOfBounds || bIsStayTileOutOfBounds) {
                 return EActionResult.Blocked;
             }
 
@@ -126,9 +126,14 @@ export class PlayerManager extends EntityManager {
             const nextPosition = this.getNextPosition(inputValue, lastPosition);
             const nextPositionAfterNext = this.getNextPositionAfterNext(direction, nextPosition);
 
+            const { door: { position: doorPosition } } = DataManager.instance;
+
+            const bIsNextPositionOutOfBounds = nextPosition.x < 0 || nextPosition.y < 0 || nextPosition.x >= tileInfo.length || nextPosition.y >= tileInfo[0].length;
+            const bIsNextPositionAfterNextOutOfBounds = nextPositionAfterNext.x < 0 || nextPositionAfterNext.y < 0 || nextPositionAfterNext.x >= tileInfo.length || nextPositionAfterNext.y >= tileInfo[0].length;
+
             if (
-                nextPosition.x < 0 || nextPosition.y < 0 || nextPosition.x >= tileInfo.length || nextPosition.y >= tileInfo[0].length ||
-                nextPositionAfterNext.x < 0 || nextPositionAfterNext.y < 0 || nextPositionAfterNext.x >= tileInfo.length || nextPositionAfterNext.y >= tileInfo[0].length
+                bIsNextPositionOutOfBounds ||
+                (bIsNextPositionAfterNextOutOfBounds && !Vec2.strictEquals(nextPosition, doorPosition))
             ) {
                 return EActionResult.Blocked;
             }
@@ -144,8 +149,8 @@ export class PlayerManager extends EntityManager {
                 return EActionResult.Attack;
             }
 
-            const { bMovable: bNextPositionMovable } = tileInfo[nextPosition.x][nextPosition.y];
-            const { bWeaponBlocked: bnextPositionAfterNextWeaponBlocked } = tileInfo[nextPositionAfterNext.x][nextPositionAfterNext.y];
+            const { bMovable: bNextPositionMovable } = tileInfo[nextPosition.x]?.[nextPosition.y] ?? {};
+            const { bWeaponBlocked: bnextPositionAfterNextWeaponBlocked } = tileInfo[nextPositionAfterNext.x]?.[nextPositionAfterNext.y] ?? {};
 
             if (!bNextPositionMovable || bnextPositionAfterNextWeaponBlocked) {
                 return EActionResult.Blocked;

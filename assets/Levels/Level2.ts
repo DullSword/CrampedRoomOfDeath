@@ -1,5 +1,6 @@
-import { Ilevel } from ".";
-import { ETileType } from "../Enums";
+import { Vec2 } from "cc";
+import { IEnemy, IEntity, Ilevel, ITrap } from ".";
+import { EDirection, EEnemyType, ETileType } from "../Enums";
 
 const mapInfo = [
     [
@@ -184,8 +185,38 @@ const mapInfo = [
     ],
 ];
 
+const player: IEntity = {
+    position: new Vec2(2, 0),
+    direction: EDirection.Bottom,
+};
+
+const enemies: Array<IEnemy> = [
+    {
+        position: new Vec2(3, 2),
+        enemyType: EEnemyType.WoodenSkeleton,
+    },
+    {
+        position: new Vec2(4, 3),
+        enemyType: EEnemyType.WoodenSkeleton,
+    },
+];
+
+const spikes: Array<ITrap> = [];
+
+const bursts: Array<ITrap> = [];
+
+const door: IEntity = {
+    position: new Vec2(5, 3),
+    direction: EDirection.Left,
+};
+
 const level: Ilevel = {
     mapInfo,
+    player,
+    enemies,
+    spikes,
+    bursts,
+    door,
 };
 
 export default level;
