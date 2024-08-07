@@ -79,18 +79,18 @@ export class PlayerManager extends EntityManager {
         switch (this.isActionValid(inputValue)) {
             case EActionResult.Perform:
                 this.control(inputValue);
+                EventManager.instance.emit(EEvent.playerActionCompleted);
                 break;
             case EActionResult.Blocked:
                 this.handleBlocked(inputValue);
                 break;
             case EActionResult.Attack:
                 this.tryAttackTarget(this.target, 2);
+                EventManager.instance.emit(EEvent.playerActionCompleted);
                 break;
             default:
             // do nothing
         }
-
-        EventManager.instance.emit(EEvent.playerActionCompleted);
     }
 
     isActionValid(inputValue: EInput) {
