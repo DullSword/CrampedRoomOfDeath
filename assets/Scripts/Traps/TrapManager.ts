@@ -10,6 +10,7 @@ export abstract class TrapManager extends EntityManager {
     protected trapType: ETrapType = null;
     protected triggerDistance: number = 0;
 
+    // totalPoint: 从 0 点开始，初始状态和触发状态各占 1 个点，每有一个刺再加 1 点
     protected totalPoint: number = 0;
     private _currentPoint: number = 0;
 
@@ -39,7 +40,7 @@ export abstract class TrapManager extends EntityManager {
 
     async initStateMachine(fsm: new () => StateMachine) {
         this.fsm = this.addComponent(fsm);
-        await this.fsm.init(this.totalPoint);
+        await this.fsm.init(this, this.totalPoint);
     }
 
     protected onDestroy(): void {

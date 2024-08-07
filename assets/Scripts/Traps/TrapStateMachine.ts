@@ -4,23 +4,29 @@ import { EEntityStateMachineParams, EStateMachineParamType } from '../../Enums';
 import { StateMachine } from '../../Base/StateMachine';
 import { State } from '../../Base/State';
 import { numberToWord } from '../../Utils';
+import { TrapManager } from './TrapManager';
 
 export abstract class TrapStateMachine extends StateMachine {
 
+    protected trapManager: TrapManager = null;
     protected totalPoint: number = 0;
     protected baseUrl: string = '';
 
-    async init(params: { totalPoint?: number, baseUrl?: string } = {}) {
-        const { totalPoint = 0, baseUrl = '' } = params;
+    async init(params: { trapManager?: TrapManager, totalPoint?: number, baseUrl?: string } = {}) {
+        const { trapManager, totalPoint = 0, baseUrl = '' } = params;
 
+        this.trapManager = trapManager;
         this.totalPoint = totalPoint;
         this.baseUrl = baseUrl;
 
         this.animationComponent = this.addComponent(Animation);
+        this.initAnimationEvent();
 
         this.initParams();
         await this.initStates();
     }
+
+    abstract initAnimationEvent(): void;
 
     initParams() {
         this.params.set(EEntityStateMachineParams.CurrentPoint, { type: EStateMachineParamType.INTEGER, value: 0 });

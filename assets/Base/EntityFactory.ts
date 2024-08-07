@@ -19,6 +19,8 @@ import { DoorManager } from '../Scripts/Door/DoorManager';
 import { TrapManager } from '../Scripts/Traps/TrapManager';
 import { BurstManager } from '../Scripts/Traps/Burst/BurstManager';
 import { BurstStateMachine } from '../Scripts/Traps/Burst/BurstStateMachine';
+import { SpikeManager } from '../Scripts/Traps/Spike/SpikeManager';
+import { SpikeStateMachine } from '../Scripts/Traps/Spike/SpikeStateMachine';
 
 export interface IEntityFactory {
     create(params: IEntity, parentNode: Node): Promise<EntityManager>;
@@ -90,14 +92,25 @@ export class TrapFactory implements IEntityFactory {
         let trapManagerComponent: TrapManager;
         let stateMachine: new () => StateMachine;
 
-        switch (params.trapType) {
-            case ETrapType.Burst:
-                trapManagerComponent = trap.addComponent(BurstManager);
-                stateMachine = BurstStateMachine;
-                params.totalPoint = 2;
-                break;
-            default:
-                break;
+        type TrapConfig = {
+            manager: new () => TrapManager;
+            stateMachine: new () => StateMachine;
+            totalPoint: number;
+        };
+
+        const trapConfig: Record<ETrapType, TrapConfig> = {
+            [ETrapType.Burst]: { manager: BurstManager, stateMachine: BurstStateMachine, totalPoint: 2 },
+            [ETrapType.SpikesOne]: { manager: SpikeManager, stateMachine: SpikeStateMachine, totalPoint: 2 },
+            [ETrapType.SpikesTwo]: { manager: SpikeManager, stateMachine: SpikeStateMachine, totalPoint: 3 },
+            [ETrapType.SpikesThree]: { manager: SpikeManager, stateMachine: SpikeStateMachine, totalPoint: 4 },
+            [ETrapType.SpikerFour]: { manager: SpikeManager, stateMachine: SpikeStateMachine, totalPoint: 5 },
+        };
+
+        const config = trapConfig[params.trapType];
+        if (config) {
+            trapManagerComponent = trap.addComponent(config.manager);
+            stateMachine = config.stateMachine;
+            params.totalPoint = config.totalPoint;
         }
 
         await trapManagerComponent.init({

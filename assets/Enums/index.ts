@@ -20,6 +20,7 @@ export enum EEvent {
     Death = 'Death',
     FallingDeath = 'FallingDeath',
     OpenDoor = 'OpenDoor',
+    ResetTrapPoint = 'ResetTrapPoint',
 }
 
 export enum EInput {
@@ -65,7 +66,7 @@ export enum EEntityStateMachineParams {
     Attack = EEntityState.Attack,
     Death = EEntityState.Death,
     FallingDeath = EEntityState.FallingDeath,
-    CurrentPoint = 'CurrentPoint',    
+    CurrentPoint = 'CurrentPoint',
 }
 
 export enum EDirection {
@@ -89,6 +90,10 @@ export enum EEnemyType {
 
 export enum ETrapType {
     Burst,
+    SpikesOne,
+    SpikesTwo,
+    SpikesThree,
+    SpikerFour,
 }
 
 export enum EActionResult {

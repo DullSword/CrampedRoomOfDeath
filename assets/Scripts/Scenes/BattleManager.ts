@@ -45,7 +45,8 @@ export class BattleManager extends Component {
             await Promise.all([
                 this.generateEnemies(),
                 this.generateDoor(),
-                this.generateBurst()]
+                this.generateBurst(),
+                this.generateSpike()]
             );
 
             this.generatePlayer();
@@ -117,6 +118,18 @@ export class BattleManager extends Component {
         );
 
         DataManager.instance.traps.push(burstManagerComponent);
+    }
+
+    async generateSpike() {
+        const spikeManagerComponent = await new TrapFactory().create(
+            {
+                position: new Vec2(4, 2),
+                trapType: ETrapType.SpikerFour,
+            },
+            this.stage,
+        );
+
+        DataManager.instance.traps.push(spikeManagerComponent);
     }
 
     async generateTileMap() {
