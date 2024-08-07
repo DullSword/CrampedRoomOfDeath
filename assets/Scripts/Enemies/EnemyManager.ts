@@ -36,7 +36,7 @@ export abstract class EnemyManager extends EntityManager {
 
     adjustDirection() {
         const player = DataManager.instance.player;
-        if (this.state === EEntityState.Death || !player || player.state === EEntityState.Death) {
+        if (this.state === EEntityState.Death || this.state === EEntityState.FallingDeath || !player || player.state === EEntityState.Death) {
             return;
         }
 
@@ -63,7 +63,7 @@ export abstract class EnemyManager extends EntityManager {
 
     tryAttackPlayer() {
         const player = DataManager.instance.player;
-        if (this.state === EEntityState.Death || !player || player.state === EEntityState.Death) {
+        if (this.state === EEntityState.Death || this.state === EEntityState.FallingDeath || !player || player.state === EEntityState.Death) {
             return;
         }
 

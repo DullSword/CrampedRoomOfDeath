@@ -65,6 +65,7 @@ export enum EEntityStateMachineParams {
     Attack = EEntityState.Attack,
     Death = EEntityState.Death,
     FallingDeath = EEntityState.FallingDeath,
+    CurrentPoint = 'CurrentPoint',    
 }
 
 export enum EDirection {

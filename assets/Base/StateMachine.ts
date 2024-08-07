@@ -14,7 +14,7 @@ export abstract class StateMachine extends Component {
     private _currentState: State | SubStateMachine = null;
 
     params: Map<string, IStateMachineParams> = new Map();
-    states: Map<EEntityState, State | SubStateMachine> = new Map();
+    states: Map<EEntityState | number, State | SubStateMachine> = new Map();
 
     animationComponent: Animation;
 
@@ -49,5 +49,6 @@ export abstract class StateMachine extends Component {
     }
 
     abstract init(): void;
+    abstract init(...args: any[]): void;
     abstract run(): void;
 }

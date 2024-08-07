@@ -43,8 +43,7 @@ export class EntityManager extends Component {
         const UITransformComponent = this.getComponent(UITransform);
         UITransformComponent.setContentSize(params.tileSize ?? DEFAULT_ENTITY_SIZE);
 
-        this.fsm = this.addComponent(params.fsm);
-        await this.fsm.init();
+        await this.initStateMachine(params.fsm);
 
         this.type = params.type;
         this.position = params.position ?? new Vec2(0, 0);
@@ -53,6 +52,11 @@ export class EntityManager extends Component {
         this.state = params.state ?? EEntityState.Idle;
 
         EventManager.instance.on(EEvent.Death, this.OnDeath, this);
+    }
+
+    async initStateMachine(fsm: new () => StateMachine) {
+        this.fsm = this.addComponent(fsm);
+        await this.fsm.init();
     }
 
     protected onDestroy(): void {

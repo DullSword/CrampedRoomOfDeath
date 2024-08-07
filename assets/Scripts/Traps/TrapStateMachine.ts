@@ -1,11 +1,21 @@
 import { _decorator, Animation } from 'cc';
 
-import { EEntityState, EEntityStateMachineParams, EStateMachineParamType } from '../../Enums';
+import { EEntityStateMachineParams, EStateMachineParamType } from '../../Enums';
 import { StateMachine } from '../../Base/StateMachine';
+import { State } from '../../Base/State';
+import { numberToWord } from '../../Utils';
 
 export abstract class TrapStateMachine extends StateMachine {
 
-    async init() {
+    protected totalPoint: number = 0;
+    protected baseUrl: string = '';
+
+    async init(params: { totalPoint?: number, baseUrl?: string } = {}) {
+        const { totalPoint = 0, baseUrl = '' } = params;
+
+        this.totalPoint = totalPoint;
+        this.baseUrl = baseUrl;
+
         this.animationComponent = this.addComponent(Animation);
 
         this.initParams();
@@ -13,34 +23,22 @@ export abstract class TrapStateMachine extends StateMachine {
     }
 
     initParams() {
-        this.params.set(EEntityStateMachineParams.Idle, { type: EStateMachineParamType.TRIGGER, value: false });
-        this.params.set(EEntityStateMachineParams.Attack, { type: EStateMachineParamType.TRIGGER, value: false });
-        this.params.set(EEntityStateMachineParams.Death, { type: EStateMachineParamType.TRIGGER, value: false });
+        this.params.set(EEntityStateMachineParams.CurrentPoint, { type: EStateMachineParamType.INTEGER, value: 0 });
     }
 
-    protected abstract initStates(): Promise<void>;
+    async initStates() {
+        const stateInstances = Array.from({ length: this.totalPoint + 1 }, (_, i) => {
+            const state = new State(`${this.baseUrl}/${numberToWord[i]}`, this);
+            return state;
+        });
+
+        await Promise.all(stateInstances.map(state => state.init()));
+
+        stateInstances.forEach((state, i) => this.states.set(i, state));
+    }
 
     run() {
-        switch (this.currentState) {
-            case this.states.get(EEntityState.Idle):
-                if (this.getParamValue(EEntityStateMachineParams.Attack)) {
-                    this.currentState = this.states.get(EEntityState.Attack);
-                } else if (this.getParamValue(EEntityStateMachineParams.Death)) {
-                    this.currentState = this.states.get(EEntityState.Death);
-                } else {
-                    this.currentState = this.currentState;
-                }
-                break;
-            case this.states.get(EEntityState.Attack):
-                if (this.getParamValue(EEntityStateMachineParams.Death)) {
-                    this.currentState = this.states.get(EEntityState.Death);
-                } else {
-                    this.currentState = this.currentState;
-                }
-                break;
-            default: {
-                this.currentState = this.states.get(EEntityState.Idle);
-            }
-        }
+        const currentPoint = this.getParamValue(EEntityStateMachineParams.CurrentPoint);
+        this.currentState = this.states.get(currentPoint as number);
     }
 }

@@ -94,6 +94,7 @@ export class TrapFactory implements IEntityFactory {
             case ETrapType.Burst:
                 trapManagerComponent = trap.addComponent(BurstManager);
                 stateMachine = BurstStateMachine;
+                params.totalPoint = 2;
                 break;
             default:
                 break;

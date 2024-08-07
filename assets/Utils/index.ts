@@ -25,3 +25,12 @@ export const mapInputToDirection = (input: EInput) => {
             return null; // 如果无法映射，返回 null
     }
 }
+
+export const numberToWord = {
+    0: 'zero',
+    1: 'one',
+    2: 'two',
+    3: 'three',
+    4: 'four',
+    5: 'five',
+};

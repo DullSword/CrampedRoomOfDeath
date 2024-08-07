@@ -1,25 +1,45 @@
 
 import { EntityManager } from '../../Base/EntityManager';
-import { EEntityType, EEvent, ETrapType } from '../../Enums';
+import { StateMachine } from '../../Base/StateMachine';
+import { EEntityStateMachineParams, EEntityType, EEvent, ETrapType } from '../../Enums';
 import { ITrap } from '../../Levels';
 import EventManager from '../../Runtime/EventManager';
 
 export abstract class TrapManager extends EntityManager {
 
-    protected bIsTriggered: boolean = false;
     protected trapType: ETrapType = null;
     protected triggerDistance: number = 0;
 
+    protected totalPoint: number = 0;
+    private _currentPoint: number = 0;
+
+    get currentPoint() {
+        return this._currentPoint;
+    }
+
+    set currentPoint(value: number) {
+        this._currentPoint = value;
+        this.fsm.setParamValue(EEntityStateMachineParams.CurrentPoint, value);
+    }
+
     async init(params: ITrap) {
+        this.trapType = params.trapType;
+        this.totalPoint = params.totalPoint;
+        this.triggerDistance = params.triggerDistance ?? 0;
+
         await super.init({
             ...params,
             type: EEntityType.Trap,
         });
 
-        this.trapType = params.trapType;
-        this.triggerDistance = params.triggerDistance ?? 0;
+        this.currentPoint = 0;
 
         EventManager.instance.on(EEvent.playerActionCompleted, this.trigger, this);
+    }
+
+    async initStateMachine(fsm: new () => StateMachine) {
+        this.fsm = this.addComponent(fsm);
+        await this.fsm.init(this.totalPoint);
     }
 
     protected onDestroy(): void {

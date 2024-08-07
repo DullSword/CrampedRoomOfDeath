@@ -29,6 +29,7 @@ export interface IEnemy extends IEntity {
 
 export interface ITrap extends IEntity {
     trapType: ETrapType;
+    totalPoint?: number,
     triggerDistance?: number,
 }
 

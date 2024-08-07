@@ -1,4 +1,4 @@
-import { UITransform, Vec2 } from 'cc';
+import { Vec2 } from 'cc';
 
 import { TrapManager } from '../TrapManager';
 import { ITrap } from '../../../Levels';
@@ -16,9 +16,6 @@ export class BurstManager extends TrapManager {
             ...params,
         });
 
-        const UITransformComponent = this.getComponent(UITransform);
-        UITransformComponent.setContentSize(TILE_WIDTH, TILE_HEIGHT);
-
         this.setTileInfo(true, false);
     }
 
@@ -31,28 +28,19 @@ export class BurstManager extends TrapManager {
 
         if (
             (!player || player.state === EEntityState.Death) ||
-            (this.state === EEntityState.Idle && Vec2.distance(this.position, player.targetPosition) > this.triggerDistance)
+            (this.currentPoint === 0 && Vec2.distance(this.position, player.targetPosition) > this.triggerDistance)
         ) {
             return;
         }
 
-        switch (this.state) {
-            case EEntityState.Idle:
-                this.state = EEntityState.Attack;
-                this.bIsTriggered = true;
-                break;
-            case EEntityState.Attack:
-                this.state = EEntityState.Death;
-                if (Vec2.distance(this.position, player.targetPosition) <= this.triggerDistance) {
-                    EventManager.instance.emit(EEvent.FallingDeath, player, this);
-                }
-                this.setTileVisibility(false);
-                this.setTileInfo(false, false);
-                break;
-            case EEntityState.Death:
-                break;
-            default:
-                break;
+        this.currentPoint++;
+
+        if (this.currentPoint === this.totalPoint) {
+            if (Vec2.distance(this.position, player.targetPosition) <= this.triggerDistance) {
+                EventManager.instance.emit(EEvent.FallingDeath, player, this);
+            }
+            this.setTileVisibility(false);
+            this.setTileInfo(false, false);
         }
     }
 }
