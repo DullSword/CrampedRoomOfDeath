@@ -33,6 +33,7 @@ export class SpikeManager extends TrapManager {
         }
 
         this.currentPoint++;
+        this.currentPoint = this.currentPoint % (this.totalPoint + 1);
 
         if (this.currentPoint === this.totalPoint) {
             if (Vec2.distance(this.position, player.targetPosition) <= this.triggerDistance) {

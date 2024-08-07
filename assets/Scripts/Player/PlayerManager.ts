@@ -72,7 +72,13 @@ export class PlayerManager extends EntityManager {
     }
 
     handleInput(inputValue: EInput) {
-        if (this.state === EEntityState.Death || this.state === EEntityState.FallingDeath || this.state === EEntityState.Attack) {
+        if (
+            this.state === EEntityState.Death ||
+            this.state === EEntityState.FallingDeath ||
+            this.state === EEntityState.Attack ||
+            this.state === EEntityState.TurnLeft ||
+            this.state === EEntityState.TurnRight
+        ) {
             return;
         }
 
