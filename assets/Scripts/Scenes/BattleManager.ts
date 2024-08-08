@@ -7,22 +7,28 @@ import levels, { Ilevel } from '../../Levels';
 import DataManager from '../../Runtime/DataManager';
 import { TILE_WIDTH, TILE_HEIGHT } from '../Tile/TileManager';
 import EventManager from '../../Runtime/EventManager';
-import { EEntityState, EEvent } from '../../Enums';
-import { TrapFactory, DoorFactory, EnemyFactory, PlayerFactory } from '../../Base/EntityFactory';
+import { EDirection, EEntityState, EEvent } from '../../Enums';
+import { TrapFactory, DoorFactory, EnemyFactory, PlayerFactory, SmokeFactory } from '../../Base/EntityFactory';
 
 @ccclass('BattleManager')
 export class BattleManager extends Component {
     level: Ilevel;
     stage: Node;
 
+    private smokeLayout: Node;
+
     onLoad() {
         EventManager.instance.on(EEvent.NextLevel, this.NextLevel, this);
         EventManager.instance.on(EEvent.PlayerMoveEnd, this.checkArrived, this);
+
+        EventManager.instance.on(EEvent.SpawnSmoke, this.generateSmoke, this);
     }
 
     onDestroy() {
         EventManager.instance.off(EEvent.NextLevel, this.NextLevel, this);
         EventManager.instance.off(EEvent.PlayerMoveEnd, this.checkArrived, this);
+
+        EventManager.instance.off(EEvent.SpawnSmoke, this.generateSmoke, this);
     }
 
     start() {
@@ -50,6 +56,8 @@ export class BattleManager extends Component {
                 this.generateBurst(),
                 this.generateSpike()]
             );
+
+            this.generateSmokeLayout();
 
             this.generatePlayer();
         }
@@ -116,6 +124,35 @@ export class BattleManager extends Component {
         const spikeComponents = await Promise.all(promises);
 
         DataManager.instance.spikes.push(...spikeComponents);
+    }
+
+    generateSmokeLayout() {
+        this.smokeLayout = CreateUINode('smokeLayout');
+        this.smokeLayout.setParent(this.stage);
+    }
+
+    async generateSmoke(position: Vec2, direction: EDirection) {
+        const { smokes } = DataManager.instance;
+
+        const smokePoolCount = 5;
+
+        const deathSmoke = smokes.length >= smokePoolCount && smokes.find(smoke => smoke.state === EEntityState.Death);
+        if (deathSmoke) {
+            deathSmoke.position = position;
+            deathSmoke.direction = direction;
+            deathSmoke.state = EEntityState.Idle;
+        } else {
+            const smokeManagerComponent = await new SmokeFactory().create(
+                {
+                    position,
+                    direction,
+                    state: EEntityState.Idle
+                },
+                this.smokeLayout,
+            );
+
+            smokes.push(smokeManagerComponent);
+        }
     }
 
     async generateTileMap() {

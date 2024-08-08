@@ -19,7 +19,12 @@ export abstract class SubStateMachine {
         this._currentState.run();
     }
 
-    constructor(protected fsm: StateMachine, protected baseUrl: string, protected wrapMode: AnimationClip.WrapMode = AnimationClip.WrapMode.Normal) {
+    constructor(
+        protected fsm: StateMachine,
+        protected baseUrl: string,
+        protected wrapMode: AnimationClip.WrapMode = AnimationClip.WrapMode.Normal,
+        protected sampleRate: number = 8
+    ) {
     }
 
     abstract init(): void;

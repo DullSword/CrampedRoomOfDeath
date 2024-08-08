@@ -3,6 +3,7 @@ import { ITile } from "../Levels";
 import { DoorManager } from "../Scripts/Door/DoorManager";
 import { EnemyManager } from "../Scripts/Enemies/EnemyManager";
 import { PlayerManager } from "../Scripts/Player/PlayerManager";
+import { SmokeManager } from "../Scripts/Smoke/SmokeManager";
 import { TileManager } from "../Scripts/Tile/TileManager";
 import { TrapManager } from "../Scripts/Traps/TrapManager";
 
@@ -20,6 +21,7 @@ export default class DataManager extends Singleton {
     door: DoorManager = null;
     bursts: Array<TrapManager> = [];
     spikes: Array<TrapManager> = [];
+    smokes: Array<SmokeManager> = [];
 
     static get instance() {
         return super.getInstance<DataManager>();

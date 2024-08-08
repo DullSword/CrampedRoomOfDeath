@@ -21,6 +21,7 @@ import { BurstManager } from '../Scripts/Traps/Burst/BurstManager';
 import { BurstStateMachine } from '../Scripts/Traps/Burst/BurstStateMachine';
 import { SpikeManager } from '../Scripts/Traps/Spike/SpikeManager';
 import { SpikeStateMachine } from '../Scripts/Traps/Spike/SpikeStateMachine';
+import { SmokeManager } from '../Scripts/Smoke/SmokeManager';
 
 export interface IEntityFactory {
     create(params: IEntity, parentNode: Node): Promise<EntityManager>;
@@ -119,5 +120,19 @@ export class TrapFactory implements IEntityFactory {
         });
 
         return trapManagerComponent;
+    }
+}
+
+export class SmokeFactory implements IEntityFactory {
+    async create(params: IEntity, parentNode: Node) {
+        const smoke = CreateUINode('smoke');
+        smoke.setParent(parentNode);
+
+        const SmokeManagerComponent = smoke.addComponent(SmokeManager);
+        await SmokeManagerComponent.init({
+            ...params,
+        });
+
+        return SmokeManagerComponent;
     }
 }

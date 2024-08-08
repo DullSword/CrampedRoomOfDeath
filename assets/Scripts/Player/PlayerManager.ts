@@ -266,17 +266,21 @@ export class PlayerManager extends EntityManager {
         if (inputValue === EInput.Left) {
             this.targetPosition.x -= 1;
             this.isMoving = true;
+            EventManager.instance.emit(EEvent.SpawnSmoke, new Vec2(this.position), inputValue);
         } else if (inputValue === EInput.Right) {
             this.targetPosition.x += 1;
             this.isMoving = true;
+            EventManager.instance.emit(EEvent.SpawnSmoke, new Vec2(this.position), inputValue);
         }
 
         if (inputValue === EInput.Top) {
             this.targetPosition.y -= 1;
             this.isMoving = true;
+            EventManager.instance.emit(EEvent.SpawnSmoke, new Vec2(this.position), inputValue);
         } else if (inputValue === EInput.Bottom) {
             this.targetPosition.y += 1;
             this.isMoving = true;
+            EventManager.instance.emit(EEvent.SpawnSmoke, new Vec2(this.position), inputValue);
         }
 
         if (inputValue === EInput.TurnLeft) {

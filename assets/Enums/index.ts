@@ -21,6 +21,7 @@ export enum EEvent {
     FallingDeath = 'FallingDeath',
     OpenDoor = 'OpenDoor',
     ResetTrapPoint = 'ResetTrapPoint',
+    SpawnSmoke = 'SpawnSmoke',
 }
 
 export enum EInput {
@@ -81,6 +82,7 @@ export enum EEntityType {
     Enemy,
     Door,
     Trap,
+    Smoke,
 }
 
 export enum EEnemyType {

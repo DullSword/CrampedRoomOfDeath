@@ -7,15 +7,15 @@ import { StateMachine } from "./StateMachine";
 
 export class DirectionSubStateMachine extends SubStateMachine {
 
-    constructor(fsm: StateMachine, baseUrl: string, wrapMode: AnimationClip.WrapMode = AnimationClip.WrapMode.Normal) {
-        super(fsm, baseUrl, wrapMode);
+    constructor(fsm: StateMachine, baseUrl: string, wrapMode?: AnimationClip.WrapMode, sampleRate?: number) {
+        super(fsm, baseUrl, wrapMode, sampleRate);
     }
 
     async init() {
-        const topState = new State(`${this.baseUrl}/top`, this.fsm, this.wrapMode);
-        const bottomState = new State(`${this.baseUrl}/bottom`, this.fsm, this.wrapMode);
-        const leftState = new State(`${this.baseUrl}/left`, this.fsm, this.wrapMode);
-        const rightState = new State(`${this.baseUrl}/right`, this.fsm, this.wrapMode);
+        const topState = new State(`${this.baseUrl}/top`, this.fsm, this.wrapMode, this.sampleRate);
+        const bottomState = new State(`${this.baseUrl}/bottom`, this.fsm, this.wrapMode, this.sampleRate);
+        const leftState = new State(`${this.baseUrl}/left`, this.fsm, this.wrapMode, this.sampleRate);
+        const rightState = new State(`${this.baseUrl}/right`, this.fsm, this.wrapMode, this.sampleRate);
 
         await Promise.all([topState.init(), bottomState.init(), leftState.init(), rightState.init()]);
 
