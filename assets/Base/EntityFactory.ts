@@ -49,17 +49,20 @@ export class EnemyFactory implements IEntityFactory {
         let enemyManagerComponent: EnemyManager;
         let stateMachine: new () => StateMachine;
 
-        switch (params.enemyType) {
-            case EEnemyType.WoodenSkeleton:
-                enemyManagerComponent = enemy.addComponent(WoodenSkeletonManager);
-                stateMachine = WoodenSkeletonStateMachine;
-                break;
-            case EEnemyType.IronSkeleton:
-                enemyManagerComponent = enemy.addComponent(IronSkeletonManager);
-                stateMachine = IronSkeletonStateMachine;
-                break;
-            default:
-                break;
+        type EnemyConfig = {
+            manager: new () => EnemyManager;
+            stateMachine: new () => StateMachine;
+        };
+
+        const enemyConfig: Record<EEnemyType, EnemyConfig> = {
+            [EEnemyType.WoodenSkeleton]: { manager: WoodenSkeletonManager, stateMachine: WoodenSkeletonStateMachine },
+            [EEnemyType.IronSkeleton]: { manager: IronSkeletonManager, stateMachine: IronSkeletonStateMachine },
+        };
+
+        const config = enemyConfig[params.enemyType];
+        if (config) {
+            enemyManagerComponent = enemy.addComponent(config.manager);
+            stateMachine = config.stateMachine;
         }
 
         await enemyManagerComponent.init({
