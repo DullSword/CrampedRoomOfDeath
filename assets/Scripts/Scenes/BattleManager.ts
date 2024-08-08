@@ -9,6 +9,7 @@ import { TILE_WIDTH, TILE_HEIGHT } from '../Tile/TileManager';
 import EventManager from '../../Runtime/EventManager';
 import { EDirection, EEntityState, EEvent } from '../../Enums';
 import { TrapFactory, DoorFactory, EnemyFactory, PlayerFactory, SmokeFactory } from '../../Base/EntityFactory';
+import FaderManager from '../../Runtime/FaderManager';
 
 @ccclass('BattleManager')
 export class BattleManager extends Component {
@@ -40,6 +41,8 @@ export class BattleManager extends Component {
     async initLevel() {
         const level = levels[`level${DataManager.instance.levelIndex}`];
         if (level) {
+            await FaderManager.instance.fadeIn();
+
             this.clearLevel();
 
             this.level = level;
@@ -59,7 +62,9 @@ export class BattleManager extends Component {
 
             this.generateSmokeLayout();
 
-            this.generatePlayer();
+            await this.generatePlayer();
+
+            await FaderManager.instance.fadeOut();
         }
     }
 

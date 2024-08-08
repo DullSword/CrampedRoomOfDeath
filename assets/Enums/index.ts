@@ -103,3 +103,9 @@ export enum EActionResult {
     Attack,
     Blocked,
 }
+
+export enum FadeStatus {
+    Idle,
+    fadeIn,
+    fadeOut,
+}
