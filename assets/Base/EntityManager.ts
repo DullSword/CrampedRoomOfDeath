@@ -67,6 +67,7 @@ export class EntityManager extends Component {
         this.node.setPosition((this.position.x - 1.5) * TILE_WIDTH, -(this.position.y - 1.5) * TILE_HEIGHT);
     }
 
+    // TODO 有的实体并不需要攻击，可以设计成接口
     protected tryAttackTarget(target: EntityManager, attackDistance: number) {
         if (Vec2.distance(this.position, target.position) <= attackDistance) {
             this.state = EEntityState.Attack;
