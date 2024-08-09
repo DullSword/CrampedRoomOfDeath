@@ -8,6 +8,8 @@ import { PlayerStateMachine } from './PlayerStateMachine';
 import DataManager from '../../Runtime/DataManager';
 import { IEntity } from '../../Levels';
 import { mapInputToDirection } from '../../Utils';
+import { IShakeParams } from '../UI/ShakeManager';
+import { TILE_WIDTH } from '../Tile/TileManager';
 
 @ccclass('PlayerManager')
 export class PlayerManager extends EntityManager {
@@ -256,6 +258,15 @@ export class PlayerManager extends EntityManager {
         } else if (inputValue === EInput.TurnRight) {
             this.state = EEntityState.BlockedTurnRight;
         }
+
+        const cycle = 0.2;
+        const shakeParams: IShakeParams = {
+            duration: 200,
+            // 频率 = 1 / 周期
+            frequency: 1 / cycle,
+            amplitude: TILE_WIDTH * 0.05,
+        };
+        EventManager.instance.emit(EEvent.ScreenShake, shakeParams);
     }
 
     control(inputValue: EInput) {

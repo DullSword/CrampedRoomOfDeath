@@ -10,6 +10,7 @@ import EventManager from '../../Runtime/EventManager';
 import { EDirection, EEntityState, EEvent } from '../../Enums';
 import { TrapFactory, DoorFactory, EnemyFactory, PlayerFactory, SmokeFactory } from '../../Base/EntityFactory';
 import FaderManager from '../../Runtime/FaderManager';
+import { ShakeManager } from '../UI/ShakeManager';
 
 @ccclass('BattleManager')
 export class BattleManager extends Component {
@@ -76,6 +77,7 @@ export class BattleManager extends Component {
     generateStage() {
         this.stage = CreateUINode('stage');
         this.stage.setParent(this.node);
+        this.stage.addComponent(ShakeManager);
     }
 
     async generatePlayer() {

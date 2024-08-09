@@ -22,6 +22,7 @@ export enum EEvent {
     OpenDoor = 'OpenDoor',
     ResetTrapPoint = 'ResetTrapPoint',
     SpawnSmoke = 'SpawnSmoke',
+    ScreenShake = 'ScreenShake',
 }
 
 export enum EInput {
