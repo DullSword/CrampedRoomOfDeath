@@ -80,6 +80,7 @@ export enum EDirection {
     Right = 'Right',
     Top = 'Top',
     Bottom = 'Bottom',
+    None = 'None',
 }
 
 export enum EEntityType {

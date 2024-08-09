@@ -34,3 +34,22 @@ export const numberToWord = {
     4: 'four',
     5: 'five',
 };
+
+export const mapTurnDirectionToBlockedDirection = (direction: EDirection, turnDirection: EInput.TurnLeft | EInput.TurnRight,) => {
+
+    const TurnLeftToBlockedDirection = {
+        [EDirection.Top]: EDirection.Left,
+        [EDirection.Left]: EDirection.Bottom,
+        [EDirection.Bottom]: EDirection.Right,
+        [EDirection.Right]: EDirection.Top,
+    };
+
+    const TurnRightToBlockedDirection = {
+        [EDirection.Top]: EDirection.Right,
+        [EDirection.Right]: EDirection.Bottom,
+        [EDirection.Bottom]: EDirection.Left,
+        [EDirection.Left]: EDirection.Top,
+    };
+
+    return turnDirection === EInput.TurnLeft ? TurnLeftToBlockedDirection[direction] : TurnRightToBlockedDirection[direction];
+}

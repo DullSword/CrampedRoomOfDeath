@@ -2,7 +2,7 @@ import { Component, Vec2, _decorator, game } from 'cc';
 const { ccclass } = _decorator;
 
 import EventManager from '../../Runtime/EventManager';
-import { EEvent } from '../../Enums';
+import { EDirection, EEvent } from '../../Enums';
 
 const DEFAULT_SHAKE_AMPLITUDE = 100;
 const DEFAULT_SHAKE_FREQUENCY = 1;
@@ -15,6 +15,7 @@ export interface IShakeParams {
     frequency?: number;
     initialPhase?: number;
     duration?: number;
+    direction?: EDirection;
 }
 
 @ccclass('ShakeManager')
@@ -29,6 +30,7 @@ export class ShakeManager extends Component {
     initialPhase: number = DEFAULT_SHAKE_INITIAL_PHASE;
 
     duration: number = DEFAULT_SHAKE_DURATION;
+    direction: EDirection = EDirection.None;
 
     onLoad() {
         EventManager.instance.on(EEvent.ScreenShake, this.play, this);
@@ -53,6 +55,7 @@ export class ShakeManager extends Component {
         this.frequency = shakeParams.frequency ?? DEFAULT_SHAKE_FREQUENCY;
         this.initialPhase = shakeParams.initialPhase ?? DEFAULT_SHAKE_INITIAL_PHASE;
         this.duration = shakeParams.duration ?? DEFAULT_SHAKE_DURATION;
+        this.direction = shakeParams.direction ?? EDirection.None;
     }
 
     stop() {
@@ -70,7 +73,22 @@ export class ShakeManager extends Component {
             const offset = this.amplitude * Math.sin(Math.PI * this.frequency * (deltaTime / 1000) + this.initialPhase);
             const absoluteOffset = Math.abs(offset);
 
-            this.node.setPosition(this.lastPosition.x + absoluteOffset, this.lastPosition.y);
+            const directionalShake = {
+                [EDirection.Top]: () => {
+                    this.node.setPosition(this.lastPosition.x, this.lastPosition.y + absoluteOffset);
+                },
+                [EDirection.Bottom]: () => {
+                    this.node.setPosition(this.lastPosition.x, this.lastPosition.y - absoluteOffset);
+                },
+                [EDirection.Left]: () => {
+                    this.node.setPosition(this.lastPosition.x - absoluteOffset, this.lastPosition.y);
+                },
+                [EDirection.Right]: () => {
+                    this.node.setPosition(this.lastPosition.x + absoluteOffset, this.lastPosition.y);
+                },
+            }
+
+            directionalShake[this.direction]();
 
             if (deltaTime > this.duration) {
                 this.stop();

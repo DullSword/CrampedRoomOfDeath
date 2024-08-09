@@ -7,7 +7,7 @@ import EventManager from '../../Runtime/EventManager';
 import { PlayerStateMachine } from './PlayerStateMachine';
 import DataManager from '../../Runtime/DataManager';
 import { IEntity } from '../../Levels';
-import { mapInputToDirection } from '../../Utils';
+import { mapInputToDirection, mapTurnDirectionToBlockedDirection } from '../../Utils';
 import { IShakeParams } from '../UI/ShakeManager';
 import { TILE_WIDTH } from '../Tile/TileManager';
 
@@ -243,12 +243,18 @@ export class PlayerManager extends EntityManager {
     }
 
     handleBlocked(inputValue: EInput) {
-        if (mapInputToDirection(inputValue) === this.direction) {
+        let blockedDirection = EDirection.None;
+
+        const inputDirection = mapInputToDirection(inputValue);
+        if (inputDirection === this.direction) {
             this.state = EEntityState.BlockedFront;
+            blockedDirection = inputDirection;
         } else if (mapInputToDirection(inputValue) === EDirection.Left) {
             this.state = EEntityState.BlockedLeft;
+            blockedDirection = inputDirection;
         } else if (mapInputToDirection(inputValue) === EDirection.Right) {
             this.state = EEntityState.BlockedRight;
+            blockedDirection = inputDirection;
         } else if (
             (inputValue === EInput.Top && this.direction === EDirection.Bottom) ||
             (inputValue === EInput.Bottom && this.direction === EDirection.Top) ||
@@ -256,11 +262,11 @@ export class PlayerManager extends EntityManager {
             (inputValue === EInput.Right && this.direction === EDirection.Left)
         ) {
             this.state = EEntityState.BlockedBack;
+            blockedDirection = inputDirection;
         }
-        else if (inputValue === EInput.TurnLeft) {
-            this.state = EEntityState.BlockedTurnLeft;
-        } else if (inputValue === EInput.TurnRight) {
-            this.state = EEntityState.BlockedTurnRight;
+        else if (inputValue === EInput.TurnLeft || inputValue === EInput.TurnRight) {
+            this.state = inputValue === EInput.TurnLeft ? EEntityState.BlockedTurnLeft : EEntityState.BlockedTurnRight;
+            blockedDirection = mapTurnDirectionToBlockedDirection(this.direction, inputValue);
         }
 
         const cycle = 0.2;
@@ -269,6 +275,7 @@ export class PlayerManager extends EntityManager {
             // 频率 = 1 / 周期
             frequency: 1 / cycle,
             amplitude: TILE_WIDTH * 0.05,
+            direction: blockedDirection,
         };
         EventManager.instance.emit(EEvent.ScreenShake, shakeParams);
     }
