@@ -245,6 +245,10 @@ export class PlayerManager extends EntityManager {
     handleBlocked(inputValue: EInput) {
         if (mapInputToDirection(inputValue) === this.direction) {
             this.state = EEntityState.BlockedFront;
+        } else if (mapInputToDirection(inputValue) === EDirection.Left) {
+            this.state = EEntityState.BlockedLeft;
+        } else if (mapInputToDirection(inputValue) === EDirection.Right) {
+            this.state = EEntityState.BlockedRight;
         } else if (
             (inputValue === EInput.Top && this.direction === EDirection.Bottom) ||
             (inputValue === EInput.Bottom && this.direction === EDirection.Top) ||
