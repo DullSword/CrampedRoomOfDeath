@@ -1,5 +1,7 @@
 import level1 from "../Levels/Level1";
 import level2 from "../Levels/Level2";
+import level3 from "../Levels/Level3";
+import level4 from "../Levels/Level4";
 
 import { EDirection, EEnemyType, EEntityState, EEntityType, ETileType, ETrapType } from "../Enums";
 import { Size, Vec2 } from "cc";
@@ -41,6 +43,8 @@ export interface ITrap extends IEntity {
 const levels: Record<string, Ilevel> = {
     level1,
     level2,
+    level3,
+    level4,
 };
 
 export default levels;
