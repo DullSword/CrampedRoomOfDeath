@@ -10,7 +10,8 @@ export class State {
         private path: string,
         private fsm: StateMachine,
         private wrapMode: AnimationClip.WrapMode = AnimationClip.WrapMode.Normal,
-        private sampleRate: number = 8
+        private sampleRate: number = 8,
+        private events: AnimationClip.IEvent[] = [],
     ) {
     }
 
@@ -25,6 +26,7 @@ export class State {
         this.animationClip = new AnimationClip(this.path);
         this.animationClip.duration = 1 / this.sampleRate * spriteFrames.length;
         this.animationClip.wrapMode = this.wrapMode;
+        this.animationClip.events = this.events;
 
         const track = new animation.ObjectTrack();
         track.path = new animation.TrackPath().toComponent(Sprite).toProperty('spriteFrame');

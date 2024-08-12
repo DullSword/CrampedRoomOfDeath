@@ -353,4 +353,16 @@ export class PlayerManager extends EntityManager {
             this.state = EEntityState.FallingDeath;
         }
     }
+
+    onAttackShake(direction: EDirection) {
+        const cycle = 0.2;
+        const shakeParams: IShakeParams = {
+            duration: 200,
+            // 频率 = 1 / 周期
+            frequency: 1 / cycle,
+            amplitude: TILE_WIDTH * 0.25,
+            direction,
+        };
+        EventManager.instance.emit(EEvent.ScreenShake, shakeParams);
+    }
 }
