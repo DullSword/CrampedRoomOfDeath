@@ -130,8 +130,8 @@ export class PlayerManager extends EntityManager {
 
             const { door: { position: doorPosition } } = DataManager.instance;
 
-            const bIsNextPositionOutOfBounds = nextPosition.x < 0 || nextPosition.y < 0 || nextPosition.x >= tileInfo.length || nextPosition.y >= tileInfo[0].length;
-            const bIsNextPositionAfterNextOutOfBounds = nextPositionAfterNext.x < 0 || nextPositionAfterNext.y < 0 || nextPositionAfterNext.x >= tileInfo.length || nextPositionAfterNext.y >= tileInfo[0].length;
+            const bIsNextPositionOutOfBounds = nextPosition.x < 0 || nextPosition.y < 0 || nextPosition.x >= tileInfo.length || nextPosition.y >= tileInfo[lastPosition.x].length;
+            const bIsNextPositionAfterNextOutOfBounds = nextPositionAfterNext.x < 0 || nextPositionAfterNext.y < 0 || nextPositionAfterNext.x >= tileInfo.length || nextPositionAfterNext.y >= tileInfo[lastPosition.x].length;
 
             if (
                 bIsNextPositionOutOfBounds ||
