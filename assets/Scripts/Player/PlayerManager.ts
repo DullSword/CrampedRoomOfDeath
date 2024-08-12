@@ -118,8 +118,8 @@ export class PlayerManager extends EntityManager {
                 return EActionResult.Blocked;
             }
 
-            const { bWeaponBlocked: bPassTileWeaponBlocked } = tileInfo[passTilePosition.x][passTilePosition.y];
-            const { bWeaponBlocked: bStayTileWeaponBlocked } = tileInfo[stayTilePosition.x][stayTilePosition.y];
+            const { bWeaponBlocked: bPassTileWeaponBlocked } = tileInfo[passTilePosition.x]?.[passTilePosition.y] ?? { bWeaponBlocked: false };
+            const { bWeaponBlocked: bStayTileWeaponBlocked } = tileInfo[stayTilePosition.x]?.[stayTilePosition.y] ?? { bWeaponBlocked: false };
 
             if (bPassTileWeaponBlocked || bStayTileWeaponBlocked) {
                 return EActionResult.Blocked;
