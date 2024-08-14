@@ -111,12 +111,13 @@ export class PlayerManager extends EntityManager {
 
             const { passTilePosition, stayTilePosition } = this.calculatePositions(direction, lastPosition, turnLeft);
 
-            const bIsPassTileOutOfBounds = passTilePosition.x < 0 || passTilePosition.y < 0 || passTilePosition.x >= tileInfo.length || passTilePosition.y >= tileInfo[0].length;
-            const bIsStayTileOutOfBounds = stayTilePosition.x < 0 || stayTilePosition.y < 0 || stayTilePosition.x >= tileInfo.length || stayTilePosition.y >= tileInfo[0].length;
+            // 武器可以出界
+            // const bIsPassTileOutOfBounds = passTilePosition.x < 0 || passTilePosition.y < 0 || passTilePosition.x >= tileInfo.length || passTilePosition.y >= tileInfo[0].length;
+            // const bIsStayTileOutOfBounds = stayTilePosition.x < 0 || stayTilePosition.y < 0 || stayTilePosition.x >= tileInfo.length || stayTilePosition.y >= tileInfo[0].length;
 
-            if (bIsPassTileOutOfBounds || bIsStayTileOutOfBounds) {
-                return EActionResult.Blocked;
-            }
+            // if (bIsPassTileOutOfBounds || bIsStayTileOutOfBounds) {
+            //     return EActionResult.Blocked;
+            // }
 
             const { bWeaponBlocked: bPassTileWeaponBlocked } = tileInfo[passTilePosition.x]?.[passTilePosition.y] ?? { bWeaponBlocked: false };
             const { bWeaponBlocked: bStayTileWeaponBlocked } = tileInfo[stayTilePosition.x]?.[stayTilePosition.y] ?? { bWeaponBlocked: false };
