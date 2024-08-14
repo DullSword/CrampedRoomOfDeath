@@ -14,6 +14,8 @@ export class DoorManager extends EntityManager {
             fsm: DoorStateMachine,
         });
 
+        this.setTileInfo(false, true);
+
         EventManager.instance.on(EEvent.OpenDoor, this.open, this);
     }
 
@@ -25,5 +27,7 @@ export class DoorManager extends EntityManager {
 
     open() {
         this.state = EEntityState.Death;
+
+        this.setTileInfo(true, false);
     }
 }
