@@ -7,7 +7,7 @@ import EventManager from '../../Runtime/EventManager';
 import { PlayerStateMachine } from './PlayerStateMachine';
 import DataManager from '../../Runtime/DataManager';
 import { IEntity } from '../../Levels';
-import { mapInputToDirection, mapTurnDirectionToBlockedDirection } from '../../Utils';
+import { mapInputToDirection, getRelativeDirection, mapTurnDirectionToBlockedDirection } from '../../Utils';
 import { IShakeParams } from '../UI/ShakeManager';
 import { TILE_WIDTH } from '../Tile/TileManager';
 
@@ -254,10 +254,10 @@ export class PlayerManager extends EntityManager {
         if (inputDirection === this.direction) {
             this.state = EEntityState.BlockedFront;
             blockedDirection = inputDirection;
-        } else if (mapInputToDirection(inputValue) === EDirection.Left) {
+        } else if (getRelativeDirection(this.direction, inputDirection) === EDirection.Left) {
             this.state = EEntityState.BlockedLeft;
             blockedDirection = inputDirection;
-        } else if (mapInputToDirection(inputValue) === EDirection.Right) {
+        } else if (getRelativeDirection(this.direction, inputDirection) === EDirection.Right) {
             this.state = EEntityState.BlockedRight;
             blockedDirection = inputDirection;
         } else if (

@@ -9,7 +9,7 @@ export const CreateUINode = (name: string = "") => {
 
     node.layer = Layers.Enum.UI_2D;
     return node;
-}
+};
 
 export const mapInputToDirection = (input: EInput) => {
     switch (input) {
@@ -24,7 +24,7 @@ export const mapInputToDirection = (input: EInput) => {
         default:
             return null; // 如果无法映射，返回 null
     }
-}
+};
 
 export const numberToWord = {
     0: 'zero',
@@ -35,7 +35,31 @@ export const numberToWord = {
     5: 'five',
 };
 
-export const mapTurnDirectionToBlockedDirection = (direction: EDirection, turnDirection: EInput.TurnLeft | EInput.TurnRight,) => {
+export const getRelativeDirection = (direction: EDirection, inputDirection: EDirection) => {
+    const directionToLeftDirection = {
+        [EDirection.Top]: EDirection.Left,
+        [EDirection.Left]: EDirection.Bottom,
+        [EDirection.Bottom]: EDirection.Right,
+        [EDirection.Right]: EDirection.Top,
+    };
+
+    const directionToRightDirection = {
+        [EDirection.Top]: EDirection.Right,
+        [EDirection.Right]: EDirection.Bottom,
+        [EDirection.Bottom]: EDirection.Left,
+        [EDirection.Left]: EDirection.Top,
+    };
+
+    if (inputDirection === directionToLeftDirection[direction]) {
+        return EDirection.Left;
+    } else if (inputDirection === directionToRightDirection[direction]) {
+        return EDirection.Right;
+    } else {
+        return EDirection.None;
+    }
+};
+
+export const mapTurnDirectionToBlockedDirection = (direction: EDirection, turnDirection: EInput.TurnLeft | EInput.TurnRight) => {
 
     const TurnLeftToBlockedDirection = {
         [EDirection.Top]: EDirection.Left,
@@ -52,4 +76,4 @@ export const mapTurnDirectionToBlockedDirection = (direction: EDirection, turnDi
     };
 
     return turnDirection === EInput.TurnLeft ? TurnLeftToBlockedDirection[direction] : TurnRightToBlockedDirection[direction];
-}
+};
