@@ -1,4 +1,4 @@
-import { Node } from 'cc';
+import { Node, Size } from 'cc';
 
 import { IEnemy, IEntity, ITrap } from '../Levels';
 import { EEnemyType, ETrapType } from '../Enums';
@@ -22,6 +22,8 @@ import { BurstStateMachine } from '../Scripts/Traps/Burst/BurstStateMachine';
 import { SpikeManager } from '../Scripts/Traps/Spike/SpikeManager';
 import { SpikeStateMachine } from '../Scripts/Traps/Spike/SpikeStateMachine';
 import { SmokeManager } from '../Scripts/Smoke/SmokeManager';
+
+import { TILE_HEIGHT, TILE_WIDTH } from '../Scripts/Tile/TileManager';
 
 export interface IEntityFactory {
     create(params: IEntity, parentNode: Node): Promise<EntityManager>;
@@ -100,10 +102,11 @@ export class TrapFactory implements IEntityFactory {
             manager: new () => TrapManager;
             stateMachine: new () => StateMachine;
             totalPoint: number;
+            tileSize?: Size;
         };
 
         const trapConfig: Record<ETrapType, TrapConfig> = {
-            [ETrapType.Burst]: { manager: BurstManager, stateMachine: BurstStateMachine, totalPoint: 2 },
+            [ETrapType.Burst]: { manager: BurstManager, stateMachine: BurstStateMachine, totalPoint: 2, tileSize: new Size(TILE_WIDTH, TILE_HEIGHT) },
             [ETrapType.SpikesOne]: { manager: SpikeManager, stateMachine: SpikeStateMachine, totalPoint: 2 },
             [ETrapType.SpikesTwo]: { manager: SpikeManager, stateMachine: SpikeStateMachine, totalPoint: 3 },
             [ETrapType.SpikesThree]: { manager: SpikeManager, stateMachine: SpikeStateMachine, totalPoint: 4 },
@@ -115,6 +118,7 @@ export class TrapFactory implements IEntityFactory {
             trapManagerComponent = trap.addComponent(config.manager);
             stateMachine = config.stateMachine;
             params.totalPoint = config.totalPoint;
+            params.tileSize = config.tileSize;
         }
 
         await trapManagerComponent.init({
