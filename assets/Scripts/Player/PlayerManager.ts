@@ -157,9 +157,9 @@ export class PlayerManager extends EntityManager {
             const burstTarget = bursts.filter(burst => !burst.disabled).filter(burst => Vec2.strictEquals(burst.position, nextPosition));
 
             const { bMovable: bNextPositionMovable } = tileInfo[nextPosition.x]?.[nextPosition.y] ?? {};
-            const { bWeaponBlocked: bnextPositionAfterNextWeaponBlocked } = tileInfo[nextPositionAfterNext.x]?.[nextPositionAfterNext.y] ?? {};
+            const { bWeaponBlocked: bNextPositionAfterNextWeaponBlocked } = tileInfo[nextPositionAfterNext.x]?.[nextPositionAfterNext.y] ?? {};
 
-            if ((!bNextPositionMovable && burstTarget.length <= 0) || bnextPositionAfterNextWeaponBlocked) {
+            if ((!bNextPositionMovable && burstTarget.length <= 0) || bNextPositionAfterNextWeaponBlocked) {
                 return EActionResult.Blocked;
             }
         }
