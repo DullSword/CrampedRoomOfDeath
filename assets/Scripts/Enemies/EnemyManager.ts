@@ -71,15 +71,15 @@ export abstract class EnemyManager extends EntityManager {
     }
 
     protected OnDeath(target: EntityManager, Instigator: EntityManager): void {
-        super.OnDeath(target, Instigator);
-
         if (target === this) {
-            this.setTileInfo(true, false);
-        }
+            super.OnDeath(target, Instigator);
 
-        const bNoEnemySurvived = DataManager.instance.enemies.every(enemy => enemy.state === EEntityState.Death);
-        if (bNoEnemySurvived) {
-            EventManager.instance.emit(EEvent.OpenDoor);
+            this.setTileInfo(true, false);
+
+            const bNoEnemySurvived = DataManager.instance.enemies.every(enemy => enemy.state === EEntityState.Death);
+            if (bNoEnemySurvived) {
+                EventManager.instance.emit(EEvent.OpenDoor);
+            }
         }
     }
 }
