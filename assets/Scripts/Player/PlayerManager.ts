@@ -151,10 +151,14 @@ export class PlayerManager extends EntityManager {
                 return EActionResult.Attack;
             }
 
+            // 检查 burst，因为 burst 可能在空地块上
+            const { bursts } = DataManager.instance;
+            const burstTarget = bursts.filter(burst => !burst.disabled).filter(burst => Vec2.strictEquals(burst.position, nextPosition));
+
             const { bMovable: bNextPositionMovable } = tileInfo[nextPosition.x]?.[nextPosition.y] ?? {};
             const { bWeaponBlocked: bnextPositionAfterNextWeaponBlocked } = tileInfo[nextPositionAfterNext.x]?.[nextPositionAfterNext.y] ?? {};
 
-            if (!bNextPositionMovable || bnextPositionAfterNextWeaponBlocked) {
+            if ((!bNextPositionMovable && burstTarget.length <= 0) || bnextPositionAfterNextWeaponBlocked) {
                 return EActionResult.Blocked;
             }
         }

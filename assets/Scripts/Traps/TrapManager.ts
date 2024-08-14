@@ -7,6 +7,8 @@ import EventManager from '../../Runtime/EventManager';
 
 export abstract class TrapManager extends EntityManager {
 
+    protected _disabled: boolean = false;
+
     protected trapType: ETrapType = null;
     protected triggerDistance: number = 0;
 
@@ -21,6 +23,10 @@ export abstract class TrapManager extends EntityManager {
     set currentPoint(value: number) {
         this._currentPoint = value;
         this.fsm.setParamValue(EEntityStateMachineParams.CurrentPoint, value);
+    }
+
+    get disabled() {
+        return this._disabled;
     }
 
     async init(params: ITrap) {

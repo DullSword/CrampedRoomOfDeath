@@ -41,6 +41,7 @@ export class BurstManager extends TrapManager {
             }
             this.setTileVisibility(false);
             this.setTileInfo(false, false);
+            this._disabled = true;
         }
     }
 }
