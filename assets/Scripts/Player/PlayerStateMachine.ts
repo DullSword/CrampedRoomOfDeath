@@ -134,6 +134,7 @@ export class PlayerStateMachine extends StateMachine {
                 } else if (this.getParamValue(EEntityStateMachineParams.FallingDeath)) {
                     this.currentState = this.states.get(EEntityState.FallingDeath);
                 } else {
+                    // 通过此方式在撤回操作时触发 state 重新判断朝向
                     this.currentState = this.currentState;
                 }
                 break;

@@ -40,6 +40,7 @@ export abstract class EnemyStateMachine extends StateMachine {
                 } else if (this.getParamValue(EEntityStateMachineParams.Death)) {
                     this.currentState = this.states.get(EEntityState.Death);
                 } else {
+                    // 通过此方式触发 state 重新判断朝向
                     this.currentState = this.currentState;
                 }
 
