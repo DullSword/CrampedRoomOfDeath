@@ -22,6 +22,8 @@ export class PlayerManager extends EntityManager {
 
     private target: EntityManager = null;
 
+    private controlResolve: () => void = null;
+
     async init(params: IEntity) {
         await super.init({
             ...params,
@@ -70,11 +72,17 @@ export class PlayerManager extends EntityManager {
             this.position.y = this.targetPosition.y;
 
             EventManager.instance.emit(EEvent.PlayerMoveEnd);
+
+            if (this.controlResolve) {
+                this.controlResolve();
+                this.controlResolve = null;
+            }
         }
     }
 
-    handleInput(inputValue: EInput) {
+    async handleInput(inputValue: EInput) {
         if (
+            this.isMoving ||
             this.state === EEntityState.Death ||
             this.state === EEntityState.FallingDeath ||
             this.state === EEntityState.Attack ||
@@ -86,7 +94,7 @@ export class PlayerManager extends EntityManager {
 
         switch (this.isActionValid(inputValue)) {
             case EActionResult.Perform:
-                this.control(inputValue);
+                await this.control(inputValue);
                 EventManager.instance.emit(EEvent.playerActionCompleted);
                 break;
             case EActionResult.Blocked:
@@ -286,71 +294,73 @@ export class PlayerManager extends EntityManager {
     }
 
     control(inputValue: EInput) {
-        if (this.isMoving) {
-            return;
-        }
+        return new Promise<void>((resolve, reject) => {
+            this.controlResolve = resolve;
 
-        if (inputValue === EInput.Left) {
-            this.targetPosition.x -= 1;
-            this.isMoving = true;
-            EventManager.instance.emit(EEvent.SpawnSmoke, new Vec2(this.position), inputValue);
-        } else if (inputValue === EInput.Right) {
-            this.targetPosition.x += 1;
-            this.isMoving = true;
-            EventManager.instance.emit(EEvent.SpawnSmoke, new Vec2(this.position), inputValue);
-        }
-
-        if (inputValue === EInput.Top) {
-            this.targetPosition.y -= 1;
-            this.isMoving = true;
-            EventManager.instance.emit(EEvent.SpawnSmoke, new Vec2(this.position), inputValue);
-        } else if (inputValue === EInput.Bottom) {
-            this.targetPosition.y += 1;
-            this.isMoving = true;
-            EventManager.instance.emit(EEvent.SpawnSmoke, new Vec2(this.position), inputValue);
-        }
-
-        if (inputValue === EInput.TurnLeft) {
-            switch (this.direction) {
-                case EDirection.Top:
-                    this.direction = EDirection.Left;
-                    break;
-                case EDirection.Bottom:
-                    this.direction = EDirection.Right;
-                    break;
-                case EDirection.Left:
-                    this.direction = EDirection.Bottom;
-                    break;
-                case EDirection.Right:
-                    this.direction = EDirection.Top;
-                    break;
-                default:
-                    break;
+            if (inputValue === EInput.Left) {
+                this.targetPosition.x -= 1;
+                this.isMoving = true;
+                EventManager.instance.emit(EEvent.SpawnSmoke, new Vec2(this.position), inputValue);
+            } else if (inputValue === EInput.Right) {
+                this.targetPosition.x += 1;
+                this.isMoving = true;
+                EventManager.instance.emit(EEvent.SpawnSmoke, new Vec2(this.position), inputValue);
             }
 
-            this.state = EEntityState.TurnLeft;
-        }
-
-        if (inputValue === EInput.TurnRight) {
-            switch (this.direction) {
-                case EDirection.Top:
-                    this.direction = EDirection.Right;
-                    break;
-                case EDirection.Bottom:
-                    this.direction = EDirection.Left;
-                    break;
-                case EDirection.Left:
-                    this.direction = EDirection.Top;
-                    break;
-                case EDirection.Right:
-                    this.direction = EDirection.Bottom;
-                    break;
-                default:
-                    break;
+            if (inputValue === EInput.Top) {
+                this.targetPosition.y -= 1;
+                this.isMoving = true;
+                EventManager.instance.emit(EEvent.SpawnSmoke, new Vec2(this.position), inputValue);
+            } else if (inputValue === EInput.Bottom) {
+                this.targetPosition.y += 1;
+                this.isMoving = true;
+                EventManager.instance.emit(EEvent.SpawnSmoke, new Vec2(this.position), inputValue);
             }
 
-            this.state = EEntityState.TurnRight;
-        }
+            if (inputValue === EInput.TurnLeft) {
+                switch (this.direction) {
+                    case EDirection.Top:
+                        this.direction = EDirection.Left;
+                        break;
+                    case EDirection.Bottom:
+                        this.direction = EDirection.Right;
+                        break;
+                    case EDirection.Left:
+                        this.direction = EDirection.Bottom;
+                        break;
+                    case EDirection.Right:
+                        this.direction = EDirection.Top;
+                        break;
+                    default:
+                        break;
+                }
+
+                this.state = EEntityState.TurnLeft;
+                resolve();
+            }
+
+            if (inputValue === EInput.TurnRight) {
+                switch (this.direction) {
+                    case EDirection.Top:
+                        this.direction = EDirection.Right;
+                        break;
+                    case EDirection.Bottom:
+                        this.direction = EDirection.Left;
+                        break;
+                    case EDirection.Left:
+                        this.direction = EDirection.Top;
+                        break;
+                    case EDirection.Right:
+                        this.direction = EDirection.Bottom;
+                        break;
+                    default:
+                        break;
+                }
+
+                this.state = EEntityState.TurnRight;
+                resolve();
+            }
+        });
     }
 
     protected onFallingDeath(target: EntityManager, Instigator: EntityManager) {
