@@ -4,7 +4,7 @@ const { ccclass, property } = _decorator;
 import { TileMapManager } from '../Tile/TileMapManager';
 import { CreateUINode } from '../../Utils';
 import levels, { Ilevel } from '../../Levels';
-import DataManager from '../../Runtime/DataManager';
+import DataManager, { IRecord } from '../../Runtime/DataManager';
 import { TILE_WIDTH, TILE_HEIGHT } from '../Tile/TileManager';
 import EventManager from '../../Runtime/EventManager';
 import { EDirection, EEntityState, EEvent } from '../../Enums';
@@ -24,6 +24,9 @@ export class BattleManager extends Component {
         EventManager.instance.on(EEvent.PlayerMoveEnd, this.checkArrived, this);
 
         EventManager.instance.on(EEvent.SpawnSmoke, this.generateSmoke, this);
+
+        EventManager.instance.on(EEvent.RecordStep, this.recordStep, this);
+        EventManager.instance.on(EEvent.RevokeStep, this.revokeStep, this);
     }
 
     onDestroy() {
@@ -31,6 +34,9 @@ export class BattleManager extends Component {
         EventManager.instance.off(EEvent.PlayerMoveEnd, this.checkArrived, this);
 
         EventManager.instance.off(EEvent.SpawnSmoke, this.generateSmoke, this);
+
+        EventManager.instance.off(EEvent.RecordStep, this.recordStep, this);
+        EventManager.instance.off(EEvent.RevokeStep, this.revokeStep, this);
     }
 
     start() {
@@ -195,6 +201,73 @@ export class BattleManager extends Component {
 
         if (Vec2.strictEquals(playerPosition, doorPosition) && doorState === EEntityState.Death) {
             EventManager.instance.emit(EEvent.NextLevel);
+        }
+    }
+
+    recordStep() {
+        const { player, enemies, door, bursts, spikes } = DataManager.instance;
+
+        const record: IRecord = {
+            player: {
+                position: player.position.clone(),
+                direction: player.direction,
+                state: player.state
+            },
+            enemies: enemies.map(enemy => ({
+                position: enemy.position,
+                direction: enemy.direction,
+                state: enemy.state,
+            })),
+            door: {
+                position: door.position.clone(),
+                state: door.state
+            },
+            bursts: bursts.map(burst => ({
+                position: burst.position.clone(),
+                state: burst.state,
+                currentPoint: burst.currentPoint,
+            })),
+            spikes: spikes.map(spike => ({
+                position: spike.position.clone(),
+                state: spike.state,
+                currentPoint: spike.currentPoint,
+            }))
+        }
+
+        DataManager.instance.records.push(record);
+    }
+
+    revokeStep() {
+        const record = DataManager.instance.records.pop();
+
+        if (record) {
+            const { player, enemies, door, bursts, spikes } = DataManager.instance;
+
+            player.position = record.player.position.clone();
+            player.targetPosition = record.player.position.clone();
+            player.direction = record.player.direction;
+            player.state = record.player.state;
+
+            enemies.forEach((enemy, index) => {
+                enemy.position = record.enemies[index].position;
+                enemy.direction = record.enemies[index].direction;
+                enemy.state = record.enemies[index].state;
+            })
+
+            door.position = record.door.position;
+            door.state = record.door.state;
+
+            bursts.forEach((burst, index) => {
+                burst.position = record.bursts[index].position;
+                burst.state = record.bursts[index].state;
+                burst.currentPoint = record.bursts[index].currentPoint;
+            })
+
+            spikes.forEach((spike, index) => {
+                spike.position = record.spikes[index].position;
+                spike.state = record.spikes[index].state;
+                spike.currentPoint = record.spikes[index].currentPoint;
+            })
         }
     }
 }

@@ -94,6 +94,7 @@ export class PlayerManager extends EntityManager {
 
         switch (this.isActionValid(inputValue)) {
             case EActionResult.Perform:
+                EventManager.instance.emit(EEvent.RecordStep);
                 await this.control(inputValue);
                 EventManager.instance.emit(EEvent.playerActionCompleted);
                 break;
@@ -101,11 +102,13 @@ export class PlayerManager extends EntityManager {
                 this.handleBlocked(inputValue);
                 break;
             case EActionResult.Attack:
+                EventManager.instance.emit(EEvent.RecordStep);
                 this.tryAttackTarget(this.target, 2);
                 EventManager.instance.emit(EEvent.playerActionCompleted);
                 break;
             default:
-            // do nothing
+                // do nothing
+                break;
         }
     }
 

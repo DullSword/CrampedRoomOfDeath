@@ -23,6 +23,8 @@ export enum EEvent {
     ResetTrapPoint = 'ResetTrapPoint',
     SpawnSmoke = 'SpawnSmoke',
     ScreenShake = 'ScreenShake',
+    RecordStep = 'RecordStep',
+    RevokeStep = 'RevokeStep',
 }
 
 export enum EInput {

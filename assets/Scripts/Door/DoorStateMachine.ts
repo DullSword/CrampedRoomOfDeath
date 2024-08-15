@@ -42,8 +42,11 @@ export class DoorStateMachine extends StateMachine {
             case this.states.get(EEntityState.Idle):
                 if (this.getParamValue(EEntityStateMachineParams.Death)) {
                     this.currentState = this.states.get(EEntityState.Death);
-                } else {
-                    this.currentState = this.currentState;
+                }
+                break;
+            case this.states.get(EEntityState.Death):
+                if (this.getParamValue(EEntityStateMachineParams.Idle)) {
+                    this.currentState = this.states.get(EEntityState.Idle);
                 }
                 break;
             default: {
