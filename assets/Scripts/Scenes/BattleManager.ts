@@ -20,7 +20,7 @@ export class BattleManager extends Component {
     private smokeLayout: Node;
 
     onLoad() {
-        EventManager.instance.on(EEvent.NextLevel, this.NextLevel, this);
+        EventManager.instance.on(EEvent.NextLevel, this.nextLevel, this);
         EventManager.instance.on(EEvent.PlayerMoveEnd, this.checkArrived, this);
 
         EventManager.instance.on(EEvent.SpawnSmoke, this.generateSmoke, this);
@@ -30,7 +30,7 @@ export class BattleManager extends Component {
     }
 
     onDestroy() {
-        EventManager.instance.off(EEvent.NextLevel, this.NextLevel, this);
+        EventManager.instance.off(EEvent.NextLevel, this.nextLevel, this);
         EventManager.instance.off(EEvent.PlayerMoveEnd, this.checkArrived, this);
 
         EventManager.instance.off(EEvent.SpawnSmoke, this.generateSmoke, this);
@@ -189,7 +189,7 @@ export class BattleManager extends Component {
         );
     }
 
-    NextLevel() {
+    nextLevel() {
         DataManager.instance.levelIndex++;
         this.initLevel();
     }
