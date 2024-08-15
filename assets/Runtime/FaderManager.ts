@@ -29,11 +29,24 @@ export default class FaderManager extends Singleton {
         return this._fader;
     }
 
+    /**
+     * 逐渐进入黑幕
+     */
     async fadeIn(duration: number = DEFAULT_FADE_DURATION) {
         await this.fader.fadeIn(duration);
     }
 
+    /**
+     * 逐渐退出黑幕
+     */
     async fadeOut(duration: number = DEFAULT_FADE_DURATION) {
         await this.fader.fadeOut(duration);
+    }
+
+    /**
+     * 保持黑幕
+     */
+    mask() {
+        this.fader.mask();
     }
 }

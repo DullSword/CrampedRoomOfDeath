@@ -25,6 +25,14 @@ export enum EEvent {
     ScreenShake = 'ScreenShake',
     RecordStep = 'RecordStep',
     RevokeStep = 'RevokeStep',
+    RestartLevel = 'RestartLevel',
+    QuitBattle = 'QuitBattle',
+}
+
+export enum EScene {
+    Loading = 'Loading',
+    Start = 'Start',
+    Battle = 'Battle',
 }
 
 export enum EInput {

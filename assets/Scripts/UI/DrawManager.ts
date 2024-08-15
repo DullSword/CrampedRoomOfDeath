@@ -69,7 +69,9 @@ export class DrawManager extends Component {
         }
     }
 
-    // fadeIn 逐渐进入黑幕
+    /**
+     * 逐渐进入黑幕
+     */
     fadeIn(duration: number = DEFAULT_FADE_DURATION) {
         this.setAlpha(0);
         this.duration = duration;
@@ -81,7 +83,9 @@ export class DrawManager extends Component {
         });
     }
 
-    // fadeOut 逐渐退出黑幕
+    /**
+     * 逐渐退出黑幕
+     */
     fadeOut(duration: number = DEFAULT_FADE_DURATION) {
         this.setAlpha(1);
         this.duration = duration;
@@ -91,5 +95,12 @@ export class DrawManager extends Component {
         return new Promise(resolve => {
             this.fadeResolve = resolve;
         })
+    }
+
+    /**
+     * 保持黑幕
+     */
+    mask() {
+        this.setAlpha(1);
     }
 }

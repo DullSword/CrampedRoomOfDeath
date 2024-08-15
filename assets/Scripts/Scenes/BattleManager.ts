@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Vec2 } from 'cc';
+import { _decorator, Component, director, Node, Vec2 } from 'cc';
 const { ccclass, property } = _decorator;
 
 import { TileMapManager } from '../Tile/TileMapManager';
@@ -7,7 +7,7 @@ import levels, { Ilevel } from '../../Levels';
 import DataManager, { IRecord } from '../../Runtime/DataManager';
 import { TILE_WIDTH, TILE_HEIGHT } from '../Tile/TileManager';
 import EventManager from '../../Runtime/EventManager';
-import { EDirection, EEntityState, EEvent } from '../../Enums';
+import { EDirection, EEntityState, EEvent, EScene } from '../../Enums';
 import { TrapFactory, DoorFactory, EnemyFactory, PlayerFactory, SmokeFactory } from '../../Base/EntityFactory';
 import FaderManager from '../../Runtime/FaderManager';
 import { ShakeManager } from '../UI/ShakeManager';
@@ -19,6 +19,8 @@ export class BattleManager extends Component {
 
     private smokeLayout: Node;
 
+    private bIsInitialized: boolean = false;
+
     onLoad() {
         EventManager.instance.on(EEvent.NextLevel, this.nextLevel, this);
         EventManager.instance.on(EEvent.PlayerMoveEnd, this.checkArrived, this);
@@ -27,6 +29,9 @@ export class BattleManager extends Component {
 
         EventManager.instance.on(EEvent.RecordStep, this.recordStep, this);
         EventManager.instance.on(EEvent.RevokeStep, this.revokeStep, this);
+
+        EventManager.instance.on(EEvent.RestartLevel, this.initLevel, this);
+        EventManager.instance.on(EEvent.QuitBattle, this.quitBattle, this);
     }
 
     onDestroy() {
@@ -37,6 +42,9 @@ export class BattleManager extends Component {
 
         EventManager.instance.off(EEvent.RecordStep, this.recordStep, this);
         EventManager.instance.off(EEvent.RevokeStep, this.revokeStep, this);
+
+        EventManager.instance.off(EEvent.RestartLevel, this.initLevel, this);
+        EventManager.instance.off(EEvent.QuitBattle, this.quitBattle, this);
     }
 
     start() {
@@ -48,7 +56,12 @@ export class BattleManager extends Component {
     async initLevel() {
         const level = levels[`level${DataManager.instance.levelIndex}`];
         if (level) {
-            await FaderManager.instance.fadeIn();
+            // 初始化时也就是刚开始进入第一关时，不要“逐渐进入黑幕”，此后进入下一关时则需要“逐渐进入黑幕”
+            if (this.bIsInitialized) {
+                await FaderManager.instance.fadeIn();
+            } else {
+                FaderManager.instance.mask();
+            }
 
             this.clearLevel();
 
@@ -72,6 +85,7 @@ export class BattleManager extends Component {
             await this.generatePlayer();
 
             await FaderManager.instance.fadeOut();
+            this.bIsInitialized = true;
         }
     }
 
@@ -192,6 +206,10 @@ export class BattleManager extends Component {
     nextLevel() {
         DataManager.instance.levelIndex++;
         this.initLevel();
+    }
+
+    quitBattle() {
+        director.loadScene(EScene.Start);
     }
 
     checkArrived() {
