@@ -28,7 +28,7 @@ export class SpikeManager extends TrapManager {
     trigger() {
         const player = DataManager.instance.player;
 
-        if (!player || player.state === EEntityState.Death) {
+        if (!player) {
             return;
         }
 
