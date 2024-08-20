@@ -9,6 +9,8 @@ export class StartManager extends Component {
     protected onLoad(): void {
         FaderManager.instance.fadeOut(1000);
 
+        director.preloadScene(EScene.Battle);
+
         this.node.once(Node.EventType.TOUCH_START, this.handleStart, this);
     }
 
