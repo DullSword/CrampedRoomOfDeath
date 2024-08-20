@@ -71,7 +71,7 @@ export abstract class EnemyManager extends EntityManager {
     }
 
     protected OnDeath(target: EntityManager, Instigator: EntityManager): void {
-        if (target === this) {
+        if (target === this && this.state !== EEntityState.Death) {
             super.OnDeath(target, Instigator);
 
             this.setTileInfo(true, false);

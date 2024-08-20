@@ -77,7 +77,7 @@ export class EntityManager extends Component {
     }
 
     protected OnDeath(target: EntityManager, Instigator: EntityManager) {
-        if (target === this) {
+        if (target === this && this.state !== EEntityState.Death) {
             this.state = EEntityState.Death;
         }
     }
