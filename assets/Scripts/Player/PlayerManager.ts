@@ -41,6 +41,8 @@ export class PlayerManager extends EntityManager {
     protected onDestroy(): void {
         EventManager.instance.off(EEvent.PlayerInput, this.handleInput, this);
 
+        EventManager.instance.off(EEvent.FallingDeath, this.onFallingDeath, this);
+
         super.onDestroy();
     }
 
