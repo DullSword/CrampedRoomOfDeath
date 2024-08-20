@@ -22,6 +22,8 @@ export class BattleManager extends Component {
     private bIsInitialized: boolean = false;
 
     onLoad() {
+        DataManager.instance.levelIndex = 1;
+
         EventManager.instance.on(EEvent.NextLevel, this.nextLevel, this);
         EventManager.instance.on(EEvent.PlayerMoveEnd, this.checkArrived, this);
 
