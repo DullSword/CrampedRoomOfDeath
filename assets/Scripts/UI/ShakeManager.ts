@@ -37,7 +37,7 @@ export class ShakeManager extends Component {
     }
 
     onDestroy() {
-        EventManager.instance.on(EEvent.ScreenShake, this.play, this);
+        EventManager.instance.off(EEvent.ScreenShake, this.play, this);
 
         super.destroy();
     }
