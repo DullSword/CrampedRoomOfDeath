@@ -88,6 +88,8 @@ export class BattleManager extends Component {
 
             await FaderManager.instance.fadeOut();
             this.bIsInitialized = true;
+        } else {
+            this.quitBattle();
         }
     }
 
