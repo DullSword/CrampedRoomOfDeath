@@ -43,7 +43,11 @@ export abstract class EnemyStateMachine extends StateMachine {
                     // 通过此方式触发 state 重新判断朝向
                     this.currentState = this.currentState;
                 }
-
+                break;
+            case this.states.get(EEntityState.Death):
+                if (this.getParamValue(EEntityStateMachineParams.Idle)) {
+                    this.currentState = this.states.get(EEntityState.Idle);
+                }
                 break;
             default: {
                 this.currentState = this.states.get(EEntityState.Idle);
