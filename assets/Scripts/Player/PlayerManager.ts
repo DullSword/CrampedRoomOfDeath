@@ -83,6 +83,13 @@ export class PlayerManager extends EntityManager {
     }
 
     async handleInput(inputValue: EInput) {
+        const { position: doorPosition } = DataManager.instance.door ?? {};
+
+        // 避免在门的位置尝试移动或旋转时触发屏幕震动，导致 stage 的 position 在 adaptPos 被重置回上一关的位置
+        if (!doorPosition || Vec2.strictEquals(doorPosition, this.position)) {
+            return;
+        }
+
         if (
             this.isMoving ||
             this.state === EEntityState.Death ||
