@@ -174,7 +174,7 @@ export class PlayerManager extends EntityManager {
 
             // 检查 burst，因为 burst 可能在空地块上
             const { bursts } = DataManager.instance;
-            const burstTarget = bursts.filter(burst => !burst.disabled).filter(burst => Vec2.strictEquals(burst.position, nextPosition));
+            const burstTarget = bursts.filter(burst => burst.state !== EEntityState.Death).filter(burst => Vec2.strictEquals(burst.position, nextPosition));
 
             const { bMovable: bNextPositionMovable } = tileInfo[nextPosition.x]?.[nextPosition.y] ?? {};
             const { bWeaponBlocked: bNextPositionAfterNextWeaponBlocked } = tileInfo[nextPositionAfterNext.x]?.[nextPositionAfterNext.y] ?? {};

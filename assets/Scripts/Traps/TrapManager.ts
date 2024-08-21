@@ -7,13 +7,11 @@ import EventManager from '../../Runtime/EventManager';
 
 export abstract class TrapManager extends EntityManager {
 
-    protected _disabled: boolean = false;
-
     protected trapType: ETrapType = null;
     protected triggerDistance: number = 0;
 
     // totalPoint: 从 0 点开始，初始状态和触发状态各占 1 个点，每有一个刺再加 1 点
-    protected totalPoint: number = 0;
+    private _totalPoint: number = 0;
     private _currentPoint: number = 0;
 
     get currentPoint() {
@@ -25,13 +23,13 @@ export abstract class TrapManager extends EntityManager {
         this.fsm.setParamValue(EEntityStateMachineParams.CurrentPoint, value);
     }
 
-    get disabled() {
-        return this._disabled;
+    get totalPoint() {
+        return this._totalPoint;
     }
 
     async init(params: ITrap) {
         this.trapType = params.trapType;
-        this.totalPoint = params.totalPoint;
+        this._totalPoint = params.totalPoint;
         this.triggerDistance = params.triggerDistance ?? 0;
 
         await super.init({
@@ -46,7 +44,7 @@ export abstract class TrapManager extends EntityManager {
 
     async initStateMachine(fsm: new () => StateMachine) {
         this.fsm = this.addComponent(fsm);
-        await this.fsm.init(this, this.totalPoint);
+        await this.fsm.init(this, this._totalPoint);
     }
 
     protected onDestroy(): void {

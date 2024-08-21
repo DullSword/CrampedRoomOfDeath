@@ -14,8 +14,6 @@ export class SpikeManager extends TrapManager {
             ...params,
         });
 
-        this.setTileInfo(true, false);
-
         EventManager.instance.on(EEvent.ResetTrapPoint, this.resetPoint, this);
     }
 

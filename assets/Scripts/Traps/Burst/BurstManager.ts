@@ -15,8 +15,6 @@ export class BurstManager extends TrapManager {
         await super.init({
             ...params,
         });
-
-        this.setTileInfo(true, false);
     }
 
     protected update(dt: number): void {
@@ -28,6 +26,7 @@ export class BurstManager extends TrapManager {
 
         if (
             (!player || player.state === EEntityState.Death) ||
+            this.state === EEntityState.Death ||
             (this.currentPoint === 0 && Vec2.distance(this.position, player.targetPosition) > this.triggerDistance)
         ) {
             return;
@@ -36,12 +35,10 @@ export class BurstManager extends TrapManager {
         this.currentPoint++;
 
         if (this.currentPoint === this.totalPoint) {
+            this.state = EEntityState.Death;
             if (Vec2.distance(this.position, player.targetPosition) <= this.triggerDistance) {
                 EventManager.instance.emit(EEvent.FallingDeath, player, this);
             }
-            this.setTileVisibility(false);
-            this.setTileInfo(false, false);
-            this._disabled = true;
         }
     }
 }
