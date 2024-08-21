@@ -124,44 +124,43 @@ export class PlayerManager extends EntityManager {
     isActionValid(inputValue: EInput) {
         const { targetPosition: lastPosition, direction } = this;
 
-        const { tileInfo } = DataManager.instance;
+        const { tileInfo, enemies, door } = DataManager.instance;
 
         if (inputValue === EInput.TurnLeft || inputValue === EInput.TurnRight) {
             let turnLeft = inputValue === EInput.TurnLeft;
 
             const { passTilePosition, stayTilePosition } = this.calculatePositions(direction, lastPosition, turnLeft);
 
-            // 武器可以出界
-            // const bIsPassTileOutOfBounds = passTilePosition.x < 0 || passTilePosition.y < 0 || passTilePosition.x >= tileInfo.length || passTilePosition.y >= tileInfo[0].length;
-            // const bIsStayTileOutOfBounds = stayTilePosition.x < 0 || stayTilePosition.y < 0 || stayTilePosition.x >= tileInfo.length || stayTilePosition.y >= tileInfo[0].length;
+            const blockedEnemies = enemies.filter(enemy => enemy.state !== EEntityState.Death).filter(enemy => Vec2.strictEquals(enemy.position, passTilePosition) || Vec2.strictEquals(enemy.position, stayTilePosition));
+            const bHasBlockedEnemies = blockedEnemies.length > 0;
 
-            // if (bIsPassTileOutOfBounds || bIsStayTileOutOfBounds) {
-            //     return EActionResult.Blocked;
-            // }
+            const bHasBlockedDoor = door.state !== EEntityState.Death && (Vec2.strictEquals(door.position, passTilePosition) || Vec2.strictEquals(door.position, stayTilePosition));
 
             const { bWeaponBlocked: bPassTileWeaponBlocked } = tileInfo[passTilePosition.x]?.[passTilePosition.y] ?? { bWeaponBlocked: false };
             const { bWeaponBlocked: bStayTileWeaponBlocked } = tileInfo[stayTilePosition.x]?.[stayTilePosition.y] ?? { bWeaponBlocked: false };
 
-            if (bPassTileWeaponBlocked || bStayTileWeaponBlocked) {
+            if (
+                bHasBlockedEnemies ||
+                bHasBlockedDoor ||
+                bPassTileWeaponBlocked ||
+                bStayTileWeaponBlocked
+            ) {
                 return EActionResult.Blocked;
             }
         } else {
             const nextPosition = this.getNextPosition(inputValue, lastPosition);
             const nextPositionAfterNext = this.getNextPositionAfterNext(direction, nextPosition);
 
-            const { door: { position: doorPosition } } = DataManager.instance;
-
             const bIsNextPositionOutOfBounds = nextPosition.x < 0 || nextPosition.y < 0 || nextPosition.x >= tileInfo.length || nextPosition.y >= tileInfo[lastPosition.x].length;
             const bIsNextPositionAfterNextOutOfBounds = nextPositionAfterNext.x < 0 || nextPositionAfterNext.y < 0 || nextPositionAfterNext.x >= tileInfo.length || nextPositionAfterNext.y >= tileInfo[lastPosition.x].length;
 
             if (
                 bIsNextPositionOutOfBounds ||
-                (bIsNextPositionAfterNextOutOfBounds && !Vec2.strictEquals(nextPosition, doorPosition))
+                (bIsNextPositionAfterNextOutOfBounds && !Vec2.strictEquals(nextPosition, door.position))
             ) {
                 return EActionResult.Blocked;
             }
 
-            const { enemies } = DataManager.instance;
             const enemyTarget = enemies.filter(enemy => enemy.state !== EEntityState.Death).filter(enemy => Vec2.strictEquals(enemy.position, nextPositionAfterNext));
 
             const bIsSameDirection = mapInputToDirection(inputValue) === this.direction;
@@ -176,10 +175,20 @@ export class PlayerManager extends EntityManager {
             const { bursts } = DataManager.instance;
             const burstTarget = bursts.filter(burst => burst.state !== EEntityState.Death).filter(burst => Vec2.strictEquals(burst.position, nextPosition));
 
+            const blockedEnemies = enemies.filter(enemy => enemy.state !== EEntityState.Death).filter(enemy => Vec2.strictEquals(enemy.position, nextPosition) || Vec2.strictEquals(enemy.position, nextPositionAfterNext));
+            const bHasBlockedEnemies = blockedEnemies.length > 0;
+
+            const bHasBlockedDoor = door.state !== EEntityState.Death && (Vec2.strictEquals(door.position, nextPosition) || Vec2.strictEquals(door.position, nextPositionAfterNext));
+
             const { bMovable: bNextPositionMovable } = tileInfo[nextPosition.x]?.[nextPosition.y] ?? {};
             const { bWeaponBlocked: bNextPositionAfterNextWeaponBlocked } = tileInfo[nextPositionAfterNext.x]?.[nextPositionAfterNext.y] ?? {};
 
-            if ((!bNextPositionMovable && burstTarget.length <= 0) || bNextPositionAfterNextWeaponBlocked) {
+            if (
+                bHasBlockedEnemies ||
+                bHasBlockedDoor ||
+                (!bNextPositionMovable && burstTarget.length <= 0) ||
+                bNextPositionAfterNextWeaponBlocked
+            ) {
                 return EActionResult.Blocked;
             }
         }
